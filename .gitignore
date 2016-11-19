@@ -1,0 +1,12 @@
+target/
+
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+
+### Packaging ###
+*.jar
+*.war
+*.ear
