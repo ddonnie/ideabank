@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/controller-layer/controller-layer.iml" filepath="$PROJECT_DIR$/controller-layer/controller-layer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/frontend-services-layer/frontend-services-layer.iml" filepath="$PROJECT_DIR$/frontend-services-layer/frontend-services-layer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/ideabank.iml" filepath="$PROJECT_DIR$/.idea/ideabank.iml" />
+      <module fileurl="file://$PROJECT_DIR$/persistence-layer/persistence-layer.iml" filepath="$PROJECT_DIR$/persistence-layer/persistence-layer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/router-layer/router-layer.iml" filepath="$PROJECT_DIR$/router-layer/router-layer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/service-layer/service-layer.iml" filepath="$PROJECT_DIR$/service-layer/service-layer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/view-layer/view-layer.iml" filepath="$PROJECT_DIR$/view-layer/view-layer.iml" />
+    </modules>
+  </component>
+</project>
