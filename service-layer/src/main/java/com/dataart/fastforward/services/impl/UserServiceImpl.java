@@ -1,6 +1,6 @@
 package com.dataart.fastforward.services.impl;
 
-import com.dataart.fastforward.entity.User;
+import com.dataart.fastforward.entity.UserDetail;
 import com.dataart.fastforward.repository.UserRepository;
 import com.dataart.fastforward.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<User> findAll() {
+    public List<UserDetail> findAll() {
         return userRepository.findAll();
     }
 }

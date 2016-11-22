@@ -1,6 +1,6 @@
 package com.dataart.fastforward.controller;
 
-import com.dataart.fastforward.entity.User;
+import com.dataart.fastforward.entity.UserDetail;
 import com.dataart.fastforward.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +19,7 @@ public class TestRestController {
     UserService userService;
 
     @GetMapping("/users")
-    public List<User> testMethod() {
+    public List<UserDetail> testMethod() {
         return userService.findAll();
     }
 }

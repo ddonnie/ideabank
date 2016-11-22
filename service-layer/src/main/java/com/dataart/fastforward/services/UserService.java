@@ -1,6 +1,6 @@
 package com.dataart.fastforward.services;
 
-import com.dataart.fastforward.entity.User;
+import com.dataart.fastforward.entity.UserDetail;
 
 import java.util.List;
 
@@ -9,5 +9,5 @@ import java.util.List;
  */
 public interface UserService {
 
-    List<User> findAll();
+    List<UserDetail> findAll();
 }

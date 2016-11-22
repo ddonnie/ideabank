@@ -3,17 +3,18 @@ package com.dataart.fastforward.entity;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created by logariett on 19.11.2016.
  */
 @Entity
 @Table(name = "Users")
-public class User {
+public class UserDetail {
 
     @Id
     @GeneratedValue(generator = "increment")
-    @GenericGenerator(name= "increment", strategy= "increment")
+    @GenericGenerator(name = "increment", strategy = "increment")
     @Column(name = "user_id", length = 6, nullable = false)
     private long userId;
 
@@ -29,7 +30,18 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    public User() {}
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role role;
+
+    @ManyToMany
+    @JoinTable(name="Bookmarks",
+            joinColumns = @JoinColumn(name="user_id", referencedColumnName="user_id"),
+            inverseJoinColumns = @JoinColumn(name="idea_id", referencedColumnName="idea_id")
+    )
+    private Set<Idea> ideas;
+
+    public UserDetail() {}
 
     public long getUserId() {
         return userId;
@@ -69,5 +81,21 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public Set<Idea> getIdeas() {
+        return ideas;
+    }
+
+    public void setIdeas(Set<Idea> ideas) {
+        this.ideas = ideas;
     }
 }
