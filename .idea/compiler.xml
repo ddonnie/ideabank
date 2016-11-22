@@ -36,7 +36,7 @@
       <module name="ideabank" target="1.5" />
       <module name="persistence-layer" target="1.5" />
       <module name="router-layer" target="1.6" />
-      <module name="service-layer" target="1.5" />
+      <module name="service-layer" target="1.6" />
       <module name="view-layer" target="1.5" />
     </bytecodeTargetLevel>
   </component>

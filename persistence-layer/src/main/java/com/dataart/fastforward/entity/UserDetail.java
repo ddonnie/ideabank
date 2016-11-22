@@ -1,9 +1,10 @@
 package com.dataart.fastforward.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.Set;
 
 /**
  * Created by logariett on 19.11.2016.
@@ -28,24 +29,15 @@ public class UserDetail {
     private String login;
 
     @Column(name = "password")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinColumn(name = "role_id", nullable = false)
-    private Role role;
-
-    @ManyToMany
-    @JoinTable(name="Bookmarks",
-            joinColumns = @JoinColumn(name="user_id", referencedColumnName="user_id"),
-            inverseJoinColumns = @JoinColumn(name="idea_id", referencedColumnName="idea_id")
-    )
-    private Set<Idea> ideas;
+    @Column(name = "role_id")
+    private Integer roleId;
 
     public UserDetail() {}
 
-    public long getUserId() {
-        return userId;
-    }
+    public long getUserId() {return userId;}
 
     public void setUserId(long userId) {
         this.userId = userId;
@@ -75,6 +67,15 @@ public class UserDetail {
         this.login = login;
     }
 
+    public Integer getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
+    }
+
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -83,19 +84,4 @@ public class UserDetail {
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public Set<Idea> getIdeas() {
-        return ideas;
-    }
-
-    public void setIdeas(Set<Idea> ideas) {
-        this.ideas = ideas;
-    }
 }
