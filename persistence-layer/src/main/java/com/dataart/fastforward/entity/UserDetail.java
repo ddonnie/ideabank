@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created by logariett on 19.11.2016.
@@ -36,9 +37,18 @@ public class UserDetail {
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
+/*    @ManyToMany
+    @JoinTable(name = "Bookmarks",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "idea_id", referencedColumnName = "idea_id")
+    )
+    private Set<Idea> bookmarkedIdeas;*/
+
     public UserDetail() {}
 
-    public long getUserId() {return userId;}
+    public long getUserId() {
+        return userId;
+    }
 
     public void setUserId(long userId) {
         this.userId = userId;
@@ -68,14 +78,6 @@ public class UserDetail {
         this.login = login;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
     @JsonIgnore
     public String getPassword() {
         return password;
@@ -84,4 +86,20 @@ public class UserDetail {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+/*    public Set<Idea> getBookmarkedIdeas() {
+        return bookmarkedIdeas;
+    }
+
+    public void setBookmarkedIdeas(Set<Idea> bookmarkedIdeas) {
+        this.bookmarkedIdeas = bookmarkedIdeas;
+    }*/
 }

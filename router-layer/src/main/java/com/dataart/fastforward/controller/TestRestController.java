@@ -1,8 +1,10 @@
 package com.dataart.fastforward.controller;
 
+import com.dataart.fastforward.entity.Idea;
 import com.dataart.fastforward.entity.UserDetail;
 import com.dataart.fastforward.repository.RoleRepository;
 import com.dataart.fastforward.repository.UserDetailRepository;
+import com.dataart.fastforward.services.IdeaService;
 import com.dataart.fastforward.services.RoleService;
 import com.dataart.fastforward.services.UserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,8 @@ public class TestRestController {
     UserDetailService userDetailService;
     @Autowired
     RoleService roleService;
+    @Autowired
+    IdeaService ideaService;
 
     @Autowired
     UserDetailRepository userDetailRepository;
@@ -47,8 +51,12 @@ public class TestRestController {
         newUserDetail.setLogin(login);
         newUserDetail.setPassword(password);
         newUserDetail.setRole(roleService.getRoleById(2));
-//        newUserDetail.setRoleId(2);
         userDetailService.addUserDetail(newUserDetail);
         return "/users/" + newUserDetail.getUserId();
+    }
+
+    @GetMapping("/ideas")
+    public List<Idea> getAllIdeas() {
+        return ideaService.getAll();
     }
 }

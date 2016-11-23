@@ -1,4 +1,3 @@
-/*
 package com.dataart.fastforward.entity;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -7,10 +6,9 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
 
-*/
 /**
  * Created by logariett on 22.11.2016.
- *//*
+ */
 
 @Entity
 @Table(name = "Ideas")
@@ -22,25 +20,26 @@ public class Idea {
     @Column(name = "idea_id", length = 6, nullable = false)
     private long ideaId;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne//(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "user_id", nullable = false)
     private UserDetail user;
 
     @Column(name = "idea_text")
     private String ideaText;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "creation_date")
     private Date creationDate;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "ideas")
-    private Set<UserDetail> users;
+/*    @ManyToMany(mappedBy = "bookmarkedIdeas")//,fetch = FetchType.EAGER)
+    private Set<UserDetail> usersWhoBookmarked;*/
 
-    @ManyToMany
+/*    @ManyToMany
     @JoinTable(name="Ideas_Tags",
             joinColumns = @JoinColumn(name="idea_id", referencedColumnName="idea_id"),
             inverseJoinColumns = @JoinColumn(name="tag_id", referencedColumnName="tag_id")
     )
-    private Set<Tag> tags;
+    private Set<Tag> tags;*/
 
     public Idea() {}
 
@@ -76,20 +75,19 @@ public class Idea {
         this.creationDate = creationDate;
     }
 
-    public Set<UserDetail> getUsers() {
-        return users;
+/*    public Set<UserDetail> getUsers() {
+        return usersWhoBookmarked;
     }
 
     public void setUsers(Set<UserDetail> users) {
-        this.users = users;
-    }
+        this.usersWhoBookmarked = users;
+    }*/
 
-    public Set<Tag> getTags() {
+/*    public Set<Tag> getTags() {
         return tags;
     }
 
     public void setTags(Set<Tag> tags) {
         this.tags = tags;
-    }
+    }*/
 }
-*/
