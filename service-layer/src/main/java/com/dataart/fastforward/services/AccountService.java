@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface AccountService {
 
-    Account add(Account account);
+    Account add(String firstName, String lastName, String login, String password);
     void delete(long userId);
     Account getAccountById(long userId);
     Account edit(Account account);

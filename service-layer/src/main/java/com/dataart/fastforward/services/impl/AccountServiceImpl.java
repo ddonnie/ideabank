@@ -3,6 +3,7 @@ package com.dataart.fastforward.services.impl;
 import com.dataart.fastforward.entity.Account;
 import com.dataart.fastforward.repository.AccountRepository;
 import com.dataart.fastforward.services.AccountService;
+import com.dataart.fastforward.services.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +18,20 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private AccountRepository accountRepository;
 
-    @Override
-    public Account add(Account account) {
-        Account savedAccount = accountRepository.saveAndFlush(account);
+    @Autowired
+    RoleService roleService;
 
-        return savedAccount;
+    @Override
+    public Account add(String firstName, String lastName, String login, String password) {
+        Account newAccount = new Account();
+        newAccount.setFirstName(firstName);
+        newAccount.setLastName(lastName);
+        newAccount.setLogin(login);
+        newAccount.setPassword(password);
+        newAccount.setRole(roleService.getRoleById(2));
+        accountRepository.saveAndFlush(newAccount);
+
+        return newAccount;
     }
 
     @Override
