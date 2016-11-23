@@ -22,12 +22,6 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="controller-layer" />
-        <module name="frontend-services-layer" />
-        <module name="persistence-layer" />
-        <module name="router-layer" />
-        <module name="service-layer" />
-        <module name="view-layer" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

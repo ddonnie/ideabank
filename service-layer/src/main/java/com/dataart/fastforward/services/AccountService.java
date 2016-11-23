@@ -9,9 +9,9 @@ import java.util.List;
  */
 public interface AccountService {
 
-    Account addUserDetail(Account account);
+    Account add(Account account);
     void delete(long userId);
-    Account getUserById(long userId);
-    Account editUserDetail(Account account);
+    Account getAccountById(long userId);
+    Account edit(Account account);
     List<Account> getAll();
 }

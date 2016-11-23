@@ -13,8 +13,24 @@ import java.util.List;
  */
 @Service
 public class IdeaServiceImpl implements IdeaService {
+
     @Autowired
     private IdeaRepository ideaRepository;
+
+    @Override
+    public Idea add(Idea idea) {
+        Idea savedIdea = ideaRepository.saveAndFlush(idea);
+        return savedIdea;
+    }
+
+    @Override
+    public void delete(long ideaId) { ideaRepository.delete(ideaId);}
+
+    @Override
+    public Idea getIdeaById(long ideaId) { return ideaRepository.findOne(ideaId);}
+
+    @Override
+    public Idea edit(Idea idea) {return ideaRepository.saveAndFlush(idea);}
 
     @Override
     public List<Idea> getAll() {

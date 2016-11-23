@@ -18,7 +18,7 @@ public class AccountServiceImpl implements AccountService {
     private AccountRepository accountRepository;
 
     @Override
-    public Account addUserDetail(Account account) {
+    public Account add(Account account) {
         Account savedAccount = accountRepository.saveAndFlush(account);
 
         return savedAccount;
@@ -30,12 +30,12 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account getUserById(long userId) {
+    public Account getAccountById(long userId) {
         return accountRepository.findOne(userId);
     }
 
     @Override
-    public Account editUserDetail(Account account) {
+    public Account edit(Account account) {
         return accountRepository.saveAndFlush(account);
     }
 
