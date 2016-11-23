@@ -1,3 +1,4 @@
+/*
 package com.dataart.fastforward.entity;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -6,9 +7,11 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
 
+*/
 /**
  * Created by logariett on 22.11.2016.
- */
+ *//*
+
 @Entity
 @Table(name = "Ideas")
 public class Idea {
@@ -89,3 +92,4 @@ public class Idea {
         this.tags = tags;
     }
 }
+*/

@@ -32,8 +32,9 @@ public class UserDetail {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @Column(name = "role_id")
-    private Integer roleId;
+    @ManyToOne
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role role;
 
     public UserDetail() {}
 
@@ -67,12 +68,12 @@ public class UserDetail {
         this.login = login;
     }
 
-    public Integer getRoleId() {
-        return roleId;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     @JsonIgnore
@@ -83,5 +84,4 @@ public class UserDetail {
     public void setPassword(String password) {
         this.password = password;
     }
-
 }

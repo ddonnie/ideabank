@@ -1,3 +1,4 @@
+/*
 package com.dataart.fastforward.entity;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -5,9 +6,11 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.Set;
 
+*/
 /**
  * Created by logariett on 22.11.2016.
- */
+ *//*
+
 @Entity
 @Table(name = "Tags")
 public class Tag {
@@ -50,3 +53,4 @@ public class Tag {
         this.ideas = ideas;
     }
 }
+*/

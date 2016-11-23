@@ -1,7 +1,9 @@
 package com.dataart.fastforward.controller;
 
 import com.dataart.fastforward.entity.UserDetail;
+import com.dataart.fastforward.repository.RoleRepository;
 import com.dataart.fastforward.repository.UserDetailRepository;
+import com.dataart.fastforward.services.RoleService;
 import com.dataart.fastforward.services.UserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +20,13 @@ public class TestRestController {
 
     @Autowired
     UserDetailService userDetailService;
+    @Autowired
+    RoleService roleService;
 
     @Autowired
     UserDetailRepository userDetailRepository;
+    @Autowired
+    private RoleRepository roleRepository;
 
     @GetMapping("/users")
     public List<UserDetail> testMethod() {
@@ -28,7 +34,7 @@ public class TestRestController {
     }
 
     @GetMapping("/users/{userId}")
-    public UserDetail anotherMethod(@PathVariable long userId) {return userDetailService.getByUserId(userId);}
+    public UserDetail anotherMethod(@PathVariable long userId) {return userDetailService.getUserById(userId);}
 
     @PostMapping("/users/")
     public String userDetailAdd(@RequestParam String firstName,
@@ -40,7 +46,8 @@ public class TestRestController {
         newUserDetail.setLastName(lastName);
         newUserDetail.setLogin(login);
         newUserDetail.setPassword(password);
-        newUserDetail.setRoleId(2);
+        newUserDetail.setRole(roleService.getRoleById(2));
+//        newUserDetail.setRoleId(2);
         userDetailService.addUserDetail(newUserDetail);
         return "/users/" + newUserDetail.getUserId();
     }

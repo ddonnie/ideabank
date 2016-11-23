@@ -30,7 +30,7 @@ public class UserDetailServiceImpl implements UserDetailService {
     }
 
     @Override
-    public UserDetail getByUserId(long userId) {
+    public UserDetail getUserById(long userId) {
         return userDetailRepository.findOne(userId);
     }
 

@@ -1,12 +1,15 @@
+/*
 package com.dataart.fastforward.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
+*/
 /**
  * Created by logariett on 22.11.2016.
- */
+ *//*
+
 @Entity
 @Table(name = "Attachments")
 public class Attachment {
@@ -50,3 +53,4 @@ public class Attachment {
         this.link = link;
     }
 }
+*/

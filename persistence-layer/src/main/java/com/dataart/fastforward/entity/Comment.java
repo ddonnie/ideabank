@@ -1,3 +1,4 @@
+/*
 package com.dataart.fastforward.entity;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -5,9 +6,11 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.Date;
 
+*/
 /**
  * Created by logariett on 22.11.2016.
- */
+ *//*
+
 @Entity
 @Table(name = "Comments")
 public class Comment {
@@ -74,3 +77,4 @@ public class Comment {
         this.creationDate = creationDate;
     }
 }
+*/
