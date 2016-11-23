@@ -27,7 +27,7 @@ public class AccountController {
         return accountService.getAll();
     }
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/{userId}")
     public Account getUserById(@PathVariable long userId) {return accountService.getAccountById(userId);}
 
     @PostMapping
