@@ -23,7 +23,7 @@ public class Comment {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "user_id", nullable = false)
-    private UserDetail user;
+    private Account user;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "idea_id", nullable = false)
@@ -45,11 +45,11 @@ public class Comment {
         this.commentId = commentId;
     }
 
-    public UserDetail getUser() {
+    public Account getUser() {
         return user;
     }
 
-    public void setUser(UserDetail user) {
+    public void setUser(Account user) {
         this.user = user;
     }
 

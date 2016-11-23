@@ -4,7 +4,6 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Set;
 
 /**
  * Created by logariett on 22.11.2016.
@@ -22,7 +21,7 @@ public class Idea {
 
     @ManyToOne//(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "user_id", nullable = false)
-    private UserDetail user;
+    private Account user;
 
     @Column(name = "idea_text")
     private String ideaText;
@@ -32,7 +31,7 @@ public class Idea {
     private Date creationDate;
 
 /*    @ManyToMany(mappedBy = "bookmarkedIdeas")//,fetch = FetchType.EAGER)
-    private Set<UserDetail> usersWhoBookmarked;*/
+    private Set<Account> usersWhoBookmarked;*/
 
 /*    @ManyToMany
     @JoinTable(name="Ideas_Tags",
@@ -51,11 +50,11 @@ public class Idea {
         this.ideaId = ideaId;
     }
 
-    public UserDetail getUser() {
+    public Account getUser() {
         return user;
     }
 
-    public void setUser(UserDetail user) {
+    public void setUser(Account user) {
         this.user = user;
     }
 
@@ -75,11 +74,11 @@ public class Idea {
         this.creationDate = creationDate;
     }
 
-/*    public Set<UserDetail> getUsers() {
+/*    public Set<Account> getUsers() {
         return usersWhoBookmarked;
     }
 
-    public void setUsers(Set<UserDetail> users) {
+    public void setUsers(Set<Account> users) {
         this.usersWhoBookmarked = users;
     }*/
 

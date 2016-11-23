@@ -12,8 +12,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "Users")
-public class UserDetail {
-
+public class Account {
     @Id
     @GeneratedValue(generator = "increment")
     @GenericGenerator(name = "increment", strategy = "increment")
@@ -44,7 +43,7 @@ public class UserDetail {
     )
     private Set<Idea> bookmarkedIdeas;*/
 
-    public UserDetail() {}
+    public Account() {}
 
     public long getUserId() {
         return userId;
