@@ -4,13 +4,20 @@
     <entry_points version="2.0" />
   </component>
   <component name="FrameworkDetectionExcludesConfiguration">
-    <file type="web" url="file://$PROJECT_DIR$/router-layer" />
+    <file type="web" url="file://$PROJECT_DIR$" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/controller-layer/pom.xml" />
+        <option value="$PROJECT_DIR$/frontend-services-layer/pom.xml" />
+        <option value="$PROJECT_DIR$/view-layer/pom.xml" />
+      </set>
     </option>
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
