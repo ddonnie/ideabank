@@ -31,10 +31,10 @@ public class AccountController {
     public Account getUserById(@PathVariable long userId) {return accountService.getAccountById(userId);}
 
     @PostMapping
-    public String createAccount(@RequestParam String firstName,
-                                @RequestParam String lastName,
-                                @RequestParam String login,
-                                @RequestParam String password) {
+    public String createAccount(@RequestParam("firstName") String firstName,
+                                @RequestParam("lastName") String lastName,
+                                @RequestParam("login") String login,
+                                @RequestParam("password") String password) {
         accountService.add(firstName,lastName,login,password);
         return "Account created!";
     }
