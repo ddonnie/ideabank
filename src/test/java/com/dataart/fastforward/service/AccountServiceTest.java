@@ -1,5 +1,7 @@
-package com.dataart.fastforward;
+package com.dataart.fastforward.service;
 
+import com.dataart.fastforward.app.dto.NewAccountDTO;
+import com.dataart.fastforward.app.services.AccountService;
 import com.dataart.fastforward.config.root.DbConfig;
 import com.dataart.fastforward.config.servlet.WebMvcConfig;
 import org.junit.Test;
@@ -25,8 +27,22 @@ public class AccountServiceTest {
     @Autowired
     private DataSource dataSource;
 
+    @Autowired
+    AccountService accountService;
+
     @Test
     public void testDataSource(){
         System.out.println(dataSource);
+    }
+
+    @Test
+    public void testCreateAccount() {
+        NewAccountDTO newAccountDTO = new NewAccountDTO();
+        newAccountDTO.setFirstName("TestFirstName");
+        newAccountDTO.setLastName("TestLastName");
+        newAccountDTO.setLogin("TestLogin");
+        newAccountDTO.setPassword("TestPassword");
+        accountService.createAccount(newAccountDTO);
+        System.out.println(accountService.getAccountByLogin(newAccountDTO.getLogin()));
     }
 }

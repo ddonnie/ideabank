@@ -100,4 +100,16 @@ public class Account {
     public void setBookmarkedIdeas(Set<Idea> bookmarkedIdeas) {
         this.bookmarkedIdeas = bookmarkedIdeas;
     }*/
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "userId=" + userId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                '}';
+    }
 }

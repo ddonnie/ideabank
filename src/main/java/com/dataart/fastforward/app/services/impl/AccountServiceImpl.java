@@ -1,6 +1,7 @@
 package com.dataart.fastforward.app.services.impl;
 
 import com.dataart.fastforward.app.dao.AccountRepository;
+import com.dataart.fastforward.app.dto.NewAccountDTO;
 import com.dataart.fastforward.app.model.Account;
 import com.dataart.fastforward.app.services.AccountService;
 import com.dataart.fastforward.app.services.RoleService;
@@ -22,17 +23,16 @@ public class AccountServiceImpl implements AccountService {
     RoleService roleService;
 
     @Override
-    public Account add(String firstName, String lastName, String login, String password) {
-        Account newAccount = new Account();
-        newAccount.setFirstName(firstName);
-        newAccount.setLastName(lastName);
-        newAccount.setLogin(login);
-        newAccount.setPassword(password);
-        newAccount.setRole(roleService.getRoleById(2));
-        accountRepository.saveAndFlush(newAccount);
-
-        return newAccount;
+    public void createAccount(NewAccountDTO newAccountDTO) {
+        Account account = new Account();
+        account.setFirstName(newAccountDTO.getFirstName());
+        account.setLastName(newAccountDTO.getLastName());
+        account.setLogin(newAccountDTO.getLogin());
+        account.setPassword(newAccountDTO.getPassword());
+        account.setRole(roleService.getRoleById(2));
+        accountRepository.saveAndFlush(account);
     }
+
 
     @Override
     public void delete(long userId) {
@@ -43,6 +43,9 @@ public class AccountServiceImpl implements AccountService {
     public Account getAccountById(long userId) {
         return accountRepository.findOne(userId);
     }
+
+    @Override
+    public Account getAccountByLogin(String login) { return accountRepository.findOne(login); }
 
     @Override
     public Account edit(Account account) {

@@ -1,6 +1,7 @@
 package com.dataart.fastforward.app.controllers;
 
 import com.dataart.fastforward.app.dao.AccountRepository;
+import com.dataart.fastforward.app.dto.NewAccountDTO;
 import com.dataart.fastforward.app.model.Account;
 import com.dataart.fastforward.app.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +32,8 @@ public class AccountController {
     public Account getUserById(@PathVariable long userId) {return accountService.getAccountById(userId);}
 
     @PostMapping
-    public String createAccount(@RequestParam("firstName") String firstName,
-                                @RequestParam("lastName") String lastName,
-                                @RequestParam("login") String login,
-                                @RequestParam("password") String password) {
-        accountService.add(firstName,lastName,login,password);
-        return "Account created!";
+    public void createAccount(@RequestBody NewAccountDTO newAccount) {
+        accountService.createAccount(newAccount);
     }
 
 }

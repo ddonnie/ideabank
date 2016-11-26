@@ -1,5 +1,6 @@
 package com.dataart.fastforward.app.services;
 
+import com.dataart.fastforward.app.dto.NewAccountDTO;
 import com.dataart.fastforward.app.model.Account;
 
 import java.util.List;
@@ -9,9 +10,10 @@ import java.util.List;
  */
 public interface AccountService {
 
-    Account add(String firstName, String lastName, String login, String password);
+    void createAccount(NewAccountDTO newAccountDTO);
     void delete(long userId);
     Account getAccountById(long userId);
+    Account getAccountByLogin(String login);
     Account edit(Account account);
     List<Account> getAll();
 }
