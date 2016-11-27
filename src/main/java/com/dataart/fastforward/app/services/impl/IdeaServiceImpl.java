@@ -1,12 +1,15 @@
 package com.dataart.fastforward.app.services.impl;
 
 import com.dataart.fastforward.app.dao.IdeaRepository;
+import com.dataart.fastforward.app.dto.IdeaDTO;
 import com.dataart.fastforward.app.model.Idea;
 import com.dataart.fastforward.app.services.AccountService;
 import com.dataart.fastforward.app.services.IdeaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,9 +22,14 @@ public class IdeaServiceImpl implements IdeaService {
     private IdeaRepository ideaRepository;
 
     @Override
-    public Idea add(Idea idea) {
-        Idea savedIdea = ideaRepository.saveAndFlush(idea);
-        return savedIdea;
+    public void add(IdeaDTO ideaDTO) {
+        Idea idea = new Idea();
+
+        idea.setAuthor(ideaDTO.getAuthor());
+        idea.setIdeaText(ideaDTO.getIdeaText());
+        idea.setCreationDate(new Date());
+
+        ideaRepository.saveAndFlush(idea);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.dataart.fastforward.app.services;
 
+import com.dataart.fastforward.app.dto.IdeaDTO;
 import com.dataart.fastforward.app.model.Idea;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -10,7 +11,7 @@ import java.util.List;
  */
 public interface IdeaService {
 
-    Idea add(Idea idea);
+    void add(IdeaDTO ideaDTO);
     Idea edit(Idea idea);
     void delete(long ideaId);
 

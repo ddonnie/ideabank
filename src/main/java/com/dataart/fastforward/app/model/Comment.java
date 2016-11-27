@@ -45,11 +45,11 @@ public class Comment {
         this.commentId = commentId;
     }
 
-    public Account getUser() {
+    public Account getAuthor() {
         return user;
     }
 
-    public void setUser(Account user) {
+    public void setAuthor(Account user) {
         this.user = user;
     }
 

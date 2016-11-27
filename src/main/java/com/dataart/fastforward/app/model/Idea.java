@@ -1,6 +1,5 @@
 package com.dataart.fastforward.app.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.GenericGenerator;
@@ -25,7 +24,7 @@ public class Idea {
 
     @ManyToOne//(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "user_id", nullable = false)
-    private Account user;
+    private Account author;
 
     @Column(name = "idea_text")
     private String ideaText;
@@ -56,12 +55,12 @@ public class Idea {
         this.ideaId = ideaId;
     }
 
-    public Account getUser() {
-        return user;
+    public Account getAuthor() {
+        return author;
     }
 
-    public void setUser(Account user) {
-        this.user = user;
+    public void setAuthor(Account author) {
+        this.author = author;
     }
 
     public String getIdeaText() {
@@ -109,7 +108,7 @@ public class Idea {
     public String toString() {
         return "Idea{" +
                 "ideaId=" + ideaId +
-                ", user=" + user +
+                ", author=" + author +
                 ", ideaText='" + ideaText + '\'' +
                 ", creationDate=" + creationDate +
                 '}';
