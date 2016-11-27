@@ -31,6 +31,11 @@ public class AccountServiceTest {
     AccountService accountService;
 
     @Test
+    public void testGetAccountById() {
+        System.out.println(accountService.getAccountById(1));
+    }
+
+    @Test
     public void testDataSource(){
         System.out.println(dataSource);
     }

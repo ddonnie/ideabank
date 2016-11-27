@@ -1,10 +1,10 @@
 package com.dataart.fastforward.app.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created by logariett on 19.11.2016.
@@ -35,12 +35,13 @@ public class Account {
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
-/*    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "Bookmarks",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "idea_id", referencedColumnName = "idea_id")
     )
-    private Set<Idea> bookmarkedIdeas;*/
+    @JsonBackReference
+    private Set<Idea> bookmarkedIdeas;
 
     public Account() {}
 
@@ -68,6 +69,7 @@ public class Account {
         this.lastName = lastName;
     }
 
+    @JsonIgnore
     public String getLogin() {
         return login;
     }
@@ -76,7 +78,6 @@ public class Account {
         this.login = login;
     }
 
-    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -93,13 +94,14 @@ public class Account {
         this.role = role;
     }
 
-/*    public Set<Idea> getBookmarkedIdeas() {
+    @JsonIgnore
+    public Set<Idea> getBookmarkedIdeas() {
         return bookmarkedIdeas;
     }
 
     public void setBookmarkedIdeas(Set<Idea> bookmarkedIdeas) {
         this.bookmarkedIdeas = bookmarkedIdeas;
-    }*/
+    }
 
     @Override
     public String toString() {
