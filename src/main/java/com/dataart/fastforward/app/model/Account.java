@@ -69,7 +69,7 @@ public class Account {
         this.lastName = lastName;
     }
 
-    @JsonIgnore
+
     public String getLogin() {
         return login;
     }
@@ -78,6 +78,7 @@ public class Account {
         this.login = login;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -86,6 +87,7 @@ public class Account {
         this.password = password;
     }
 
+    @JsonIgnore
     public Role getRole() {
         return role;
     }
@@ -109,9 +111,7 @@ public class Account {
                 "userId=" + userId +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                ", role=" + role +
+                ", login='" + login +
                 '}';
     }
 }

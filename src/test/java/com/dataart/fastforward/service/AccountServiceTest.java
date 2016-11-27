@@ -50,4 +50,9 @@ public class AccountServiceTest {
         accountService.createAccount(newAccountDTO);
         System.out.println(accountService.getAccountByLogin(newAccountDTO.getLogin()));
     }
+
+    @Test
+    public void getBookmarksTest() {
+        System.out.println(accountService.getBookmarks(accountService.getAccountById(1)));
+    }
 }

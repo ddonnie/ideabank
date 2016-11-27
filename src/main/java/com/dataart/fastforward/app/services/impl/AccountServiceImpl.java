@@ -1,13 +1,17 @@
 package com.dataart.fastforward.app.services.impl;
 
 import com.dataart.fastforward.app.dao.AccountRepository;
+import com.dataart.fastforward.app.dao.IdeaRepository;
 import com.dataart.fastforward.app.dto.NewAccountDTO;
 import com.dataart.fastforward.app.model.Account;
+import com.dataart.fastforward.app.model.Idea;
 import com.dataart.fastforward.app.services.AccountService;
+import com.dataart.fastforward.app.services.IdeaService;
 import com.dataart.fastforward.app.services.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,6 +25,8 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
     RoleService roleService;
+    @Autowired
+    IdeaService ideaService;
 
     @Override
     public void createAccount(NewAccountDTO newAccountDTO) {
@@ -33,10 +39,14 @@ public class AccountServiceImpl implements AccountService {
         accountRepository.saveAndFlush(account);
     }
 
-
     @Override
     public void delete(long userId) {
         accountRepository.delete(userId);
+    }
+
+    @Override
+    public Account edit(Account account) {
+        return accountRepository.saveAndFlush(account);
     }
 
     @Override
@@ -48,13 +58,12 @@ public class AccountServiceImpl implements AccountService {
     public Account getAccountByLogin(String login) { return accountRepository.findOne(login); }
 
     @Override
-    public Account edit(Account account) {
-        return accountRepository.saveAndFlush(account);
-    }
-
-    @Override
     public List<Account> getAll() {
         return accountRepository.findAll();
     }
 
+    @Override
+    public List<Idea> getBookmarks(Account account) {
+        return new ArrayList<Idea>(account.getBookmarkedIdeas());
+    }
 }
