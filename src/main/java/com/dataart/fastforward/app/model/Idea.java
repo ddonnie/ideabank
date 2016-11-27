@@ -1,9 +1,12 @@
 package com.dataart.fastforward.app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 /**
  * Created by logariett on 22.11.2016.
@@ -21,7 +24,7 @@ public class Idea {
 
     @ManyToOne//(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "user_id", nullable = false)
-    private Account user;
+    private Account author;
 
     @Column(name = "idea_text")
     private String ideaText;
@@ -30,8 +33,10 @@ public class Idea {
     @Column(name = "creation_date")
     private Date creationDate;
 
-/*    @ManyToMany(mappedBy = "bookmarkedIdeas")//,fetch = FetchType.EAGER)
-    private Set<Account> usersWhoBookmarked;*/
+    @JsonIgnore
+    @ManyToMany(mappedBy = "bookmarkedIdeas",fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private Set<Account> usersWhoBookmarked;
 
 /*    @ManyToMany
     @JoinTable(name="Ideas_Tags",
@@ -50,12 +55,12 @@ public class Idea {
         this.ideaId = ideaId;
     }
 
-    public Account getUser() {
-        return user;
+    public Account getAuthor() {
+        return author;
     }
 
-    public void setUser(Account user) {
-        this.user = user;
+    public void setAuthor(Account author) {
+        this.author = author;
     }
 
     public String getIdeaText() {
@@ -74,15 +79,42 @@ public class Idea {
         this.creationDate = creationDate;
     }
 
-/*    public Set<Account> getUsers() {
+    @JsonIgnore
+    public Set<Account> getUsersWhoBookmarked() {
         return usersWhoBookmarked;
     }
 
-    public void setUsers(Set<Account> users) {
+    public void setUsersWhoBookmarked(Set<Account> users) {
         this.usersWhoBookmarked = users;
-    }*/
+    }
 
-/*    public Set<Tag> getTags() {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Idea idea = (Idea) o;
+
+        return ideaId == idea.ideaId;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (ideaId ^ (ideaId >>> 32));
+    }
+
+    @Override
+    public String toString() {
+        return "Idea{" +
+                "ideaId=" + ideaId +
+                ", author=" + author +
+                ", ideaText='" + ideaText + '\'' +
+                ", creationDate=" + creationDate +
+                '}';
+    }
+
+    /*    public Set<Tag> getTags() {
         return tags;
     }
 
