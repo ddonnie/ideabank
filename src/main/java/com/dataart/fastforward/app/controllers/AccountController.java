@@ -32,6 +32,7 @@ public class AccountController {
     public Account getUserById(@PathVariable long userId) {return accountService.getAccountById(userId);}
 
     @PostMapping
+    @ResponseStatus()
     public void createAccount(@RequestBody NewAccountDTO newAccount) {
         accountService.createAccount(newAccount);
     }
