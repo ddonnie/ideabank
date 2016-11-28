@@ -55,4 +55,14 @@ public class AccountServiceTest {
     public void getBookmarksTest() {
         System.out.println(accountService.getBookmarks(accountService.getAccountById(1)));
     }
+
+    @Test
+    public void findNonExistLoginTest() {
+        if (accountService.getAccountByLogin("ASS")==null) {
+            System.out.println("Not found");
+        }
+        else {
+            System.out.println("Found.");
+        }
+    }
 }

@@ -1,7 +1,6 @@
 package com.dataart.fastforward.app.services.impl;
 
 import com.dataart.fastforward.app.dao.AccountRepository;
-import com.dataart.fastforward.app.dao.IdeaRepository;
 import com.dataart.fastforward.app.dto.NewAccountDTO;
 import com.dataart.fastforward.app.model.Account;
 import com.dataart.fastforward.app.model.Idea;
@@ -13,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.dataart.fastforward.app.services.validation.ValidationUtils.assertNotBlank;
 
 /**
  * Created by logariett on 19.11.2016.
@@ -30,6 +31,14 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void createAccount(NewAccountDTO newAccountDTO) {
+        assertNotBlank(newAccountDTO.getFirstName(), "First name cannot be empty.");
+        assertNotBlank(newAccountDTO.getLastName(), "Last name cannot be empty.");
+        assertNotBlank(newAccountDTO.getLogin(), "Login cannot be empty.");
+        assertNotBlank(newAccountDTO.getPassword(), "Password cannot be empty.");
+
+        if (getAccountByLogin(newAccountDTO.getLogin())!=null) {
+            throw new IllegalArgumentException("The login is taken.");
+        }
         Account account = new Account();
         account.setFirstName(newAccountDTO.getFirstName());
         account.setLastName(newAccountDTO.getLastName());

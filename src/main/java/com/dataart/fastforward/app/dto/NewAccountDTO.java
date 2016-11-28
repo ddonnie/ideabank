@@ -10,8 +10,7 @@ public class NewAccountDTO {
     private String login;
     private String password;
 
-    public NewAccountDTO() {
-    }
+    public NewAccountDTO() {}
 
     public String getFirstName() { return firstName; }
 
