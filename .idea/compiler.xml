@@ -22,12 +22,16 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
+        <module name="ideabank" />
+        <module name="persistence-layer" />
+        <module name="router-layer" />
+        <module name="service-layer" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="controller-layer" target="1.5" />
       <module name="frontend-services-layer" target="1.5" />
-      <module name="ideabank" target="1.5" />
+      <module name="ideabank" target="1.8" />
       <module name="persistence-layer" target="1.5" />
       <module name="router-layer" target="1.6" />
       <module name="service-layer" target="1.6" />
