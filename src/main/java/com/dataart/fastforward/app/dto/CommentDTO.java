@@ -1,7 +1,7 @@
 package com.dataart.fastforward.app.dto;
 
-import com.dataart.fastforward.app.model.Account;
 import com.dataart.fastforward.app.model.Idea;
+import com.dataart.fastforward.app.model.User;
 
 import java.util.Date;
 
@@ -10,7 +10,7 @@ import java.util.Date;
  */
 public class CommentDTO {
 
-    private Account author;
+    private User author;
     private Idea idea;
     private String commentText;
     private Date creationDate;
@@ -18,11 +18,11 @@ public class CommentDTO {
     public CommentDTO() {
     }
 
-    public Account getAuthor() {
+    public User getAuthor() {
         return author;
     }
 
-    public void setAuthor(Account author) {
+    public void setAuthor(User author) {
         this.author = author;
     }
 
