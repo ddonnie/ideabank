@@ -1,7 +1,7 @@
 package com.dataart.fastforward.service;
 
-import com.dataart.fastforward.app.dto.NewAccountDTO;
-import com.dataart.fastforward.app.services.AccountService;
+import com.dataart.fastforward.app.dto.NewUserDTO;
+import com.dataart.fastforward.app.services.UserService;
 import com.dataart.fastforward.config.root.DbConfig;
 import com.dataart.fastforward.config.servlet.WebMvcConfig;
 import org.junit.Test;
@@ -22,17 +22,22 @@ import javax.sql.DataSource;
 @WebAppConfiguration
 @ActiveProfiles("test")
 @ContextConfiguration(classes={DbConfig.class, WebMvcConfig.class})
-public class AccountServiceTest {
+public class UserServiceTest {
 
     @Autowired
     private DataSource dataSource;
 
     @Autowired
-    AccountService accountService;
+    UserService userService;
 
     @Test
     public void testGetAccountById() {
-        System.out.println(accountService.getAccountById(1));
+        System.out.println(userService.getUserById(1));
+    }
+
+    @Test
+    public void testGetUserByUsername() {
+        System.out.println(userService.getUserByUsername("Patty"));
     }
 
     @Test
@@ -42,23 +47,23 @@ public class AccountServiceTest {
 
     @Test
     public void testCreateAccount() {
-        NewAccountDTO newAccountDTO = new NewAccountDTO();
-        newAccountDTO.setFirstName("TestFirstName");
-        newAccountDTO.setLastName("TestLastName");
-        newAccountDTO.setLogin("TestLogin");
-        newAccountDTO.setPassword("TestPassword");
-        accountService.createAccount(newAccountDTO);
-        System.out.println(accountService.getAccountByLogin(newAccountDTO.getLogin()));
+        NewUserDTO newUserDTO = new NewUserDTO();
+        newUserDTO.setFirstName("TestFirstName");
+        newUserDTO.setLastName("TestLastName");
+        newUserDTO.setUsername("TestLogin");
+        newUserDTO.setPassword("TestPassword");
+        userService.createUser(newUserDTO);
+        System.out.println(userService.getUserByUsername(newUserDTO.getUsername()));
     }
 
     @Test
     public void getBookmarksTest() {
-        System.out.println(accountService.getBookmarks(accountService.getAccountById(1)));
+        System.out.println(userService.getBookmarks(userService.getUserById(1)));
     }
 
     @Test
     public void findNonExistLoginTest() {
-        if (accountService.getAccountByLogin("ASS")==null) {
+        if (userService.getUserByUsername("ASS")==null) {
             System.out.println("Not found");
         }
         else {

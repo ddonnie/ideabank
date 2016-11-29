@@ -11,7 +11,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "Users")
-public class Account {
+public class User {
     @Id
     @GeneratedValue(generator = "increment")
     @GenericGenerator(name = "increment", strategy = "increment")
@@ -25,7 +25,7 @@ public class Account {
     private String lastName;
 
     @Column(name = "login")
-    private String login;
+    private String username;
 
     @Column(name = "password")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -43,7 +43,7 @@ public class Account {
     @JsonBackReference
     private Set<Idea> bookmarkedIdeas;
 
-    public Account() {}
+    public User() {}
 
     public long getUserId() {
         return userId;
@@ -70,12 +70,12 @@ public class Account {
     }
 
 
-    public String getLogin() {
-        return login;
+    public String getUsername() {
+        return username;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @JsonIgnore
@@ -107,11 +107,11 @@ public class Account {
 
     @Override
     public String toString() {
-        return "Account{" +
+        return "User{" +
                 "userId=" + userId +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", login='" + login +
+                ", username='" + username +
                 '}';
     }
 }

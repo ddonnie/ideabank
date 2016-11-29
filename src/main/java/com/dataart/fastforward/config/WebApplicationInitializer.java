@@ -1,6 +1,7 @@
 package com.dataart.fastforward.config;
 
 import com.dataart.fastforward.config.root.DbConfig;
+import com.dataart.fastforward.config.root.SecurityConfig;
 import com.dataart.fastforward.config.servlet.WebMvcConfig;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
@@ -8,12 +9,13 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
  * Created by Orlov on 25.10.2016.
  */
 
-
-public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+public class WebApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class<?>[]{DbConfig.class} ;
+        return new Class<?>[]{
+                SecurityConfig.class,
+                DbConfig.class} ;
     }
 
     @Override

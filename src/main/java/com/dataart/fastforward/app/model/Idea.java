@@ -25,7 +25,7 @@ public class Idea {
 
     @ManyToOne//(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "user_id", nullable = false)
-    private Account author;
+    private User author;
 
     @Column(name = "idea_text")
     private String ideaText;
@@ -37,7 +37,7 @@ public class Idea {
     @JsonIgnore
     @ManyToMany(mappedBy = "bookmarkedIdeas",fetch = FetchType.EAGER)
     @JsonManagedReference
-    private Set<Account> usersWhoBookmarked;
+    private Set<User> usersWhoBookmarked;
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "ideasWithThisTag")
     @JsonManagedReference
@@ -53,11 +53,11 @@ public class Idea {
         this.ideaId = ideaId;
     }
 
-    public Account getAuthor() {
+    public User getAuthor() {
         return author;
     }
 
-    public void setAuthor(Account author) {
+    public void setAuthor(User author) {
         this.author = author;
     }
 
@@ -78,11 +78,11 @@ public class Idea {
     }
 
     @JsonIgnore
-    public Set<Account> getUsersWhoBookmarked() {
+    public Set<User> getUsersWhoBookmarked() {
         return usersWhoBookmarked;
     }
 
-    public void setUsersWhoBookmarked(Set<Account> users) {
+    public void setUsersWhoBookmarked(Set<User> users) {
         this.usersWhoBookmarked = users;
     }
 

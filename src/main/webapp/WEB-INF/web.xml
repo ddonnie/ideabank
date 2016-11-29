@@ -7,7 +7,7 @@
     <display-name>Archetype Created Web Application</display-name>
 
     <welcome-file-list>
-        <welcome-file>/resources/public/index.html</welcome-file>
+        <welcome-file>/resources/feed.html</welcome-file>
     </welcome-file-list>
 
 

@@ -1,23 +1,24 @@
 /**
  * Created by Orlov on 25.11.2016.
  */
-angular.module("mainApp", [])
+angular.module("signupApp", [])
     .controller("signupController", function ($scope, $http) {
 
-        $scope.SendData = function () {
+        $scope.Register = function () {
             var data = {
                 firstName: $scope.firstName,
                 lastName: $scope.lastName,
-                login: $scope.login,
+                username: $scope.username,
                 password: $scope.password
             };
 
             var config = {
                 headers : {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    "X-Login-Ajax-call": 'true'
                 }
             }
-            $http.post('/users', data, config)
+            $http.post('/registration', data, config)
                 .success(function (data, status, headers, config) {
                     $scope.PostDataResponse = status;
                 })

@@ -1,6 +1,6 @@
 package com.dataart.fastforward.app.dto;
 
-import com.dataart.fastforward.app.model.Account;
+import com.dataart.fastforward.app.model.User;
 
 /**
  * Created by logariett on 27.11.2016.
@@ -8,7 +8,7 @@ import com.dataart.fastforward.app.model.Account;
 public class IdeaDTO {
 
     private long ideaId;
-    private Account author;
+    private User author;
     private String ideaText;
 
     public IdeaDTO() {
@@ -22,11 +22,11 @@ public class IdeaDTO {
         this.ideaId = ideaId;
     }
 
-    public Account getAuthor() {
+    public User getAuthor() {
         return author;
     }
 
-    public void setAuthor(Account author) {
+    public void setAuthor(User author) {
         this.author = author;
     }
 

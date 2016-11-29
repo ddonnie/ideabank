@@ -78,6 +78,17 @@
             <version>${springframework.Core-version}</version>
         </dependency>
 
+        <!-- Spring Security -->
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-web</artifactId>
+                <version>${spring-security-version}</version>
+            </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring-security-version}</version>
+        </dependency>
 
         <!-- Database -->
         <dependency>
@@ -120,11 +131,6 @@
             <artifactId>jackson-annotations</artifactId>
             <version>2.8.5</version>
         </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <version>2.8.3</version>
-        </dependency>
 
         <!-- JUnit -->
         <dependency>
@@ -132,6 +138,8 @@
             <artifactId>junit</artifactId>
             <version>4.12</version>
         </dependency>
+
+        <!-- Apache Commons -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>

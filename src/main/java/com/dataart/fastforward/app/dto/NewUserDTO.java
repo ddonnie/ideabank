@@ -3,14 +3,14 @@ package com.dataart.fastforward.app.dto;
 /**
  * Created by Orlov on 26.11.2016.
  */
-public class NewAccountDTO {
+public class NewUserDTO {
 
     private String firstName;
     private String lastName;
-    private String login;
+    private String username;
     private String password;
 
-    public NewAccountDTO() {}
+    public NewUserDTO() {}
 
     public String getFirstName() { return firstName; }
 
@@ -20,9 +20,9 @@ public class NewAccountDTO {
 
     public void setLastName(String lastName) { this.lastName = lastName; }
 
-    public String getLogin() { return login; }
+    public String getUsername() { return username; }
 
-    public void setLogin(String login) { this.login = login; }
+    public void setUsername(String username) { this.username = username; }
 
     public String getPassword() { return password; }
 
