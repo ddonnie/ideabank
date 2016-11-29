@@ -20,9 +20,9 @@ import java.util.List;
 public class IdeaController {
 
     @Autowired
-    IdeaRepository ideaRepository;
+    private IdeaRepository ideaRepository;
     @Autowired
-    IdeaService ideaService;
+    private IdeaService ideaService;
 
     @GetMapping
     public List<Idea> getAllIdeas() {return ideaService.getAll();

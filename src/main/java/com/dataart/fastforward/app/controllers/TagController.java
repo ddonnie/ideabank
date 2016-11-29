@@ -31,7 +31,7 @@ public class TagController {
     }
 
     @GetMapping(value = "/{tagId}")
-    public Tag getIagById(@PathVariable long tagId) {
-        return tagService.getIdeaById(tagId);
+    public Tag getTagById(@PathVariable long tagId) {
+        return tagService.getTagById(tagId);
     }
 }

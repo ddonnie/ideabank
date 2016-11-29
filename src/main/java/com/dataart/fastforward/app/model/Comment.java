@@ -1,15 +1,13 @@
-/*
-package com.dataart.fastforward.entity;
+package com.dataart.fastforward.app.model;
 
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Date;
 
-*/
 /**
  * Created by logariett on 22.11.2016.
- *//*
+ */
 
 @Entity
 @Table(name = "Comments")
@@ -21,17 +19,18 @@ public class Comment {
     @Column(name = "comment_id", length = 6, nullable = false)
     private long commentId;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne//(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "user_id", nullable = false)
-    private Account user;
+    private Account author;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne//(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "idea_id", nullable = false)
     private Idea idea;
 
     @Column(name = "comment_text")
     private String commentText;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "creation_date")
     private Date creationDate;
 
@@ -46,11 +45,11 @@ public class Comment {
     }
 
     public Account getAuthor() {
-        return user;
+        return author;
     }
 
     public void setAuthor(Account user) {
-        this.user = user;
+        this.author = user;
     }
 
     public Idea getIdea() {
@@ -77,4 +76,3 @@ public class Comment {
         this.creationDate = creationDate;
     }
 }
-*/
