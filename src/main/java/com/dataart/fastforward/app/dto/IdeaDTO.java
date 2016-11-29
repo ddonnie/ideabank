@@ -2,8 +2,6 @@ package com.dataart.fastforward.app.dto;
 
 import com.dataart.fastforward.app.model.Account;
 
-import java.util.Date;
-
 /**
  * Created by logariett on 27.11.2016.
  */

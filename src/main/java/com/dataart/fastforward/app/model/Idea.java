@@ -1,5 +1,6 @@
 package com.dataart.fastforward.app.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.GenericGenerator;
@@ -38,12 +39,9 @@ public class Idea {
     @JsonManagedReference
     private Set<Account> usersWhoBookmarked;
 
-/*    @ManyToMany
-    @JoinTable(name="Ideas_Tags",
-            joinColumns = @JoinColumn(name="idea_id", referencedColumnName="idea_id"),
-            inverseJoinColumns = @JoinColumn(name="tag_id", referencedColumnName="tag_id")
-    )
-    private Set<Tag> tags;*/
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "ideasWithThisTag")
+    @JsonManagedReference
+    private Set<Tag> tags;
 
     public Idea() {}
 
@@ -88,6 +86,15 @@ public class Idea {
         this.usersWhoBookmarked = users;
     }
 
+    @JsonIgnore
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -95,13 +102,20 @@ public class Idea {
 
         Idea idea = (Idea) o;
 
-        return ideaId == idea.ideaId;
+        if (ideaId != idea.ideaId) return false;
+        if (author != null ? !author.equals(idea.author) : idea.author != null) return false;
+        if (ideaText != null ? !ideaText.equals(idea.ideaText) : idea.ideaText != null) return false;
+        return creationDate != null ? creationDate.equals(idea.creationDate) : idea.creationDate == null;
 
     }
 
     @Override
     public int hashCode() {
-        return (int) (ideaId ^ (ideaId >>> 32));
+        int result = (int) (ideaId ^ (ideaId >>> 32));
+        result = 31 * result + (author != null ? author.hashCode() : 0);
+        result = 31 * result + (ideaText != null ? ideaText.hashCode() : 0);
+        result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
+        return result;
     }
 
     @Override
@@ -113,12 +127,4 @@ public class Idea {
                 ", creationDate=" + creationDate +
                 '}';
     }
-
-    /*    public Set<Tag> getTags() {
-        return tags;
-    }
-
-    public void setTags(Set<Tag> tags) {
-        this.tags = tags;
-    }*/
 }
