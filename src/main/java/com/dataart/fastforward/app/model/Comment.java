@@ -75,4 +75,31 @@ public class Comment {
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Comment comment = (Comment) o;
+
+        return commentId == comment.commentId;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (commentId ^ (commentId >>> 32));
+    }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "commentId=" + commentId +
+                ", author=" + author +
+                ", idea=" + idea +
+                ", commentText='" + commentText + '\'' +
+                ", creationDate=" + creationDate +
+                '}';
+    }
 }

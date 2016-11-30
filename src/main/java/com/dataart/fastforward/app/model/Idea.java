@@ -1,6 +1,5 @@
 package com.dataart.fastforward.app.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.GenericGenerator;
@@ -8,6 +7,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Created by logariett on 22.11.2016.
@@ -15,7 +15,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "Ideas")
-public class Idea {
+public class Idea implements Comparable<Idea> {
 
     @Id
     @GeneratedValue(generator = "increment")
@@ -37,11 +37,11 @@ public class Idea {
     @JsonIgnore
     @ManyToMany(mappedBy = "bookmarkedIdeas",fetch = FetchType.EAGER)
     @JsonManagedReference
-    private Set<User> usersWhoBookmarked;
+    private Set<User> usersWhoBookmarked = new TreeSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "ideasWithThisTag")
     @JsonManagedReference
-    private Set<Tag> tags;
+    private Set<Tag> tags = new TreeSet<>();
 
     public Idea() {}
 
@@ -126,5 +126,10 @@ public class Idea {
                 ", ideaText='" + ideaText + '\'' +
                 ", creationDate=" + creationDate +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Idea o) {
+        return Long.compare(o.ideaId, this.ideaId);
     }
 }

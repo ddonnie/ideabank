@@ -5,13 +5,14 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Created by logariett on 19.11.2016.
  */
 @Entity
 @Table(name = "Users")
-public class User {
+public class User implements Comparable<User> {
     @Id
     @GeneratedValue(generator = "increment")
     @GenericGenerator(name = "increment", strategy = "increment")
@@ -41,7 +42,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "idea_id", referencedColumnName = "idea_id")
     )
     @JsonBackReference
-    private Set<Idea> bookmarkedIdeas;
+    private Set<Idea> bookmarkedIdeas = new TreeSet<>();
 
     public User() {}
 
@@ -106,6 +107,25 @@ public class User {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (userId != user.userId) return false;
+        return username != null ? username.equals(user.username) : user.username == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (userId ^ (userId >>> 32));
+        result = 31 * result + (username != null ? username.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "User{" +
                 "userId=" + userId +
@@ -113,5 +133,10 @@ public class User {
                 ", lastName='" + lastName + '\'' +
                 ", username='" + username +
                 '}';
+    }
+
+    @Override
+    public int compareTo(User o) {
+        return Long.compare(o.userId, this.userId);
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
 public interface IdeaService {
 
     void add(IdeaDTO ideaDTO);
-    Idea edit(Idea idea);
+    Idea edit(long ideaId, IdeaDTO ideaDTO);
     void delete(long ideaId);
 
     Idea getIdeaById(long ideaId);

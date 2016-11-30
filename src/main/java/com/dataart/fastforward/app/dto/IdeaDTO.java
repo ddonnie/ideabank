@@ -1,25 +1,22 @@
 package com.dataart.fastforward.app.dto;
 
+import com.dataart.fastforward.app.model.Tag;
 import com.dataart.fastforward.app.model.User;
+
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Created by logariett on 27.11.2016.
  */
 public class IdeaDTO {
 
-    private long ideaId;
     private User author;
     private String ideaText;
+    private Set<User> usersWhoBookmarked;
+    private Set<Tag> tags = new TreeSet<>();
 
     public IdeaDTO() {
-    }
-
-    public long getIdeaId() {
-        return ideaId;
-    }
-
-    public void setIdeaId(long ideaId) {
-        this.ideaId = ideaId;
     }
 
     public User getAuthor() {
@@ -37,4 +34,22 @@ public class IdeaDTO {
     public void setIdeaText(String ideaText) {
         this.ideaText = ideaText;
     }
+
+    public Set<User> getUsersWhoBookmarked() {
+        return usersWhoBookmarked;
+    }
+
+    public void setUsersWhoBookmarked(Set<User> usersWhoBookmarked) {
+        this.usersWhoBookmarked = usersWhoBookmarked;
+    }
+
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
+    }
+
+
 }

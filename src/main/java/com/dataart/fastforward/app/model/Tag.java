@@ -3,11 +3,11 @@ package com.dataart.fastforward.app.model;
 import com.dataart.fastforward.app.model.Idea;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Created by logariett on 22.11.2016.
@@ -15,7 +15,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "Tags")
-public class Tag {
+public class Tag implements Comparable<Tag> {
 
     @Id
     @GeneratedValue(generator = "increment")
@@ -32,7 +32,7 @@ public class Tag {
             inverseJoinColumns = @JoinColumn(name="idea_id", referencedColumnName="idea_id")
     )
     @JsonBackReference
-    private Set<Idea> ideasWithThisTag;
+    private Set<Idea> ideasWithThisTag = new TreeSet<>();
 
     public Tag() {}
 
@@ -86,5 +86,10 @@ public class Tag {
                 "tagId=" + tagId +
                 ", tagName='" + tagName +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Tag o) {
+        return Long.compare(o.tagId, this.tagId);
     }
 }

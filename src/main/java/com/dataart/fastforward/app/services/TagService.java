@@ -12,8 +12,8 @@ public interface TagService {
 
     void add(TagDTO tagDTO);
     Tag edit(Tag tag);
-    void delete(long tagDTO);
+    void delete(long tagId);
 
-    Tag getTagById(long tagDTO);
+    Tag getTagById(long tagId);
     List<Tag> getAll();
 }
