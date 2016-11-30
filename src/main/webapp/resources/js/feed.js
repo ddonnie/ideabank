@@ -1,14 +1,22 @@
 /**
- * Created by Orlov on 28.11.2016.
+ * Created by Orlov on 30.11.2016.
+ */
+/**
+ * Created by Orlov on 25.11.2016.
  */
 angular.module("feedApp", [])
-    .controller("feedController", function ($scope, $http) {
+    .controller("feedCtrl", ['$scope', '$http', function ($scope, $http) {
 
-        $scope.Logout = function() {
-            $http.post('logout', {}).finally(function() {
-                $scope.authenticated = false;
-                $location.path("/");
-            });
-        };
+        $scope.logout = function () {
+            $http.post('/logout')
+                .then(function (response) {
+                    if (response.status == 200) {
+                        window.location.reload();
+                    }
+                    else {
+                        alert("Logout failed!");
+                    }
+                });
+        }
 
-    });
+    }]);

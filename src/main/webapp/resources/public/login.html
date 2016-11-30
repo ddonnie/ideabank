@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login form</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0-rc.2/angular.min.js"></script>
+</head>
+<body ng-app="loginApp">
+
+<form ng-submit="login()" ng-controller="loginCtrl">
+    <fieldset>
+        <legend>Log In</legend>
+        <div class="form-field">
+            <input type="text" ng-model="username" placeholder="Username" required>
+        </div>
+        <div class="form-field">
+            <input type="password" ng-model="password" placeholder="Password" required>
+        </div>
+    </fieldset>
+    <button type="submit">Log In</button>
+    <a href="/resources/public/signup.html">New user?</a>
+</form>
+
+<script src="/resources/public/js/login.js"></script>
+
+
+</body>
+</html>
