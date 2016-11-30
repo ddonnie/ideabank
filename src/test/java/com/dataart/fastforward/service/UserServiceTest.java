@@ -15,7 +15,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import javax.sql.DataSource;
 
 /**
- * Created by logariett on 25.11.2016.*/
+ * Created by logariett on 25.11.2016.
+ */
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
