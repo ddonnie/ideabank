@@ -32,10 +32,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     DataSource dataSource;
 
-    @Override
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(new BCryptPasswordEncoder());
+    }
+
+    /*@Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
-    }
+    }*/
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -44,8 +51,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                     .antMatchers("/resources/public/**").permitAll()
-                    .antMatchers("/resources/public/js/").permitAll()
-                    .antMatchers(HttpMethod.POST, "/authenticate").permitAll()
                     .antMatchers(HttpMethod.POST, "/registration").permitAll()
                     .anyRequest().authenticated()
                     .and()
@@ -55,15 +60,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .usernameParameter("username")
                     .passwordParameter("password")
                     .successHandler(new AjaxAuthenticationSuccessHandler(new SavedRequestAwareAuthenticationSuccessHandler()))
-                    .loginPage("/resources/public/authenticate.html")
+                    .loginPage("/resources/public/login.html")
                     .permitAll()
                     .and()
                 .httpBasic()
                     .and()
                 .logout()
-                    .logoutUrl("/logout")
-                    .logoutSuccessUrl("/resources/public/authenticate.html")
                     .permitAll()
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("/resources/public/login.html")
+                    .invalidateHttpSession(true)
                     .and()
                 .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class)
                 .csrf().csrfTokenRepository(csrfTokenRepository());
