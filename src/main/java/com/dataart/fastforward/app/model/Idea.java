@@ -7,6 +7,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -37,11 +38,11 @@ public class Idea {
     @JsonIgnore
     @ManyToMany(mappedBy = "bookmarkedIdeas",fetch = FetchType.EAGER)
     @JsonManagedReference
-    private Set<User> usersWhoBookmarked;
+    private Set<User> usersWhoBookmarked = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "ideasWithThisTag")
     @JsonManagedReference
-    private Set<Tag> tags;
+    private Set<Tag> tags = new HashSet<>();
 
     public Idea() {}
 

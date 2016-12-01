@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -41,7 +42,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "idea_id", referencedColumnName = "idea_id")
     )
     @JsonBackReference
-    private Set<Idea> bookmarkedIdeas;
+    private Set<Idea> bookmarkedIdeas = new HashSet<>();
 
     public User() {}
 
@@ -103,6 +104,22 @@ public class User {
 
     public void setBookmarkedIdeas(Set<Idea> bookmarkedIdeas) {
         this.bookmarkedIdeas = bookmarkedIdeas;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        return userId == user.userId;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (userId ^ (userId >>> 32));
     }
 
     @Override

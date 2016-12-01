@@ -5,18 +5,9 @@ package com.dataart.fastforward.app.dto;
  */
 public class TagDTO {
 
-    private long tagId;
     private String tagName;
 
     public TagDTO() {
-    }
-
-    public long getTagId() {
-        return tagId;
-    }
-
-    public void setTagId(long tagId) {
-        this.tagId = tagId;
     }
 
     public String getTagName() {

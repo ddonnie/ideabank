@@ -11,8 +11,8 @@ import java.util.List;
  */
 public interface IdeaService {
 
-    void add(IdeaDTO ideaDTO);
-    Idea edit(Idea idea);
+    Idea add(IdeaDTO ideaDTO, long authorId);
+    Idea edit(IdeaDTO ideaDTO, long ideaId);
     void delete(long ideaId);
 
     Idea getIdeaById(long ideaId);

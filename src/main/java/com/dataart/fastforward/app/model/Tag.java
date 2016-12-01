@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -32,7 +33,7 @@ public class Tag {
             inverseJoinColumns = @JoinColumn(name="idea_id", referencedColumnName="idea_id")
     )
     @JsonBackReference
-    private Set<Idea> ideasWithThisTag;
+    private Set<Idea> ideasWithThisTag = new HashSet<>();
 
     public Tag() {}
 
