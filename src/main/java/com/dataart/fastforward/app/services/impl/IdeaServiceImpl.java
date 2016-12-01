@@ -7,13 +7,17 @@ import com.dataart.fastforward.app.model.Idea;
 import com.dataart.fastforward.app.model.User;
 import com.dataart.fastforward.app.services.IdeaService;
 import com.dataart.fastforward.app.services.UserService;
+import com.dataart.fastforward.app.services.validation.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+
+import static com.dataart.fastforward.app.services.validation.ValidationUtils.assertExistsNotBlank;
 
 /**
  * Created by logariett on 23.11.16.
@@ -30,10 +34,12 @@ public class IdeaServiceImpl implements IdeaService {
     private UserService userService;
 
     @Override
-    public Idea add(IdeaDTO ideaDTO, long authorId) {
+    public Idea add(IdeaDTO ideaDTO, String userName) {
+        assertExistsNotBlank(ideaDTO);
+
         Idea idea = new Idea();
 
-        idea.setAuthor(userService.getUserById(authorId));
+        idea.setAuthor(userService.getUserByUsername(userName));
         idea.setIdeaText(ideaDTO.getIdeaText());
         idea.setCreationDate(new Date());
 
@@ -43,8 +49,10 @@ public class IdeaServiceImpl implements IdeaService {
 
     @Override
     @Transactional
-    public void delete(long ideaId) {
+    public void delete(long ideaId, String userName) {
         Idea idea = ideaRepository.getOne(ideaId);
+        ValidationUtils.assertAuthor(idea, userService.getUserByUsername(userName));
+
         Set<User> users = idea.getUsersWhoBookmarked();
         for (User user : users) {
             user.getBookmarkedIdeas().remove(idea);
@@ -55,8 +63,9 @@ public class IdeaServiceImpl implements IdeaService {
     }
 
     @Override
-    public Idea edit(IdeaDTO ideaDTO, long ideaId) {
+    public Idea edit(IdeaDTO ideaDTO, long ideaId, String userName) {
         Idea idea = getIdeaById(ideaId);
+        ValidationUtils.assertAuthor(idea, userService.getUserByUsername(userName));
 
         if (idea.getIdeaText() == null
                 || !idea.getIdeaText().equals(ideaDTO.getIdeaText())) {

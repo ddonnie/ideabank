@@ -6,6 +6,8 @@ import com.dataart.fastforward.app.model.Idea;
 import com.dataart.fastforward.app.services.IdeaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/ideas")
+@ResponseStatus(HttpStatus.OK)
 public class IdeaController {
 
     @Autowired
@@ -28,14 +31,32 @@ public class IdeaController {
         return ideaService.getAll();
     }
 
-    @GetMapping(value = "/{ideaId}")
+    @GetMapping("/{ideaId}")
     public Idea getIdeaById(@PathVariable long ideaId) {
         return ideaService.getIdeaById(ideaId);
     }
 
-    @PostMapping(value = "/new_idea/{userId}")
-    @ResponseStatus(HttpStatus.OK)
-    public Idea addIdea(@RequestBody IdeaDTO ideaDTO, @PathVariable long userId) {
-        return ideaService.add(ideaDTO, userId);
+    @PostMapping
+    public Idea addIdea(@RequestBody IdeaDTO ideaDTO) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String userName = auth.getName();
+
+        return ideaService.add(ideaDTO, userName);
+    }
+
+    @PutMapping("/{ideaId}")
+    public Idea editIdea(@RequestBody IdeaDTO ideaDTO, @PathVariable long ideaId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String userName = auth.getName();
+
+        return ideaService.edit(ideaDTO, ideaId, userName);
+    }
+
+    @DeleteMapping("/{ideaId}")
+    public void deleteIdea(@PathVariable long ideaId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String userName = auth.getName();
+
+        ideaService.delete(ideaId, userName);
     }
 }

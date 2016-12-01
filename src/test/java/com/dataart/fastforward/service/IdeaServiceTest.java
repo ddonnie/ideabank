@@ -42,27 +42,14 @@ public class IdeaServiceTest {
 
     @Test
     public void addTest() {
-        IdeaDTO ideaDTO = new IdeaDTO();
-        ideaDTO.setIdeaText("where is your MIND");
-        Idea idea = ideaService.add(ideaDTO, 2);
-
-        User user = userService.getUserById(1);
-        user.getBookmarkedIdeas().add(idea);
-        idea.getUsersWhoBookmarked().add(user);
-        ideaRepository.saveAndFlush(idea);
-        userRepository.saveAndFlush(user);
     }
 
     @Test
     public void editTest() {
-        IdeaDTO ideaDTO = new IdeaDTO();
-        Idea idea = ideaService.getIdeaById(4);
-        ideaDTO.setIdeaText(idea.getIdeaText() + "... sir?");
-        ideaService.edit(ideaDTO, 4);
     }
 
     @Test
     public void deleteTest() {
-        ideaService.delete(5);
+
     }
 }

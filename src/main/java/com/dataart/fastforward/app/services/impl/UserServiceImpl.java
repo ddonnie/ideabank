@@ -31,10 +31,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createUser(NewUserDTO newUserDTO) {
-        assertNotBlank(newUserDTO.getFirstName(), "First name cannot be empty.");
-        assertNotBlank(newUserDTO.getLastName(), "Last name cannot be empty.");
-        assertNotBlank(newUserDTO.getUsername(), "Login cannot be empty.");
-        assertNotBlank(newUserDTO.getPassword(), "Password cannot be empty.");
+        assertNotBlank(newUserDTO.getFirstName(), "First name");
+        assertNotBlank(newUserDTO.getLastName(), "Last name");
+        assertNotBlank(newUserDTO.getUsername(), "Login");
+        assertNotBlank(newUserDTO.getPassword(), "Password");
 
         if (getUserByUsername(newUserDTO.getUsername())!=null) {
             throw new IllegalArgumentException("The login is taken.");
