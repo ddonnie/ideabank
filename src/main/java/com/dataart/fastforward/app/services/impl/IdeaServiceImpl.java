@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -40,6 +39,7 @@ public class IdeaServiceImpl implements IdeaService {
         Idea idea = new Idea();
 
         idea.setAuthor(userService.getUserByUsername(userName));
+        idea.setIdeaName(ideaDTO.getIdeaName());
         idea.setIdeaText(ideaDTO.getIdeaText());
         idea.setCreationDate(new Date());
 
@@ -56,9 +56,10 @@ public class IdeaServiceImpl implements IdeaService {
         Set<User> users = idea.getUsersWhoBookmarked();
         for (User user : users) {
             user.getBookmarkedIdeas().remove(idea);
-            userRepository.saveAndFlush(user);
+            userRepository.save(user);
         }
-
+        
+        userRepository.flush();
         ideaRepository.delete(ideaId);
     }
 
@@ -67,10 +68,9 @@ public class IdeaServiceImpl implements IdeaService {
         Idea idea = getIdeaById(ideaId);
         ValidationUtils.assertAuthor(idea, userService.getUserByUsername(userName));
 
-        if (idea.getIdeaText() == null
-                || !idea.getIdeaText().equals(ideaDTO.getIdeaText())) {
-            idea.setIdeaText(ideaDTO.getIdeaText());
-        }
+        idea.setIdeaName(ideaDTO.getIdeaName());
+        idea.setIdeaText(ideaDTO.getIdeaText());
+        idea.setLastModifiedDate(new Date());
 
         ideaRepository.saveAndFlush(idea);
         return idea;

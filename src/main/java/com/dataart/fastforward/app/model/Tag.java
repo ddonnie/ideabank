@@ -27,12 +27,8 @@ public class Tag {
     @Column(name = "tag_name")
     private String tagName;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name="Ideas_Tags",
-            joinColumns = @JoinColumn(name="tag_id", referencedColumnName="tag_id"),
-            inverseJoinColumns = @JoinColumn(name="idea_id", referencedColumnName="idea_id")
-    )
-    @JsonBackReference
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "tags")
+    @JsonManagedReference
     private Set<Idea> ideasWithThisTag = new HashSet<>();
 
     public Tag() {}

@@ -5,6 +5,7 @@ package com.dataart.fastforward.app.dto;
  */
 public class IdeaDTO {
 
+    private String ideaName;
     private String ideaText;
 
     public IdeaDTO() {
@@ -16,5 +17,13 @@ public class IdeaDTO {
 
     public void setIdeaText(String ideaText) {
         this.ideaText = ideaText;
+    }
+
+    public String getIdeaName() {
+        return ideaName;
+    }
+
+    public void setIdeaName(String ideaName) {
+        this.ideaName = ideaName;
     }
 }

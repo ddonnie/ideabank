@@ -28,7 +28,7 @@ public class UserController {
     @GetMapping("/users")
     public List<User> getAllUsers() {return userService.getAll();}
 
-    @GetMapping("/{userId}")
+    @GetMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public User getUserById(@PathVariable long userId) {return userService.getUserById(userId);}
 

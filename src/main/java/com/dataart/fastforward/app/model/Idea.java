@@ -28,6 +28,9 @@ public class Idea {
     @JoinColumn(name = "user_id", nullable = false)
     private User author;
 
+    @Column(name = "idea_name")
+    private String ideaName;
+
     @Column(name = "idea_text")
     private String ideaText;
 
@@ -35,13 +38,21 @@ public class Idea {
     @Column(name = "creation_date")
     private Date creationDate;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "last_modified_date")
+    private Date lastModifiedDate;
+
     @JsonIgnore
     @ManyToMany(mappedBy = "bookmarkedIdeas",fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<User> usersWhoBookmarked = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "ideasWithThisTag")
-    @JsonManagedReference
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name="Ideas_Tags",
+            joinColumns = @JoinColumn(name="idea_id", referencedColumnName="idea_id"),
+            inverseJoinColumns = @JoinColumn(name="tag_id", referencedColumnName="tag_id")
+    )
+    @JsonBackReference
     private Set<Tag> tags = new HashSet<>();
 
     public Idea() {}
@@ -62,6 +73,14 @@ public class Idea {
         this.author = author;
     }
 
+    public String getIdeaName() {
+        return ideaName;
+    }
+
+    public void setIdeaName(String ideName) {
+        this.ideaName = ideName;
+    }
+
     public String getIdeaText() {
         return ideaText;
     }
@@ -76,6 +95,14 @@ public class Idea {
 
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     @JsonIgnore
@@ -105,7 +132,7 @@ public class Idea {
 
         if (ideaId != idea.ideaId) return false;
         if (author != null ? !author.equals(idea.author) : idea.author != null) return false;
-        if (ideaText != null ? !ideaText.equals(idea.ideaText) : idea.ideaText != null) return false;
+        if (ideaName != null ? !ideaName.equals(idea.ideaName) : idea.ideaName != null) return false;
         return creationDate != null ? creationDate.equals(idea.creationDate) : idea.creationDate == null;
 
     }
@@ -114,7 +141,7 @@ public class Idea {
     public int hashCode() {
         int result = (int) (ideaId ^ (ideaId >>> 32));
         result = 31 * result + (author != null ? author.hashCode() : 0);
-        result = 31 * result + (ideaText != null ? ideaText.hashCode() : 0);
+        result = 31 * result + (ideaName != null ? ideaName.hashCode() : 0);
         result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
         return result;
     }
@@ -124,8 +151,10 @@ public class Idea {
         return "Idea{" +
                 "ideaId=" + ideaId +
                 ", author=" + author +
+                ", ideaName='" + ideaName + '\'' +
                 ", ideaText='" + ideaText + '\'' +
                 ", creationDate=" + creationDate +
+                ", lastModifiedDate=" + lastModifiedDate +
                 '}';
     }
 }
