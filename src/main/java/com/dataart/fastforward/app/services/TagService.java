@@ -10,10 +10,11 @@ import java.util.List;
  */
 public interface TagService {
 
-    void add(TagDTO tagDTO);
-    Tag edit(Tag tag);
+    Tag add(TagDTO tagDTO);
+    Tag edit(TagDTO tagDTO);
     void delete(long tagDTO);
 
     Tag getTagById(long tagDTO);
+    Tag getTagByTagName(String tagName);
     List<Tag> getAll();
 }

@@ -31,17 +31,17 @@ public class IdeaController {
         return ideaService.getAll();
     }
 
-    @GetMapping("/{ideaId}")
-    public Idea getIdeaById(@PathVariable long ideaId) {
-        return ideaService.getIdeaById(ideaId);
-    }
-
     @PostMapping
     public Idea addIdea(@RequestBody IdeaDTO ideaDTO) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userName = auth.getName();
 
         return ideaService.add(ideaDTO, userName);
+    }
+
+    @GetMapping("/{ideaId}")
+    public Idea getIdeaById(@PathVariable long ideaId) {
+        return ideaService.getIdeaById(ideaId);
     }
 
     @PutMapping("/{ideaId}")

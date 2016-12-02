@@ -7,6 +7,7 @@ public class IdeaDTO {
 
     private String ideaName;
     private String ideaText;
+    private String[] tags;
 
     public IdeaDTO() {
     }
@@ -25,5 +26,13 @@ public class IdeaDTO {
 
     public void setIdeaName(String ideaName) {
         this.ideaName = ideaName;
+    }
+
+    public String[] getTags() {
+        return tags;
+    }
+
+    public void setTags(String[] tags) {
+        this.tags = tags;
     }
 }

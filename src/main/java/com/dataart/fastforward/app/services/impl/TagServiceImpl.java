@@ -19,15 +19,15 @@ public class TagServiceImpl implements TagService {
     private TagRepository tagRepository;
 
     @Override
-    public void add(TagDTO tagDTO) {
+    public Tag add(TagDTO tagDTO) {
         Tag tag = new Tag();
         tag.setTagName(tagDTO.getTagName());
-        tagRepository.saveAndFlush(tag);
+        return tagRepository.saveAndFlush(tag);
     }
 
     @Override
-    public Tag edit(Tag tag) {
-        return tagRepository.saveAndFlush(tag);
+    public Tag edit(TagDTO tagDTO) {
+        return null;
     }
 
     @Override
@@ -38,6 +38,11 @@ public class TagServiceImpl implements TagService {
     @Override
     public Tag getTagById(long tagId) {
         return tagRepository.findOne(tagId);
+    }
+
+    @Override
+    public Tag getTagByTagName(String tagName) {
+        return tagRepository.findByTagName(tagName);
     }
 
     @Override

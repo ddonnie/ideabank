@@ -33,7 +33,7 @@ public class ValidationUtils {
 
     public static void assertExistsNotBlank(Object o) {
         try{
-            String[] fieldValues = ReflectionUtils.getAllFieldValuesAsStrings(o);
+            String[] fieldValues = ReflectionUtils.getAllNonCollectionFieldsValuesAsStrings(o);
             assertExistsNotBlank(fieldValues);
         }
         catch (IllegalAccessException ex) {
