@@ -27,6 +27,7 @@ public class Tag {
     @Column(name = "tag_name")
     private String tagName;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "tags")
     @JsonManagedReference
     private Set<Idea> ideasWithThisTag = new HashSet<>();

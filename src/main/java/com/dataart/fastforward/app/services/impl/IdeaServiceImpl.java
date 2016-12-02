@@ -68,13 +68,6 @@ public class IdeaServiceImpl implements IdeaService {
         Idea idea = ideaRepository.getOne(ideaId);
         ValidationUtils.assertAuthor(idea, userService.getUserByUsername(userName));
 
-        Set<User> users = idea.getUsersWhoBookmarked();
-        for (User user : users) {
-            user.getBookmarkedIdeas().remove(idea);
-            userRepository.save(user);
-        }
-        
-        userRepository.flush();
         ideaRepository.delete(ideaId);
     }
 

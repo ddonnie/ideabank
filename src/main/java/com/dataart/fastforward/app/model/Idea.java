@@ -42,9 +42,12 @@ public class Idea {
     @Column(name = "last_modified_date")
     private Date lastModifiedDate;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "bookmarkedIdeas",fetch = FetchType.EAGER)
-    @JsonManagedReference
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "Bookmarks",
+            joinColumns = @JoinColumn(name = "idea_id", referencedColumnName = "idea_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    )
+    @JsonBackReference
     private Set<User> usersWhoBookmarked = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER)

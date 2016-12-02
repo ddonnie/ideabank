@@ -36,12 +36,9 @@ public class User {
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "Bookmarks",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "idea_id", referencedColumnName = "idea_id")
-    )
-    @JsonBackReference
+    @JsonIgnore
+    @ManyToMany(mappedBy = "usersWhoBookmarked",fetch = FetchType.EAGER)
+    @JsonManagedReference
     private Set<Idea> bookmarkedIdeas = new HashSet<>();
 
     public User() {}
