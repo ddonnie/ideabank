@@ -1,11 +1,14 @@
 /**
  * Created by Orlov on 30.11.2016.
  */
-/**
- * Created by Orlov on 25.11.2016.
- */
-angular.module("feedApp", [])
-    .controller("feedCtrl", ['$scope', '$http', function ($scope, $http) {
+
+angular.module('feedApp',['ngMaterial', 'ngMessages', 'material.svgAssetsCache'])
+    .controller('feedCtrl', function($http, $scope) {
+
+        $http.get('/ideas')
+            .then(function(response) {
+                $scope.ideas = response.data;
+            });
 
         $scope.logout = function () {
             $http.post('/logout')
@@ -18,5 +21,4 @@ angular.module("feedApp", [])
                     }
                 });
         }
-
-    }]);
+    });

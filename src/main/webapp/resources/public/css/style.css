@@ -1,0 +1,14 @@
+#registerButton {
+    background-color: green;
+    color: white;
+    height:60px;
+    width:300px;
+    display: block;
+    margin: 0 auto;
+}
+
+#outer {
+    padding: 40px;
+    max-width:600px;
+    margin:40px auto;
+}

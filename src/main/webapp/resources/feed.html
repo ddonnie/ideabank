@@ -1,19 +1,70 @@
 <!DOCTYPE html>
 <html>
-<head lang="en">
+<head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Feed</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0-rc.2/angular.min.js"></script>
+    <title>IdeaBank</title>
+    <link rel="icon"
+          type="image/png"
+          href="http://www.iconsfind.com/wp-content/uploads/2016/11/20161102_581990d911320.png">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+    <link rel='stylesheet prefetch'
+          href='https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.1/angular-material.css'>
+    <link rel='stylesheet prefetch' href='https://material.angularjs.org/1.1.1/docs.css'>
+    <link rel="stylesheet" href="/resources/css/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
+
+
 </head>
 
-<body ng-app="feedApp" ng-controller="feedCtrl">
+<body>
 
-<h1>Hello!</h1>
-<div>
-    <a href="/logout" ng-click="logout()">Logout</a>
+<div ng-controller="feedCtrl" ng-cloak="" layout-gt-md="row" layout="column" ng-app="feedApp">
+
+    <div flex-gt-sm="50" flex="">
+
+        <md-toolbar style="background-color:#476076;">
+            <div class="md-toolbar-tools">
+                <md-button class="md-icon-button" ng-disabled="true">
+                    <i class="material-icons">search</i>
+                </md-button>
+                <span flex></span>
+                <md-button class="md-icon-button" style="color:yellow; width:48px; height:48px;">
+                    <i class="material-icons">lightbulb_outline</i>
+                </md-button>
+                <span flex></span>
+                <md-button ng-click="logout()" class="md-icon-button">
+                    <i class="material-icons">exit_to_app</i>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-content>
+            <md-list flex="">
+                <md-list-item class="md-3-line" ng-repeat="idea in ideas" ng-click="null">
+                    <div class="md-list-item-text" layout="column" layout-align="start center">
+                        <h3>{{ idea.author.username }}</h3>
+                        <h4>{{ idea.ideaText }}</h4>
+                        <p>{{ item.notes }}</p>
+                    </div>
+                    <md-divider></md-divider>
+                </md-list-item>
+                <md-divider></md-divider>
+            </md-list>
+        </md-content>
+
+    </div>
+
 </div>
 
+<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.js'></script>
+<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js'></script>
+<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-route.min.js'></script>
+<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js'></script>
+<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js'></script>
+<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/svg-assets-cache.js'></script>
+<script src='https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.1/angular-material.js'></script>
 <script src="/resources/js/feed.js"></script>
+
 </body>
 </html>
