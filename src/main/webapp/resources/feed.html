@@ -29,7 +29,7 @@
                     <i class="material-icons">search</i>
                 </md-button>
                 <span flex></span>
-                <md-button class="md-icon-button" style="color:yellow; width:48px; height:48px;">
+                <md-button class="md-icon-button" style="color:yellow; width:48px; height:48px;" ng-click="createIdea($event)">
                     <i class="material-icons">lightbulb_outline</i>
                 </md-button>
                 <span flex></span>
@@ -41,21 +41,67 @@
 
         <md-content>
             <md-list flex="">
-                <md-list-item class="md-3-line" ng-repeat="idea in ideas" ng-click="null">
-                    <div class="md-list-item-text" layout="column" layout-align="start center">
-                        <h3>{{ idea.author.username }}</h3>
-                        <h4>{{ idea.ideaText }}</h4>
-                        <p>{{ item.notes }}</p>
+                <md-list-item class="md-3-line" ng-disabled="true" ng-repeat="idea in ideas | filter:query | orderBy: '-creationDate'">
+                    <div class="md-list-item-text"  layout="column" layout-align="start center">
+                        <md-card style="width: 600px;" >
+                            <md-card-title>
+                                <md-card-title-text>
+                                    <span class="md-headline">{{idea.ideaName}}</span>
+                                </md-card-title-text>
+                            </md-card-title>
+                            <md-card-content>
+                                <p>
+                                    <b>{{idea.author.username}}</b> posted {{ idea.creationDate | date:"MM/dd/yyyy 'at' h:mma"}}
+                                </p>
+                                <p>
+                                    {{idea.ideaText}}
+                                </p>
+                            </md-card-content>
+                            <md-card-actions layout="row" layout-align="end center">
+                                <md-button class="md-icon-button" aria-label="Favorite">
+                                    <md-icon md-svg-icon="img/icons/favorite.svg"></md-icon>
+                                </md-button>
+                                <md-button class="md-icon-button" aria-label="Settings">
+                                    <md-icon md-svg-icon="img/icons/menu.svg"></md-icon>
+                                </md-button>
+                                <md-button class="md-icon-button" aria-label="Share">
+                                    <md-icon md-svg-icon="img/icons/share-arrow.svg"></md-icon>
+                                </md-button>
+                            </md-card-actions>
+                        </md-card>
                     </div>
                     <md-divider></md-divider>
                 </md-list-item>
-                <md-divider></md-divider>
             </md-list>
         </md-content>
 
     </div>
 
+    <div style="visibility: hidden">
+        <div class="md-dialog-container" id="createIdeaDialog">
+            <md-dialog layout-padding>
+                <h2>Post new idea</h2>
+                <form name="postIdeaForm" ng-submit="postIdea()">
+                    <div layout="column">
+                        <md-input-container flex="50">
+                            <label>Idea title</label>
+                            <input type="text" name="ideaName" ng-model="ideaName">
+                        </md-input-container>
+                        <textarea cols="40" rows="5" name="ideaText" ng-model="ideaText">
+                        Idea text
+                      </textarea>
+                        <md-input-container flex="50">
+                            <label>Use comma to separate tags</label>
+                            <input type="text" name="ideaTags" ng-model="ideaTags">
+                        </md-input-container>
+                    </div>
+                    <md-button flex="" type="submit" id="postButton" class="md-raised">Post!</md-button>
+                </form>
+            </md-dialog>
+        </div>
+    </div>
 </div>
+
 
 <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.js'></script>
 <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js'></script>

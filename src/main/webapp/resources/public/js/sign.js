@@ -36,7 +36,7 @@ angular.module('signApp', ['ngMaterial', 'ngMessages', 'material.svgAssetsCache'
 
             var config = {
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json'
                 }
             }
             $http.post('/registration', regdata, config)

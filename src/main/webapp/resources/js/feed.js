@@ -3,7 +3,7 @@
  */
 
 angular.module('feedApp',['ngMaterial', 'ngMessages', 'material.svgAssetsCache'])
-    .controller('feedCtrl', function($http, $scope) {
+    .controller('feedCtrl', function($http, $scope, $mdDialog) {
 
         $http.get('/ideas')
             .then(function(response) {
@@ -20,5 +20,57 @@ angular.module('feedApp',['ngMaterial', 'ngMessages', 'material.svgAssetsCache']
                         alert("Logout failed!");
                     }
                 });
+        };
+
+
+        $scope.createIdea = function(ev)  {
+            $mdDialog.show({
+                controller: DialogController,
+                contentElement: '#createIdeaDialog',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose: true
+            });
+        };
+
+        $scope.postIdea = function() {
+
+            var ideaSplitTags = $scope.ideaTags.split([',']);
+
+            var ideadata = {
+                ideaName: $scope.ideaName,
+                ideaText: $scope.ideaText,
+                tags: ideaSplitTags
+            };
+
+            var config = {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+            $http.post('/ideas', ideadata, config)
+                .then(function (response) {
+                    if (response.status == 200) {
+                        window.location.replace('/resources/feed.html');
+                    }
+                    else {
+                        alert("Failed!")
+                    }
+                });
+        };
+
+        function DialogController($scope, $mdDialog) {
+            $scope.hide = function() {
+                $mdDialog.hide();
+            };
+
+            $scope.cancel = function() {
+                $mdDialog.cancel();
+            };
+
+            $scope.answer = function(answer) {
+                $mdDialog.hide(answer);
+            };
         }
+
     });
