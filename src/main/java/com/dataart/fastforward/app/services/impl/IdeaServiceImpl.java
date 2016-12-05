@@ -1,12 +1,12 @@
 package com.dataart.fastforward.app.services.impl;
 
+import com.dataart.fastforward.app.dao.CommentRepository;
 import com.dataart.fastforward.app.dao.IdeaRepository;
 import com.dataart.fastforward.app.dao.TagRepository;
-import com.dataart.fastforward.app.dao.UserRepository;
 import com.dataart.fastforward.app.dto.IdeaDTO;
+import com.dataart.fastforward.app.model.Comment;
 import com.dataart.fastforward.app.model.Idea;
 import com.dataart.fastforward.app.model.Tag;
-import com.dataart.fastforward.app.model.User;
 import com.dataart.fastforward.app.services.IdeaService;
 import com.dataart.fastforward.app.services.TagService;
 import com.dataart.fastforward.app.services.UserService;
@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import static com.dataart.fastforward.app.services.validation.ValidationUtils.assertExistsNotBlank;
 
@@ -28,9 +27,9 @@ import static com.dataart.fastforward.app.services.validation.ValidationUtils.as
 public class IdeaServiceImpl implements IdeaService {
 
     @Autowired
-    private IdeaRepository ideaRepository;
+    private CommentRepository commentRepository;
     @Autowired
-    private UserRepository userRepository;
+    private IdeaRepository ideaRepository;
     @Autowired
     private TagRepository tagRepository;
 
@@ -86,6 +85,11 @@ public class IdeaServiceImpl implements IdeaService {
 
     @Override
     public Idea getIdeaById(long ideaId) { return ideaRepository.findOne(ideaId);}
+
+    @Override
+    public List<Comment> getAllComments(long ideaId) {
+        return commentRepository.getAllCommentsByIdeaId(ideaId);
+    }
 
     @Override
     public List<Idea> getAll() {

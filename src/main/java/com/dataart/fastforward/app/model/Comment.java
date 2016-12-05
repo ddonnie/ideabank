@@ -23,9 +23,13 @@ public class Comment {
     @JoinColumn(name = "user_id", nullable = false)
     private User author;
 
-    @ManyToOne//(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+/*    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY) // cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "idea_id", nullable = false)
-    private Idea idea;
+    private Idea idea;*/
+
+    @Column(name = "idea_id")
+    private long ideaId;
 
     @Column(name = "comment_text")
     private String commentText;
@@ -52,13 +56,21 @@ public class Comment {
         this.author = author;
     }
 
-    public Idea getIdea() {
+    public long getIdeaId() {
+        return ideaId;
+    }
+
+    public void setIdeaId(long ideaId) {
+        this.ideaId = ideaId;
+    }
+
+    /*    public Idea getIdea() {
         return idea;
     }
 
     public void setIdea(Idea idea) {
         this.idea = idea;
-    }
+    }*/
 
     public String getCommentText() {
         return commentText;

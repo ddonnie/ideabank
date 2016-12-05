@@ -10,6 +10,23 @@ angular.module('feedApp',['ngMaterial', 'ngMessages', 'material.svgAssetsCache']
                 $scope.ideas = response.data;
             });
 
+
+        $scope.commentIdea = function(ideaId) {
+            var commentData = {
+                commentText: this.commentText
+            }
+            var config = {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+            var commentssurl = "/ideas/" + ideaId + "/comments";
+            $http.post(commentssurl,commentData,config)
+                .then(function(response) {
+                    window.location.replace('/resources/feed.html');
+                })
+        };
+
         $scope.logout = function () {
             $http.post('/logout')
                 .then(function (response) {

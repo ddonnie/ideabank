@@ -10,10 +10,9 @@ import java.util.List;
  */
 public interface CommentService {
 
-    void add(CommentDTO commentDTO);
+    void add(CommentDTO commentDTO, String username, long ideaId);
     Comment edit(CommentDTO commentDTO);
     void delete(long commentId);
-
     Comment getCommentById(long commentId);
     List<Comment> getAll();
 }

@@ -2,7 +2,6 @@ package com.dataart.fastforward.app.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -42,11 +41,16 @@ public class Idea {
     @Column(name = "last_modified_date")
     private Date lastModifiedDate;
 
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name="idea_id", referencedColumnName = "idea_id")
+    private Set<Comment> comments = new HashSet<>();
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "Bookmarks",
             joinColumns = @JoinColumn(name = "idea_id", referencedColumnName = "idea_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     )
+
     @JsonBackReference
     private Set<User> usersWhoBookmarked = new HashSet<>();
 
@@ -106,6 +110,14 @@ public class Idea {
 
     public void setLastModifiedDate(Date lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
     }
 
     @JsonIgnore

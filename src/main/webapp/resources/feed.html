@@ -58,16 +58,37 @@
                                 </p>
                             </md-card-content>
                             <md-card-actions layout="row" layout-align="end center">
-                                <md-button class="md-icon-button" aria-label="Favorite">
-                                    <md-icon md-svg-icon="img/icons/favorite.svg"></md-icon>
-                                </md-button>
-                                <md-button class="md-icon-button" aria-label="Settings">
-                                    <md-icon md-svg-icon="img/icons/menu.svg"></md-icon>
-                                </md-button>
-                                <md-button class="md-icon-button" aria-label="Share">
+                                <md-button ng-click="showComments = ! showComments" class="md-icon-button" aria-label="Share">
                                     <md-icon md-svg-icon="img/icons/share-arrow.svg"></md-icon>
                                 </md-button>
                             </md-card-actions>
+                        </md-card>
+                        <md-list flex="">
+                            <md-list-item  ng-show="showComments" class="md-3-line check-element animate-show" ng-disabled="true" ng-repeat="comment in idea.comments | filter:query | orderBy: '-creationDate'">
+                                <div class="md-list-item-text"  layout="column" layout-align="start center">
+                                    <md-card style="width: 350px;" >
+                                        <md-card-content>
+                                            <p>
+                                                <b>{{comment.author.username}}</b> commented {{ comment.creationDate | date:"MM/dd/yyyy 'at' h:mma"}}
+                                            </p>
+                                            <p>
+                                                {{comment.commentText}}
+                                            </p>
+                                        </md-card-content>
+                                    </md-card>
+                                </div>
+                                <md-divider></md-divider>
+                            </md-list-item>
+                        </md-list>
+                        <md-card style="width: 350px;" >
+                            <md-card-content>
+                                <form name="postCommentForm" ng-submit="commentIdea(idea.ideaId)">
+                                    <textarea cols="30" rows="5" style="resize: vertical;" name="commentText" ng-model="commentText"></textarea>
+                                    <md-button style="color:grey;" class="md-icon-button" type="submit" aria-label="PostComment">
+                                        <i class="material-icons">question_answer</i>
+                                    </md-button>
+                                </form>
+                            </md-card-content>
                         </md-card>
                     </div>
                     <md-divider></md-divider>
