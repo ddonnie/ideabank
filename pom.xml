@@ -39,6 +39,16 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <configuration>
+                    <path>/</path>
+                    <httpsPort>8443</httpsPort>
+                    <keystoreFile>${basedir}/other/keystore.jks</keystoreFile>
+                    <keystorePass>secret</keystorePass>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
@@ -151,6 +161,13 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.4</version>
+        </dependency>
+
+        <!-- servlet container provided dependencies -->
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-catalina</artifactId>
+            <version>9.0.0.M1</version>
         </dependency>
 
     </dependencies>

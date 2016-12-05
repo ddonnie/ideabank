@@ -64,7 +64,7 @@
                             </md-card-actions>
                         </md-card>
                         <md-list flex="">
-                            <md-list-item  ng-show="showComments" class="md-3-line check-element animate-show" ng-disabled="true" ng-repeat="comment in idea.comments | filter:query | orderBy: '-creationDate'">
+                            <md-list-item  ng-show="showComments" class="md-3-line check-element animate-show" ng-disabled="true" ng-repeat="comment in idea.comments | filter:query | orderBy: '+creationDate'">
                                 <div class="md-list-item-text"  layout="column" layout-align="start center">
                                     <md-card style="width: 350px;" >
                                         <md-card-content>
