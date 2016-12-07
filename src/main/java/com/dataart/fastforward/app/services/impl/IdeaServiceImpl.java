@@ -15,8 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static com.dataart.fastforward.app.services.validation.ValidationUtils.assertExistsNotBlank;
 
@@ -27,11 +26,11 @@ import static com.dataart.fastforward.app.services.validation.ValidationUtils.as
 public class IdeaServiceImpl implements IdeaService {
 
     @Autowired
-    private CommentRepository commentRepository;
-    @Autowired
     private IdeaRepository ideaRepository;
     @Autowired
     private TagRepository tagRepository;
+    @Autowired
+    private CommentRepository commentRepository;
 
     @Autowired
     private UserService userService;
@@ -48,12 +47,7 @@ public class IdeaServiceImpl implements IdeaService {
         idea.setAuthor(userService.getUserByUsername(userName));
         idea.setIdeaName(ideaDTO.getIdeaName());
         idea.setIdeaText(ideaDTO.getIdeaText());
-        for (String tagName : ideaDTO.getTags()) {
-            tag = tagService.getTagByTagName(tagName);
-            tag.getIdeasWithThisTag().add(idea);
-            idea.getTags().add(tag);
-            tagRepository.save(tag);
-        }
+        updateTagSet(idea, ideaDTO);
         idea.setCreationDate(new Date());
 
         ideaRepository.saveAndFlush(idea);
@@ -77,9 +71,12 @@ public class IdeaServiceImpl implements IdeaService {
 
         idea.setIdeaName(ideaDTO.getIdeaName());
         idea.setIdeaText(ideaDTO.getIdeaText());
+        List<Tag> tagsToDelete = updateTagSet(idea, ideaDTO);
         idea.setLastModifiedDate(new Date());
 
         ideaRepository.saveAndFlush(idea);
+        for (Tag tag : tagsToDelete)
+            tagService.delete(tag.getTagId());
         return idea;
     }
 
@@ -94,5 +91,36 @@ public class IdeaServiceImpl implements IdeaService {
     @Override
     public List<Idea> getAll() {
         return ideaRepository.findAll();
+    }
+
+    private List<Tag> updateTagSet(Idea idea, IdeaDTO ideaDTO) {
+        List<Tag> tagsToDeleteFromRepository = new ArrayList<>(idea.getTags().size());
+
+        List<String> tagsToRemove = new ArrayList(idea.getTags().size());
+        List<String> tagsToAdd = new ArrayList<>(Arrays.asList(ideaDTO.getTags()));
+
+        for (Tag tag : idea.getTags())
+            tagsToRemove.add(tag.getTagName());
+
+        tagsToAdd.removeAll(tagsToRemove);
+        tagsToRemove.removeAll(Arrays.asList(ideaDTO.getTags()));
+
+        Tag tag;
+        for(String tagToRemove : tagsToRemove) {
+            tag = tagService.getTagByTagName(tagToRemove);
+
+            idea.getTags().remove(tag);
+            tag.getIdeasWithThisTag().remove(idea);
+
+            if (tag.getIdeasWithThisTag().size() == 0)
+                tagsToDeleteFromRepository.add(tag);
+        }
+        for(String tagToAdd : tagsToAdd) {
+            if ((tag = tagService.getTagByTagName(tagToAdd)) == null)
+                tag = tagService.add(tagToAdd);
+
+            idea.getTags().add(tag);
+        }
+        return tagsToDeleteFromRepository;
     }
 }

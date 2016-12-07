@@ -26,8 +26,19 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
+    public Tag add(String name) {
+        Tag tag = new Tag();
+        tag.setTagName(name);
+        return tagRepository.saveAndFlush(tag);
+    }
+
+    @Override
     public Tag edit(TagDTO tagDTO) {
-        return null;
+        Tag tag = tagRepository.findByTagName(tagDTO.getTagName());
+
+        tag.setTagName(tagDTO.getTagName());
+        tagRepository.saveAndFlush(tag);
+        return tag;
     }
 
     @Override
