@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>IdeaBank</title>
+    <link rel="icon"
+          type="image/png"
+          href="http://www.iconsfind.com/wp-content/uploads/2016/11/20161102_581990d911320.png">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+    <link rel='stylesheet prefetch'
+          href='https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.1/angular-material.css'>
+    <link rel='stylesheet prefetch' href='https://material.angularjs.org/1.1.1/docs.css'>
+    <link rel="stylesheet" href="/resources/public/css/style.css">
+
+
+</head>
+
+<body>
+
+<div ng-cloak="" ng-app="signApp">
+    <md-content ng-controller="signCtrl">
+        <md-tabs id="outer" md-dynamic-height="" md-border-bottom="">
+
+            <md-tab label="Login">
+                <md-content class="md-padding">
+                    <form name="loginForm" ng-submit="login()">
+                        <div layout="column">
+                            <md-input-container flex="50">
+                                <label>Username</label>
+                                <input required name="username" ng-model="username">
+                                <div ng-messages="loginForm.username.$error">
+                                    <div ng-message="required">This is required.</div>
+                                </div>
+                            </md-input-container>
+                            <md-input-container flex="50">
+                                <label>Password</label>
+                                <input type="password" required name="password" ng-model="password">
+                                <div ng-messages="loginForm.password.$error">
+                                    <div ng-message="required">This is required.</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                        <md-button flex="50" type="submit" id="registerButton" class="md-raised">Login</md-button>
+                    </form>
+                </md-content>
+            </md-tab>
+
+            <md-tab label="Register">
+                <md-content class="md-padding">
+                    <form name="registerForm" ng-submit="register()">
+                        <div layout="row">
+                            <md-input-container flex="50">
+                                <label>First name</label>
+                                <input required name="firstname" ng-model="firstname">
+                                <div ng-messages="registerForm.firstname.$error">
+                                    <div ng-message="required">This is required.</div>
+                                </div>
+                            </md-input-container>
+
+                            <md-input-container flex="50">
+                                <label>Last name</label>
+                                <input required name="lastname" ng-model="lastname">
+                                <div ng-messages="registerForm.lastname.$error">
+                                    <div ng-message="required">This is required.</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                        <div layout="row">
+                            <md-input-container flex="50">
+                                <label>Username</label>
+                                <input required name="username" ng-model="username">
+                                <div ng-messages="registerForm.username.$error">
+                                    <div ng-message="required">This is required.</div>
+                                </div>
+                            </md-input-container>
+                            <md-input-container flex="50">
+                                <label>Password</label>
+                                <input type="password" required name="password" ng-model="password">
+                                <div ng-messages="registerForm.password.$error">
+                                    <div ng-message="required">This is required.</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                        <md-button flex="50" type="submit" id="registerButton" class="md-raised">Register</md-button>
+                    </form>
+                </md-content>
+            </md-tab>
+
+        </md-tabs>
+    </md-content>
+</div>
+
+<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.js'></script>
+<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js'></script>
+<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-route.min.js'></script>
+<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js'></script>
+<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js'></script>
+<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/svg-assets-cache.js'></script>
+<script src='https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.1/angular-material.js'></script>
+<script src="/resources/public/js/sign.js"></script>
+
+</body>
+</html>

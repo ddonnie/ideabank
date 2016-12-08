@@ -1,6 +1,9 @@
 target/
 
+*.log
+
 ### IntelliJ IDEA ###
+.idea/
 *.iws
 *.iml
 *.ipr
@@ -9,3 +12,4 @@ target/
 *.jar
 *.war
 *.ear
+
