@@ -7,6 +7,7 @@ import com.dataart.fastforward.app.services.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -44,6 +45,12 @@ public class TagServiceImpl implements TagService {
     @Override
     public void delete(long tagId) {
         tagRepository.delete(tagId);
+    }
+
+    @Override
+    public void checkAndDeleteIfNonRequired(Tag tag) {
+            if (tag.getIdeasWithThisTag().size() == 0)
+                delete(tag.getTagId());
     }
 
     @Override

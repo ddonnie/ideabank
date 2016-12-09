@@ -42,7 +42,6 @@ public class IdeaServiceImpl implements IdeaService {
         assertExistsNotBlank(ideaDTO);
 
         Idea idea = new Idea();
-        Tag tag;
 
         idea.setAuthor(userService.getUserByUsername(userName));
         idea.setIdeaName(ideaDTO.getIdeaName());
@@ -50,7 +49,7 @@ public class IdeaServiceImpl implements IdeaService {
         updateTagSet(idea, ideaDTO);
         idea.setCreationDate(new Date());
 
-        ideaRepository.saveAndFlush(idea);
+        idea = ideaRepository.saveAndFlush(idea);
         tagRepository.flush();
         return idea;
     }
@@ -61,6 +60,7 @@ public class IdeaServiceImpl implements IdeaService {
         Idea idea = ideaRepository.getOne(ideaId);
         ValidationUtils.assertAuthor(idea, userService.getUserByUsername(userName));
 
+        updateTagSet(idea, null);
         ideaRepository.delete(ideaId);
     }
 
@@ -71,21 +71,21 @@ public class IdeaServiceImpl implements IdeaService {
 
         idea.setIdeaName(ideaDTO.getIdeaName());
         idea.setIdeaText(ideaDTO.getIdeaText());
-        List<Tag> tagsToDelete = updateTagSet(idea, ideaDTO);
+        updateTagSet(idea, ideaDTO);
         idea.setLastModifiedDate(new Date());
 
         ideaRepository.saveAndFlush(idea);
-        for (Tag tag : tagsToDelete)
-            tagService.delete(tag.getTagId());
         return idea;
     }
 
     @Override
-    public Idea getIdeaById(long ideaId) { return ideaRepository.findOne(ideaId);}
+    public Idea getIdeaById(long ideaId) {
+        return ideaRepository.findOne(ideaId);
+    }
 
     @Override
     public List<Comment> getAllComments(long ideaId) {
-        return commentRepository.getAllCommentsByIdeaId(ideaId);
+        return commentRepository.getAllCommentsByIdea(getIdeaById(ideaId));
     }
 
     @Override
@@ -93,8 +93,14 @@ public class IdeaServiceImpl implements IdeaService {
         return ideaRepository.findAll();
     }
 
-    private List<Tag> updateTagSet(Idea idea, IdeaDTO ideaDTO) {
-        List<Tag> tagsToDeleteFromRepository = new ArrayList<>(idea.getTags().size());
+    private void updateTagSet(Idea idea, IdeaDTO ideaDTO) {
+        if (ideaDTO == null) {
+            for (Tag tag : idea.getTags()) {
+                tag.getIdeasWithThisTag().remove(idea);
+                tagService.checkAndDeleteIfNonRequired(tag);
+            }
+            return;
+        }
 
         List<String> tagsToRemove = new ArrayList(idea.getTags().size());
         List<String> tagsToAdd = new ArrayList<>(Arrays.asList(ideaDTO.getTags()));
@@ -106,21 +112,18 @@ public class IdeaServiceImpl implements IdeaService {
         tagsToRemove.removeAll(Arrays.asList(ideaDTO.getTags()));
 
         Tag tag;
-        for(String tagToRemove : tagsToRemove) {
+        for (String tagToRemove : tagsToRemove) {
             tag = tagService.getTagByTagName(tagToRemove);
 
             idea.getTags().remove(tag);
             tag.getIdeasWithThisTag().remove(idea);
-
-            if (tag.getIdeasWithThisTag().size() == 0)
-                tagsToDeleteFromRepository.add(tag);
+            tagService.checkAndDeleteIfNonRequired(tag);
         }
-        for(String tagToAdd : tagsToAdd) {
+        for (String tagToAdd : tagsToAdd) {
             if ((tag = tagService.getTagByTagName(tagToAdd)) == null)
                 tag = tagService.add(tagToAdd);
 
             idea.getTags().add(tag);
         }
-        return tagsToDeleteFromRepository;
     }
 }

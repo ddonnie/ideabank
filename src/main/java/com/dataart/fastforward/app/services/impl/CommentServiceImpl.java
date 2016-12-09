@@ -3,7 +3,9 @@ package com.dataart.fastforward.app.services.impl;
 import com.dataart.fastforward.app.dao.CommentRepository;
 import com.dataart.fastforward.app.dto.CommentDTO;
 import com.dataart.fastforward.app.model.Comment;
+import com.dataart.fastforward.app.model.Idea;
 import com.dataart.fastforward.app.services.CommentService;
+import com.dataart.fastforward.app.services.IdeaService;
 import com.dataart.fastforward.app.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,13 +24,16 @@ public class CommentServiceImpl implements CommentService {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private IdeaService ideaService;
 
     @Override
     public void add(CommentDTO commentDTO, String username, long ideaId) {
         Comment comment = new Comment();
         comment.setAuthor(userService.getUserByUsername(username));
         comment.setCommentText(commentDTO.getCommentText());
-        comment.setIdeaId(ideaId);
+//        comment.setIdeaId(ideaId);
+        comment.setIdea(ideaService.getIdeaById(ideaId));
         comment.setCreationDate(new Date());
         commentRepository.saveAndFlush(comment);
     }

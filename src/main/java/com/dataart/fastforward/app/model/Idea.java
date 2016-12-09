@@ -41,9 +41,11 @@ public class Idea {
     @Column(name = "last_modified_date")
     private Date lastModifiedDate;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name="idea_id", referencedColumnName = "idea_id")
+    @OneToMany(mappedBy = "idea", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<Comment> comments = new HashSet<>();
+
+/*    @OneToMany(mappedBy = "idea", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private Set<Attachment> attachments = new HashSet<>();*/
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "Bookmarks",
@@ -119,6 +121,14 @@ public class Idea {
     public void setComments(Set<Comment> comments) {
         this.comments = comments;
     }
+
+/*    public Set<Attachment> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(Set<Attachment> attachments) {
+        this.attachments = attachments;
+    }*/
 
     @JsonIgnore
     public Set<User> getUsersWhoBookmarked() {

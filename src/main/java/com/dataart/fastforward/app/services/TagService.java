@@ -3,6 +3,7 @@ package com.dataart.fastforward.app.services;
 import com.dataart.fastforward.app.dto.TagDTO;
 import com.dataart.fastforward.app.model.Tag;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -15,6 +16,8 @@ public interface TagService {
 
     Tag edit(TagDTO tagDTO);
     void delete(long tagId);
+
+    void checkAndDeleteIfNonRequired(Tag tags);
 
     Tag getTagById(long tagDTO);
     Tag getTagByTagName(String tagName);
