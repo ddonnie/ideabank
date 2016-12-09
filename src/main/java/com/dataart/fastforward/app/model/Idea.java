@@ -44,8 +44,8 @@ public class Idea {
     @OneToMany(mappedBy = "idea", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<Comment> comments = new HashSet<>();
 
-/*    @OneToMany(mappedBy = "idea", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    private Set<Attachment> attachments = new HashSet<>();*/
+    @OneToMany(mappedBy = "idea", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private Set<Attachment> attachments = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "Bookmarks",
@@ -122,15 +122,14 @@ public class Idea {
         this.comments = comments;
     }
 
-/*    public Set<Attachment> getAttachments() {
+    public Set<Attachment> getAttachments() {
         return attachments;
     }
 
     public void setAttachments(Set<Attachment> attachments) {
         this.attachments = attachments;
-    }*/
+    }
 
-    @JsonIgnore
     public Set<User> getUsersWhoBookmarked() {
         return usersWhoBookmarked;
     }

@@ -3,10 +3,13 @@ package com.dataart.fastforward.app.services.impl;
 import com.dataart.fastforward.app.dao.CommentRepository;
 import com.dataart.fastforward.app.dao.IdeaRepository;
 import com.dataart.fastforward.app.dao.TagRepository;
+import com.dataart.fastforward.app.dto.AttachmentDTO;
 import com.dataart.fastforward.app.dto.IdeaDTO;
+import com.dataart.fastforward.app.model.Attachment;
 import com.dataart.fastforward.app.model.Comment;
 import com.dataart.fastforward.app.model.Idea;
 import com.dataart.fastforward.app.model.Tag;
+import com.dataart.fastforward.app.services.AttachmentService;
 import com.dataart.fastforward.app.services.IdeaService;
 import com.dataart.fastforward.app.services.TagService;
 import com.dataart.fastforward.app.services.UserService;
@@ -36,6 +39,9 @@ public class IdeaServiceImpl implements IdeaService {
     private UserService userService;
     @Autowired
     private TagService tagService;
+    @Autowired
+    private AttachmentService attachmentService;
+
 
     @Override
     public Idea add(IdeaDTO ideaDTO, String userName) {
@@ -51,7 +57,8 @@ public class IdeaServiceImpl implements IdeaService {
 
         idea = ideaRepository.saveAndFlush(idea);
         tagRepository.flush();
-        return idea;
+//        updateAttachmentSet(idea, ideaDTO);
+        return ideaRepository.saveAndFlush(idea);
     }
 
     @Override
@@ -60,8 +67,11 @@ public class IdeaServiceImpl implements IdeaService {
         Idea idea = ideaRepository.getOne(ideaId);
         ValidationUtils.assertAuthor(idea, userService.getUserByUsername(userName));
 
-        updateTagSet(idea, null);
+        List<Long> tagsToDelete = updateTagSet(idea, null);
+//        updateAttachmentSet(idea, null);
         ideaRepository.delete(ideaId);
+        for (Long tagId : tagsToDelete)
+            tagService.delete(tagId);
     }
 
     @Override
@@ -71,10 +81,13 @@ public class IdeaServiceImpl implements IdeaService {
 
         idea.setIdeaName(ideaDTO.getIdeaName());
         idea.setIdeaText(ideaDTO.getIdeaText());
-        updateTagSet(idea, ideaDTO);
+        List<Long> tagsToDelete = updateTagSet(idea, ideaDTO);
+//        updateAttachmentSet(idea, ideaDTO);
         idea.setLastModifiedDate(new Date());
 
-        ideaRepository.saveAndFlush(idea);
+        idea = ideaRepository.saveAndFlush(idea);
+        for (Long tagId : tagsToDelete)
+            tagService.delete(tagId);
         return idea;
     }
 
@@ -93,37 +106,92 @@ public class IdeaServiceImpl implements IdeaService {
         return ideaRepository.findAll();
     }
 
-    private void updateTagSet(Idea idea, IdeaDTO ideaDTO) {
-        if (ideaDTO == null) {
+    private List<Long> updateTagSet(Idea idea, IdeaDTO ideaDTO) {
+        List<Long> tagsToDelete = new ArrayList<>(idea.getTags().size());
+
+        if (ideaDTO == null || ideaDTO.getTags().length == 0) {
             for (Tag tag : idea.getTags()) {
                 tag.getIdeasWithThisTag().remove(idea);
-                tagService.checkAndDeleteIfNonRequired(tag);
+
+                if(tag.getIdeasWithThisTag().size() == 0)
+                    tagsToDelete.add(tag.getTagId());
             }
-            return;
+            idea.getTags().clear();
+
+        } else if (idea.getTags().size() == 0) {
+            Tag tag;
+            for (String tagToAdd : ideaDTO.getTags()) {
+                if ((tag = tagService.getTagByTagName(tagToAdd)) == null)
+                    tag = tagService.add(tagToAdd);
+
+                idea.getTags().add(tag);
+            }
+
+        } else {
+            List<String> tagsToRemove = new ArrayList(idea.getTags().size());
+            List<String> tagsToAdd = new ArrayList<>(Arrays.asList(ideaDTO.getTags()));
+
+            for (Tag tag : idea.getTags())
+                tagsToRemove.add(tag.getTagName());
+
+            tagsToAdd.removeAll(tagsToRemove);
+            tagsToRemove.removeAll(Arrays.asList(ideaDTO.getTags()));
+
+            Tag tag;
+            for (String tagToRemove : tagsToRemove) {
+                tag = tagService.getTagByTagName(tagToRemove);
+
+                idea.getTags().remove(tag);
+                tag.getIdeasWithThisTag().remove(idea);
+
+                if (tag.getIdeasWithThisTag().size() == 0)
+                    tagsToDelete.add(tag.getTagId());
+            }
+            for (String tagToAdd : tagsToAdd) {
+                if ((tag = tagService.getTagByTagName(tagToAdd)) == null)
+                    tag = tagService.add(tagToAdd);
+
+                idea.getTags().add(tag);
+            }
         }
 
-        List<String> tagsToRemove = new ArrayList(idea.getTags().size());
-        List<String> tagsToAdd = new ArrayList<>(Arrays.asList(ideaDTO.getTags()));
-
-        for (Tag tag : idea.getTags())
-            tagsToRemove.add(tag.getTagName());
-
-        tagsToAdd.removeAll(tagsToRemove);
-        tagsToRemove.removeAll(Arrays.asList(ideaDTO.getTags()));
-
-        Tag tag;
-        for (String tagToRemove : tagsToRemove) {
-            tag = tagService.getTagByTagName(tagToRemove);
-
-            idea.getTags().remove(tag);
-            tag.getIdeasWithThisTag().remove(idea);
-            tagService.checkAndDeleteIfNonRequired(tag);
-        }
-        for (String tagToAdd : tagsToAdd) {
-            if ((tag = tagService.getTagByTagName(tagToAdd)) == null)
-                tag = tagService.add(tagToAdd);
-
-            idea.getTags().add(tag);
-        }
+        return tagsToDelete;
     }
+
+/*    private void updateAttachmentSet(Idea idea, IdeaDTO ideaDTO) {
+        if (ideaDTO == null || ideaDTO.getAttachments().length == 0) {
+            for (Attachment attachment : idea.getAttachments()) {
+                attachmentService.delete(attachment.getAttachmentId());
+            }
+            idea.getAttachments().clear();
+
+        } else if (idea.getAttachments().size() == 0) {
+            Attachment attachment;
+            for (AttachmentDTO attachmentDTO : ideaDTO.getAttachments()) {
+                attachment = attachmentService.add(attachmentDTO,idea.getIdeaId());
+                idea.getAttachments().add(attachment);
+            }
+
+        } else {
+            List<String> attNamesToDelete = new ArrayList<>(idea.getAttachments().size());
+            for(Attachment attachment : idea.getAttachments())
+                attNamesToDelete.add(attachment.getAttachmentName());
+
+            for(AttachmentDTO attachmentDTO : ideaDTO.getAttachments())
+                attNamesToDelete.remove(attachmentDTO.getAttachmentName());
+
+            for (String attachmentName : attNamesToDelete) {
+                Attachment attachment = attachmentService.getAttachmentByAttachmentName(attachmentName);
+                idea.getAttachments().remove(attachment);
+                attachmentService.delete(attachment.getAttachmentId());
+            }
+
+            List<String> attNamesToRemain = new ArrayList<>(idea.getAttachments().size());
+            for(Attachment attachment : idea.getAttachments())
+                attNamesToRemain.add(attachment.getAttachmentName());
+            for (AttachmentDTO attachmentDTO : ideaDTO.getAttachments())
+                if (!attNamesToRemain.contains(attachmentDTO.getAttachmentName()))
+                    idea.getAttachments().add(attachmentService.add(attachmentDTO, idea.getIdeaId()));
+        }
+    }*/
 }

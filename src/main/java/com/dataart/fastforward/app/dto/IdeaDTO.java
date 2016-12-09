@@ -14,7 +14,7 @@ public class IdeaDTO {
     private String ideaName;
     private String ideaText;
     private String[] tags;
-/*    private List<AttachmentDTO> attachments = new ArrayList<>();*/
+//    private AttachmentDTO[] attachments;
 
     public IdeaDTO() {
     }
@@ -43,11 +43,11 @@ public class IdeaDTO {
         this.tags = tags;
     }
 
-/*    public List<AttachmentDTO> getAttachments() {
+/*    public AttachmentDTO[] getAttachments() {
         return attachments;
     }
 
-    public void setAttachments(List<AttachmentDTO> attachments) {
+    public void setAttachments(AttachmentDTO[] attachments) {
         this.attachments = attachments;
     }*/
 }
