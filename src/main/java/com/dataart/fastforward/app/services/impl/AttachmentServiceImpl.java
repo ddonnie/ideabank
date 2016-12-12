@@ -25,16 +25,23 @@ public class AttachmentServiceImpl implements AttachmentService {
     @Override
     public Attachment add(AttachmentDTO attachmentDTO, long ideaId) {
         Attachment attachment = new Attachment();
+
         attachment.setIdea(ideaService.getIdeaById(ideaId));
         attachment.setAttachmentName(ideaId + "att" + new Date().getTime());
         attachment.setExtension(attachmentDTO.getExtension());
         attachment.setAttachmentBytes(attachmentDTO.getAttachmentBytes());
+
         return attachmentRepository.saveAndFlush(attachment);
     }
 
     @Override
     public void delete(long attachmentId) {
         attachmentRepository.delete(getAttachmentById(attachmentId));
+    }
+
+    @Override
+    public void delete(Attachment attachment) {
+        attachmentRepository.delete(attachment);
     }
 
     @Override

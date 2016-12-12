@@ -57,7 +57,7 @@ public class IdeaServiceImpl implements IdeaService {
 
         idea = ideaRepository.saveAndFlush(idea);
         tagRepository.flush();
-//        updateAttachmentSet(idea, ideaDTO);
+        updateAttachmentSet(idea, ideaDTO);
         return ideaRepository.saveAndFlush(idea);
     }
 
@@ -68,10 +68,14 @@ public class IdeaServiceImpl implements IdeaService {
         ValidationUtils.assertAuthor(idea, userService.getUserByUsername(userName));
 
         List<Long> tagsToDelete = updateTagSet(idea, null);
-//        updateAttachmentSet(idea, null);
+        List<Attachment> attachmentstoDelete = updateAttachmentSet(idea, null);
+        for (Attachment attachment : attachmentstoDelete)
+            attachmentService.delete(attachment);
         ideaRepository.delete(ideaId);
+
         for (Long tagId : tagsToDelete)
             tagService.delete(tagId);
+
     }
 
     @Override
@@ -82,12 +86,14 @@ public class IdeaServiceImpl implements IdeaService {
         idea.setIdeaName(ideaDTO.getIdeaName());
         idea.setIdeaText(ideaDTO.getIdeaText());
         List<Long> tagsToDelete = updateTagSet(idea, ideaDTO);
-//        updateAttachmentSet(idea, ideaDTO);
+        List<Attachment> attachmentsToDelete = updateAttachmentSet(idea, ideaDTO);
         idea.setLastModifiedDate(new Date());
 
         idea = ideaRepository.saveAndFlush(idea);
         for (Long tagId : tagsToDelete)
             tagService.delete(tagId);
+        for (Attachment attachment : attachmentsToDelete)
+            attachmentService.delete(attachment);
         return idea;
     }
 
@@ -157,6 +163,78 @@ public class IdeaServiceImpl implements IdeaService {
 
         return tagsToDelete;
     }
+
+    private List<Attachment> updateAttachmentSet(Idea idea, IdeaDTO ideaDTO) {
+        List<Attachment> attachmentsToDelete = new ArrayList<>(idea.getAttachments().size());
+
+        if(ideaDTO == null || ideaDTO.getAttachments().length == 0) {
+            for (Attachment attachment : idea.getAttachments())
+                attachmentsToDelete.add(attachment);
+            idea.getAttachments().clear();
+        } else if (idea.getAttachments().size() == 0) {
+            for (AttachmentDTO attachmentDTO : ideaDTO.getAttachments()) {
+                Attachment attachment = attachmentService.add(attachmentDTO,idea.getIdeaId());
+                idea.getAttachments().add(attachment);
+            }
+        } else {
+            AttachmentDTO[] attFromDto = Arrays.copyOf(ideaDTO.getAttachments(), ideaDTO.getAttachments().length);
+            List<String> attNamesFromDTO = new ArrayList<>(ideaDTO.getAttachments().length);
+            for (AttachmentDTO attachmentDTO : ideaDTO.getAttachments())
+                attNamesFromDTO.add(attachmentDTO.getAttachmentName());
+
+            List<Attachment> attachments = new ArrayList<>(idea.getAttachments());
+            for(Attachment attachment : attachments)
+                if (attNamesFromDTO.contains(attachment.getAttachmentName())) {
+                    attFromDto[attNamesFromDTO.indexOf(attachment.getAttachmentName())] = null;
+                } else {
+                    idea.getAttachments().remove(attachment);
+                    attachmentsToDelete.add(attachment);
+                }
+
+            for (AttachmentDTO attachmentDTO : attFromDto)
+                if (attachmentDTO != null) {
+                    idea.getAttachments().add(attachmentService.add(attachmentDTO,idea.getIdeaId()));
+                }
+        }
+
+        return  attachmentsToDelete;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*    private void updateAttachmentSet(Idea idea, IdeaDTO ideaDTO) {
         if (ideaDTO == null || ideaDTO.getAttachments().length == 0) {
