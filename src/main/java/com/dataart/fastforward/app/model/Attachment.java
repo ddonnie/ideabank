@@ -22,7 +22,7 @@ public class Attachment {
     private long attachmentId;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)//, cascade = CascadeType.ALL)
     @JoinColumn(name = "idea_id", nullable = false)
     private Idea idea;
 

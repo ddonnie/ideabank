@@ -9,7 +9,9 @@ import com.dataart.fastforward.app.model.Attachment;
 public interface AttachmentService {
 
     Attachment add(AttachmentDTO attachmentDTO, long ideaId);
+
     void delete(long attachmentId);
+    void delete(Attachment attachment);
 
     Attachment getAttachmentById(long attachmentId);
     Attachment getAttachmentByAttachmentName(String attachmentName);
