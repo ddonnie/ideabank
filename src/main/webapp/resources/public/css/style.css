@@ -142,4 +142,56 @@ label.md-required {    /*Не могу везде стили перебить-с
 
 
 
+/* Соня */
+body {
+    background: white;
+    color: black;
+}
 
+h1 {
+    color: black;
+}
+
+
+p{
+    font-family: "Arial Narrow";
+    text-shadow: none;
+}
+
+
+.md-icon-button{
+    color: #000000;}
+
+
+#registerButton {
+    background-color: black;
+    color: white;
+    border-radius: 15px;
+}
+
+.md-button{
+    color: black;
+}
+
+label.md-required{
+    background-color: white;
+    border: solid;
+    border-color: black;
+    border-width: 0.2px;
+    color: black;
+}
+
+
+.md-tab{
+    background-color: black;
+    border-radius: 15px 15px 0 0;
+}
+
+.ng-scope {
+    color: white;
+    letter-spacing: 0.05vw;
+}
+
+md-tabs-wrapper{
+    border-color: black;
+}
