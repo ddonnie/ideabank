@@ -95,15 +95,12 @@
             <time datetime="2016-11-21" class="ib grey_font_color">posted {{ idea.creationDate | date:"MM/dd/yyyy 'at' h:mma"}}</time>
             <!--<time datetime="20:00" class="ib grey_font_color hours">03:33</time>-->
             <article class="idea_text">
-                <p>
                     {{idea.ideaText}}
-                </p>
+
             </article>
-            <ul class="tags">
-                <li>#тэги</li>
-                <li>#васялучший</li>
-                <li>#идеятоп</li>
-                <li>#силитерпенияребята</li>
+
+            <ul class="tags" >
+                <li ng-repeat="tag in idea.tags">{{tag.tagName}}</li>
             </ul>
 
         </div>
