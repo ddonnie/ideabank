@@ -105,8 +105,10 @@
 
         </div>
         <div class="right_side ib column_style">
-            <img src="img/icons_of_idea_list/favorites_star.png" class="favorites_icon">
-            <img src="img/icons_of_idea_list/delete.png" class="delete_icon">
+            <img src="img/icons_of_idea_list/favorites_star.png" class="favorites_icon ib">
+            <img src="img/icons_of_idea_list/delete.png" class="delete_icon ib">
+            <img src="img/icons_of_idea_list/edit.png" class="edit_icon">
+
             <div class="count_of_comments ib grey_font_color">131</div>
             <img src="img/icons_of_idea_list/comment_icon.png" class="comment_icon ib" ng-click="showComments = ! showComments">
         </div>
@@ -143,86 +145,6 @@
     </div>
 </div>
 
-<!--End my-->
-<!--<div class="container main_content"ng-controller="feedCtrl" ng-cloak="" layout-gt-md="row" layout="column" ng-app="feedApp">
-
-    <div flex-gt-sm="50" flex="">
-
-        <md-toolbar style="background-color:#476076;">
-            <div class="md-toolbar-tools">
-               <<md-button class="md-icon-button" ng-disabled="true">
-                    <i class="material-icons">search</i>
-                </md-button>
-                <span flex></span>
-                <md-button class="md-icon-button" style="color:yellow; width:48px; height:48px;" ng-click="createIdea($event)">
-                    <i class="material-icons">lightbulb_outline</i>
-                </md-button>
-              <span flex></span>
-                <md-button ng-click="logout()" class="md-icon-button">
-                    <i class="material-icons">exit_to_app</i>
-                </md-button>
-            </div>
-        </md-toolbar>
-
-        <md-content>
-            <md-list flex="">
-                <md-list-item class="md-3-line" ng-disabled="true" ng-repeat="idea in ideas | filter:query | orderBy: '-creationDate'">
-                    <div class="md-list-item-text"  layout="column" layout-align="start center">
-                        <md-card style="width: 600px;" >
-                            <md-card-title>
-                                <md-card-title-text>
-                                    <span class="md-headline">{{idea.ideaName}}</span>
-                                </md-card-title-text>
-                            </md-card-title>
-                            <md-card-content>
-                                <p>
-                                    <b>{{idea.author.username}}</b> posted {{ idea.creationDate | date:"MM/dd/yyyy 'at' h:mma"}}
-                                </p>
-                                <p>
-                                    {{idea.ideaText}}
-                                </p>
-                            </md-card-content>
-                            <md-card-actions layout="row" layout-align="end center">
-                                <md-button ng-click="showComments = ! showComments" class="md-icon-button" aria-label="Share">
-                                    <md-icon md-svg-icon="img/icons/share-arrow.svg"></md-icon>
-                                </md-button>
-                            </md-card-actions>
-                        </md-card>
-                        <md-list flex="">
-                            <md-list-item  ng-show="showComments" class="md-3-line check-element animate-show" ng-disabled="true" ng-repeat="comment in idea.comments | filter:query | orderBy: '+creationDate'">
-                                <div class="md-list-item-text"  layout="column" layout-align="start center">
-                                    <md-card style="width: 350px;" >
-                                        <md-card-content>
-                                            <p>
-                                                <b>{{comment.author.username}}</b> commented {{ comment.creationDate | date:"MM/dd/yyyy 'at' h:mma"}}
-                                            </p>
-                                            <p>
-                                                {{comment.commentText}}
-                                            </p>
-                                        </md-card-content>
-                                    </md-card>
-                                </div>
-                                <md-divider></md-divider>
-                            </md-list-item>
-                        </md-list>
-                        <md-card style="width: 350px;" >
-                            <md-card-content>
-                                <form name="postCommentForm" ng-submit="commentIdea(idea.ideaId)">
-                                    <textarea cols="30" rows="5" style="resize: vertical;" name="commentText" ng-model="commentText"></textarea>
-                                    <md-button style="color:grey;" class="md-icon-button" type="submit" aria-label="PostComment">
-                                        <i class="material-icons">question_answer</i>
-                                    </md-button>
-                                </form>
-                            </md-card-content>
-                        </md-card>
-                    </div>
-                    <md-divider></md-divider>
-                </md-list-item>
-            </md-list>
-        </md-content>
-
-    </div>-->
-
 <!--Add Idea Form-->
     <div style="visibility: hidden">
         <div class="md-dialog-container" id="createIdeaDialog">
@@ -247,7 +169,7 @@
             </md-dialog>
         </div>
     </div>
-<!--</div>-->
+
 
 <footer>
     <div class="logo"><a href="index.html">Idea Bank</a></div>

@@ -534,16 +534,22 @@ input#search:focus {
 .favorites_icon {
 	margin-left: 1vw;
 	width: 1.7vw;
-	margin-bottom: 10.5vw;
+
 	cursor: pointer;
 }
 .delete_icon {
 	margin-left: 1vw;
 	width: 1.5vw;
-	margin-bottom: 10.5vw;
 	cursor: pointer;
 }
 
+.edit_icon {
+	width: 1.5vw;
+	margin: 0.5vw 0 8.6vw 3.8vw;
+	margin-top: 0.7vw;
+	margin-bottom: 8.2vw;
+	cursor: pointer;
+}
 .comment_icon {
 	width: 1.9vw;
 	vertical-align: top;
@@ -551,6 +557,9 @@ input#search:focus {
 	cursor: pointer;
 
 }
+
+
+
 
 .count_of_comments {
 	margin-left: 1vw;
