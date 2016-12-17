@@ -2,17 +2,12 @@ package com.dataart.fastforward.app.services.impl;
 
 import com.dataart.fastforward.app.dao.CommentRepository;
 import com.dataart.fastforward.app.dao.IdeaRepository;
+import com.dataart.fastforward.app.dao.MarkRepository;
 import com.dataart.fastforward.app.dao.TagRepository;
 import com.dataart.fastforward.app.dto.AttachmentDTO;
 import com.dataart.fastforward.app.dto.IdeaDTO;
-import com.dataart.fastforward.app.model.Attachment;
-import com.dataart.fastforward.app.model.Comment;
-import com.dataart.fastforward.app.model.Idea;
-import com.dataart.fastforward.app.model.Tag;
-import com.dataart.fastforward.app.services.AttachmentService;
-import com.dataart.fastforward.app.services.IdeaService;
-import com.dataart.fastforward.app.services.TagService;
-import com.dataart.fastforward.app.services.UserService;
+import com.dataart.fastforward.app.model.*;
+import com.dataart.fastforward.app.services.*;
 import com.dataart.fastforward.app.services.validation.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,9 +36,12 @@ public class IdeaServiceImpl implements IdeaService {
     private TagService tagService;
     @Autowired
     private AttachmentService attachmentService;
+    @Autowired
+    private MarkService markService;
 
 
     @Override
+    @Transactional
     public Idea add(IdeaDTO ideaDTO, String userName) {
         assertExistsNotBlank(ideaDTO);
 
@@ -57,7 +55,7 @@ public class IdeaServiceImpl implements IdeaService {
 
         idea = ideaRepository.saveAndFlush(idea);
         tagRepository.flush();
-        updateAttachmentSet(idea, ideaDTO);
+//        updateAttachmentSet(idea, ideaDTO);
         return ideaRepository.saveAndFlush(idea);
     }
 
@@ -68,9 +66,10 @@ public class IdeaServiceImpl implements IdeaService {
         ValidationUtils.assertAuthor(idea, userService.getUserByUsername(userName));
 
         List<Long> tagsToDelete = updateTagSet(idea, null);
-        List<Attachment> attachmentstoDelete = updateAttachmentSet(idea, null);
-        for (Attachment attachment : attachmentstoDelete)
-            attachmentService.delete(attachment);
+        markService.delete(markService.getMarksByIdea(idea));
+//        List<Attachment> attachmentstoDelete = updateAttachmentSet(idea, null);
+//        for (Attachment attachment : attachmentstoDelete)
+//            attachmentService.delete(attachment);
         ideaRepository.delete(ideaId);
 
         for (Long tagId : tagsToDelete)
@@ -79,6 +78,7 @@ public class IdeaServiceImpl implements IdeaService {
     }
 
     @Override
+    @Transactional
     public Idea edit(IdeaDTO ideaDTO, long ideaId, String userName) {
         Idea idea = getIdeaById(ideaId);
         ValidationUtils.assertAuthor(idea, userService.getUserByUsername(userName));
@@ -86,14 +86,22 @@ public class IdeaServiceImpl implements IdeaService {
         idea.setIdeaName(ideaDTO.getIdeaName());
         idea.setIdeaText(ideaDTO.getIdeaText());
         List<Long> tagsToDelete = updateTagSet(idea, ideaDTO);
-        List<Attachment> attachmentsToDelete = updateAttachmentSet(idea, ideaDTO);
+//        List<Attachment> attachmentsToDelete = updateAttachmentSet(idea, ideaDTO);
         idea.setLastModifiedDate(new Date());
 
         idea = ideaRepository.saveAndFlush(idea);
         for (Long tagId : tagsToDelete)
             tagService.delete(tagId);
-        for (Attachment attachment : attachmentsToDelete)
-            attachmentService.delete(attachment);
+//        for (Attachment attachment : attachmentsToDelete)
+//            attachmentService.delete(attachment);
+        return idea;
+    }
+
+    @Override
+    @Transactional
+    public Idea getIdeaById(long ideaId, String username) {
+        Idea idea = ideaRepository.findOne(ideaId);
+        setUserRating(idea, username);
         return idea;
     }
 
@@ -103,6 +111,7 @@ public class IdeaServiceImpl implements IdeaService {
     }
 
     @Override
+    @Transactional
     public List<Comment> getAllComments(long ideaId) {
         return commentRepository.getAllCommentsByIdea(getIdeaById(ideaId));
     }
@@ -112,6 +121,91 @@ public class IdeaServiceImpl implements IdeaService {
         return ideaRepository.findAll();
     }
 
+    @Override
+    @Transactional
+    public List<Idea> getAll(String username) {
+        List<Idea> ideas = ideaRepository.findAll();
+        for (Idea idea : ideas)
+            setUserRating(idea, username);
+        return ideas;
+    }
+
+    @Override
+    @Transactional
+    public void updateMarkCounters(Idea idea) {
+        List<Mark> marks = markService.getMarksByIdea(idea);
+        int upVotes = 0;
+        int downVotes = 0;
+
+        for (Mark mark : marks)
+            if (mark.getMark() == 1)
+                upVotes++;
+            else if (mark.getMark() == -1)
+                downVotes++;
+
+        idea.setUpVoteCount(upVotes);
+        idea.setDownVoteCount(downVotes);
+        ideaRepository.saveAndFlush(idea);
+    }
+
+    @Override
+    @Transactional
+    public void updateMarkCounters(long ideaId) {
+        Idea idea = ideaRepository.findOne(ideaId);
+        updateMarkCounters(idea);
+    }
+
+    @Override
+    @Transactional
+    public void incrementMarkCounter(Idea idea, int mark) {
+        if (mark == 1)
+            idea.setUpVoteCount(idea.getUpVoteCount() + 1);
+        else if (mark == -1)
+            idea.setDownVoteCount(idea.getDownVoteCount() + 1);
+        ideaRepository.saveAndFlush(idea);
+    }
+
+    @Override
+    @Transactional
+    public void incrementMarkCounter(long ideaId, int mark) {
+        incrementMarkCounter(ideaRepository.getOne(ideaId), mark);
+    }
+
+    @Override
+    @Transactional
+    public void decrementMarkCounter(Idea idea, int mark) {
+        if (mark == 1)
+            idea.setUpVoteCount(idea.getUpVoteCount() - 1);
+        else if (mark == -1)
+            idea.setDownVoteCount(idea.getDownVoteCount() - 1);
+        ideaRepository.saveAndFlush(idea);
+    }
+
+    @Override
+    @Transactional
+    public void decrementMarkCounter(long ideaId, int mark) {
+        decrementMarkCounter(ideaRepository.getOne(ideaId), mark);
+    }
+
+    @Override
+    @Transactional
+    public void transferMark(Idea idea, int oldMark, int newMark) {
+        decrementMarkCounter(idea, oldMark);
+        incrementMarkCounter(idea, newMark);
+    }
+
+    @Override
+    public void transferMark(long ideaId, int oldMark, int newMark) {
+        transferMark(ideaRepository.getOne(ideaId), oldMark, newMark);
+    }
+
+    /* tekhnicheskie funkcii jeee */
+
+    private void setUserRating(Idea idea, String username) {
+        Mark mark = markService.getMark(idea, userService.getUserByUsername(username));
+        idea.setUserMark(mark == null ? 0 : mark.getMark());
+    }
+
     private List<Long> updateTagSet(Idea idea, IdeaDTO ideaDTO) {
         List<Long> tagsToDelete = new ArrayList<>(idea.getTags().size());
 
@@ -119,7 +213,7 @@ public class IdeaServiceImpl implements IdeaService {
             for (Tag tag : idea.getTags()) {
                 tag.getIdeasWithThisTag().remove(idea);
 
-                if(tag.getIdeasWithThisTag().size() == 0)
+                if (tag.getIdeasWithThisTag().size() == 0)
                     tagsToDelete.add(tag.getTagId());
             }
             idea.getTags().clear();
@@ -164,16 +258,16 @@ public class IdeaServiceImpl implements IdeaService {
         return tagsToDelete;
     }
 
-    private List<Attachment> updateAttachmentSet(Idea idea, IdeaDTO ideaDTO) {
+/*    private List<Attachment> updateAttachmentSet(Idea idea, IdeaDTO ideaDTO) {
         List<Attachment> attachmentsToDelete = new ArrayList<>(idea.getAttachments().size());
 
-        if(ideaDTO == null || ideaDTO.getAttachments().length == 0) {
+        if (ideaDTO == null || ideaDTO.getAttachments().length == 0) {
             for (Attachment attachment : idea.getAttachments())
                 attachmentsToDelete.add(attachment);
             idea.getAttachments().clear();
         } else if (idea.getAttachments().size() == 0) {
             for (AttachmentDTO attachmentDTO : ideaDTO.getAttachments()) {
-                Attachment attachment = attachmentService.add(attachmentDTO,idea.getIdeaId());
+                Attachment attachment = attachmentService.add(attachmentDTO, idea.getIdeaId());
                 idea.getAttachments().add(attachment);
             }
         } else {
@@ -183,7 +277,7 @@ public class IdeaServiceImpl implements IdeaService {
                 attNamesFromDTO.add(attachmentDTO.getAttachmentName());
 
             List<Attachment> attachments = new ArrayList<>(idea.getAttachments());
-            for(Attachment attachment : attachments)
+            for (Attachment attachment : attachments)
                 if (attNamesFromDTO.contains(attachment.getAttachmentName())) {
                     attFromDto[attNamesFromDTO.indexOf(attachment.getAttachmentName())] = null;
                 } else {
@@ -193,83 +287,10 @@ public class IdeaServiceImpl implements IdeaService {
 
             for (AttachmentDTO attachmentDTO : attFromDto)
                 if (attachmentDTO != null) {
-                    idea.getAttachments().add(attachmentService.add(attachmentDTO,idea.getIdeaId()));
+                    idea.getAttachments().add(attachmentService.add(attachmentDTO, idea.getIdeaId()));
                 }
         }
 
-        return  attachmentsToDelete;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*    private void updateAttachmentSet(Idea idea, IdeaDTO ideaDTO) {
-        if (ideaDTO == null || ideaDTO.getAttachments().length == 0) {
-            for (Attachment attachment : idea.getAttachments()) {
-                attachmentService.delete(attachment.getAttachmentId());
-            }
-            idea.getAttachments().clear();
-
-        } else if (idea.getAttachments().size() == 0) {
-            Attachment attachment;
-            for (AttachmentDTO attachmentDTO : ideaDTO.getAttachments()) {
-                attachment = attachmentService.add(attachmentDTO,idea.getIdeaId());
-                idea.getAttachments().add(attachment);
-            }
-
-        } else {
-            List<String> attNamesToDelete = new ArrayList<>(idea.getAttachments().size());
-            for(Attachment attachment : idea.getAttachments())
-                attNamesToDelete.add(attachment.getAttachmentName());
-
-            for(AttachmentDTO attachmentDTO : ideaDTO.getAttachments())
-                attNamesToDelete.remove(attachmentDTO.getAttachmentName());
-
-            for (String attachmentName : attNamesToDelete) {
-                Attachment attachment = attachmentService.getAttachmentByAttachmentName(attachmentName);
-                idea.getAttachments().remove(attachment);
-                attachmentService.delete(attachment.getAttachmentId());
-            }
-
-            List<String> attNamesToRemain = new ArrayList<>(idea.getAttachments().size());
-            for(Attachment attachment : idea.getAttachments())
-                attNamesToRemain.add(attachment.getAttachmentName());
-            for (AttachmentDTO attachmentDTO : ideaDTO.getAttachments())
-                if (!attNamesToRemain.contains(attachmentDTO.getAttachmentName()))
-                    idea.getAttachments().add(attachmentService.add(attachmentDTO, idea.getIdeaId()));
-        }
+        return attachmentsToDelete;
     }*/
 }

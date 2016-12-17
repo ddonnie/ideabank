@@ -64,6 +64,15 @@ public class Idea {
     @JsonBackReference
     private Set<Tag> tags = new HashSet<>();
 
+    @Column(name = "upvotes")
+    private int upVoteCount;
+
+    @Column(name = "downvotes")
+    private int downVoteCount;
+
+    @Transient
+    private int userMark;
+
     public Idea() {}
 
     public long getIdeaId() {
@@ -136,6 +145,30 @@ public class Idea {
 
     public void setUsersWhoBookmarked(Set<User> users) {
         this.usersWhoBookmarked = users;
+    }
+
+    public int getUpVoteCount() {
+        return upVoteCount;
+    }
+
+    public void setUpVoteCount(int upVoteCount) {
+        this.upVoteCount = upVoteCount;
+    }
+
+    public int getDownVoteCount() {
+        return downVoteCount;
+    }
+
+    public void setDownVoteCount(int downVoteCount) {
+        this.downVoteCount = downVoteCount;
+    }
+
+    public int getUserMark() {
+        return userMark;
+    }
+
+    public void setUserMark(int userMark) {
+        this.userMark = userMark;
     }
 
     @JsonIgnore
