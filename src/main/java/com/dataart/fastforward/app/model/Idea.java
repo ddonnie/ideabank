@@ -66,6 +66,7 @@ public class Idea {
             joinColumns = @JoinColumn(name="idea_id", referencedColumnName="idea_id"),
             inverseJoinColumns = @JoinColumn(name="tag_id", referencedColumnName="tag_id")
     )
+
     private Set<Tag> tags = new HashSet<>();
 
     public Idea() {}
