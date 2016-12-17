@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "User_mark")
+@Table(name = "Marks")
 public class Mark {
 
     @EmbeddedId

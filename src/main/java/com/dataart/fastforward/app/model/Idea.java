@@ -33,6 +33,15 @@ public class Idea {
     @Column(name = "idea_text")
     private String ideaText;
 
+    @Column(name = "upvotes")
+    private int upVoteCount;
+
+    @Column(name = "downvotes")
+    private int downVoteCount;
+
+    @Transient
+    private int userMark;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "creation_date")
     private Date creationDate;
@@ -44,15 +53,11 @@ public class Idea {
     @OneToMany(mappedBy = "idea", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<Comment> comments = new HashSet<>();
 
-    @OneToMany(mappedBy = "idea", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    private Set<Attachment> attachments = new HashSet<>();
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "Bookmarks",
             joinColumns = @JoinColumn(name = "idea_id", referencedColumnName = "idea_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     )
-
     @JsonBackReference
     private Set<User> usersWhoBookmarked = new HashSet<>();
 
@@ -61,17 +66,7 @@ public class Idea {
             joinColumns = @JoinColumn(name="idea_id", referencedColumnName="idea_id"),
             inverseJoinColumns = @JoinColumn(name="tag_id", referencedColumnName="tag_id")
     )
-    @JsonBackReference
     private Set<Tag> tags = new HashSet<>();
-
-    @Column(name = "upvotes")
-    private int upVoteCount;
-
-    @Column(name = "downvotes")
-    private int downVoteCount;
-
-    @Transient
-    private int userMark;
 
     public Idea() {}
 
@@ -131,14 +126,6 @@ public class Idea {
         this.comments = comments;
     }
 
-    public Set<Attachment> getAttachments() {
-        return attachments;
-    }
-
-    public void setAttachments(Set<Attachment> attachments) {
-        this.attachments = attachments;
-    }
-
     public Set<User> getUsersWhoBookmarked() {
         return usersWhoBookmarked;
     }
@@ -171,7 +158,6 @@ public class Idea {
         this.userMark = userMark;
     }
 
-    @JsonIgnore
     public Set<Tag> getTags() {
         return tags;
     }

@@ -58,6 +58,12 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
+    public void checkAndDeleteIfNonRequired(Iterable<Tag> tags) {
+        for (Tag tag : tags)
+            checkAndDeleteIfNonRequired(tag);
+    }
+
+    @Override
     public Tag getTagById(long tagId) {
         return tagRepository.findOne(tagId);
     }
