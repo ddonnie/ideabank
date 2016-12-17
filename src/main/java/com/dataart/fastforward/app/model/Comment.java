@@ -29,9 +29,6 @@ public class Comment {
     @JoinColumn(name = "idea_id", nullable = false)
     private Idea idea;
 
-/*    @Column(name = "idea_id")
-    private long ideaId;*/
-
     @Column(name = "comment_text")
     private String commentText;
 
@@ -57,15 +54,7 @@ public class Comment {
         this.author = author;
     }
 
-/*    public long getIdeaId() {
-        return ideaId;
-    }
-
-    public void setIdeaId(long ideaId) {
-        this.ideaId = ideaId;
-    }*/
-
-        public Idea getIdea() {
+    public Idea getIdea() {
         return idea;
     }
 

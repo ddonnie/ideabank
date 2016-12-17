@@ -33,6 +33,15 @@ public class Idea {
     @Column(name = "idea_text")
     private String ideaText;
 
+    @Column(name = "upvotes")
+    private int upVoteCount;
+
+    @Column(name = "downvotes")
+    private int downVoteCount;
+
+    @Transient
+    private int userMark;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "creation_date")
     private Date creationDate;
@@ -44,15 +53,11 @@ public class Idea {
     @OneToMany(mappedBy = "idea", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<Comment> comments = new HashSet<>();
 
-    @OneToMany(mappedBy = "idea", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    private Set<Attachment> attachments = new HashSet<>();
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "Bookmarks",
             joinColumns = @JoinColumn(name = "idea_id", referencedColumnName = "idea_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     )
-
     @JsonBackReference
     private Set<User> usersWhoBookmarked = new HashSet<>();
 
@@ -122,14 +127,6 @@ public class Idea {
         this.comments = comments;
     }
 
-    public Set<Attachment> getAttachments() {
-        return attachments;
-    }
-
-    public void setAttachments(Set<Attachment> attachments) {
-        this.attachments = attachments;
-    }
-
     public Set<User> getUsersWhoBookmarked() {
         return usersWhoBookmarked;
     }
@@ -138,6 +135,29 @@ public class Idea {
         this.usersWhoBookmarked = users;
     }
 
+    public int getUpVoteCount() {
+        return upVoteCount;
+    }
+
+    public void setUpVoteCount(int upVoteCount) {
+        this.upVoteCount = upVoteCount;
+    }
+
+    public int getDownVoteCount() {
+        return downVoteCount;
+    }
+
+    public void setDownVoteCount(int downVoteCount) {
+        this.downVoteCount = downVoteCount;
+    }
+
+    public int getUserMark() {
+        return userMark;
+    }
+
+    public void setUserMark(int userMark) {
+        this.userMark = userMark;
+    }
 
     public Set<Tag> getTags() {
         return tags;

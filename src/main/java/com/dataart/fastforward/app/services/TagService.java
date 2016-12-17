@@ -18,6 +18,7 @@ public interface TagService {
     void delete(long tagId);
 
     void checkAndDeleteIfNonRequired(Tag tags);
+    void checkAndDeleteIfNonRequired(Iterable<Tag> tags);
 
     Tag getTagById(long tagDTO);
     Tag getTagByTagName(String tagName);

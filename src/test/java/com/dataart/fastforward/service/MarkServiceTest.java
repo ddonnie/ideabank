@@ -1,12 +1,8 @@
 package com.dataart.fastforward.service;
 
-import com.dataart.fastforward.app.dao.IdeaRepository;
-import com.dataart.fastforward.app.dao.UserRepository;
-import com.dataart.fastforward.app.dto.IdeaDTO;
-import com.dataart.fastforward.app.model.Idea;
-import com.dataart.fastforward.app.model.User;
-import com.dataart.fastforward.app.services.IdeaService;
-import com.dataart.fastforward.app.services.UserService;
+import com.dataart.fastforward.app.dto.MarkDTO;
+import com.dataart.fastforward.app.model.Mark;
+import com.dataart.fastforward.app.services.MarkService;
 import com.dataart.fastforward.config.root.DbConfig;
 import com.dataart.fastforward.config.servlet.WebMvcConfig;
 import org.junit.Test;
@@ -20,35 +16,42 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import javax.sql.DataSource;
 
 /**
- * Created by logariett on 01.12.2016.
+ * Created by logariett on 16.12.16.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ActiveProfiles("test")
 @ContextConfiguration(classes={DbConfig.class, WebMvcConfig.class})
-public class IdeaServiceTest {
+public class MarkServiceTest {
+
     @Autowired
     private DataSource dataSource;
 
     @Autowired
-    private UserService userService;
-    @Autowired
-    private IdeaService ideaService;
+    private MarkService markService;
 
     @Test
     public void addTest() {
+        MarkDTO markDTO = new MarkDTO();
+        markDTO.setMark(1);
+
+        markService.add(markDTO, 2, "LoneT");
     }
 
     @Test
     public void editTest() {
+        Mark mark = markService.getMark(2,"LoneT");
+        MarkDTO markDTO = new MarkDTO();
+
+        if (mark.getMark() == 1)
+            markDTO.setMark(-1);
+        else if (mark.getMark() == -1)
+            markDTO.setMark(1);
+        markService.edit(markDTO, mark);
     }
 
     @Test
     public void deleteTest() {
-    }
-
-    @Test
-    public void updateMarkCountersTest() {
-        ideaService.updateMarkCounters(2);
+        markService.delete(2, "LoneT");
     }
 }
