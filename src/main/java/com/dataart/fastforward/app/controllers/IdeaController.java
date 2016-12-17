@@ -70,20 +70,29 @@ public class IdeaController {
     }
 
     @PostMapping("/{ideaId}/vote")
-    public Idea addVoteForIdea(@RequestBody MarkDTO markDTO, @PathVariable long ideaId) {
+    public void addVoteForIdea(@RequestBody MarkDTO markDTO, @PathVariable long ideaId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
 
         markService.add(markDTO, ideaId, username);
-        return ideaService.getIdeaById(ideaId, username);
+//        return ideaService.getIdeaById(ideaId, username);
     }
 
     @PutMapping("/{ideaId}/vote")
-    public Idea editVoteForIdea(@RequestBody MarkDTO markDTO, @PathVariable long ideaId) {
+    public void editVoteForIdea(@RequestBody MarkDTO markDTO, @PathVariable long ideaId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
 
         markService.edit(markDTO, ideaId, username);
-        return ideaService.getIdeaById(ideaId, username);
+//        return ideaService.getIdeaById(ideaId, username);
+    }
+
+    @DeleteMapping("/{ideaId}/vote")
+    public void deleteVoteForIdea(@PathVariable long ideaId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        markService.delete(ideaId, username);
+//        return ideaService.getIdeaById(ideaId, username);
     }
 }
