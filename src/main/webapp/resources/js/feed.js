@@ -96,4 +96,11 @@ angular.module('feedApp',['ngMaterial', 'ngMessages', 'material.svgAssetsCache']
             $scope.isActive = !$scope.isActive;
         }
 
+        $scope.remove = function(ideaId) {
+            $http.delete('/ideas/'+ideaId)
+                .then(function(response) {
+                    window.location.replace('/resources/feed.html');
+                });
+        }
+
     });
