@@ -90,4 +90,10 @@ angular.module('feedApp',['ngMaterial', 'ngMessages', 'material.svgAssetsCache']
             };
         }
 
+
+        $scope.isActive = false;
+        $scope.activeButton = function() {
+            $scope.isActive = !$scope.isActive;
+        }
+
     });

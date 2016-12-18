@@ -104,6 +104,7 @@ h2 {
 
 
 
+
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 /*HEADER*/
 
@@ -389,13 +390,13 @@ input#search:focus {
 
 .ideas_list.container {
 	overflow: visible;
-	background-color: #fff;
+
 	
 
 }
 .ideas_list {
 	margin-top: 2vw;
-	background-color: #fff;
+
 }
 
 .idea {
@@ -404,9 +405,11 @@ input#search:focus {
 	-webkit-box-shadow: 0px 0px 9px 0px rgba(50, 50, 50, 0.4);
    -moz-box-shadow:    0px 0px 9px 0px rgba(50, 50, 50, 0.4);
     box-shadow:         0px 0px 9px 0px rgba(50, 50, 50, 0.4);
-    margin-bottom: 2vw;
-	background-color: #fff;
+
+	cursor: pointer;
 }
+
+
 
 .idea_text {
 	height: 7.4vw;
@@ -414,9 +417,8 @@ input#search:focus {
 	margin-top: 1vw;
 	overflow: hidden;
 	word-wrap: break-word;
-	background-color: #fff;
-
 }
+
 
 .column_style {
 	line-height: 1.2vw;
@@ -433,10 +435,7 @@ input#search:focus {
 
 .left_side {
 	margin: 1vw;
-	width: 10vw;
-	
 }
-
 
 .center {
 	margin: 1vw 0 1vw 1vw;
@@ -447,7 +446,6 @@ input#search:focus {
 	margin: 1vw  1vw 1vw 0;
 	width: 6vw;
 }
-
 
 .brain_in_bulb {
 	background: url(../img/icons_of_idea_list/idea_picture_brain.png) center no-repeat;
@@ -534,7 +532,6 @@ input#search:focus {
 .favorites_icon {
 	margin-left: 1vw;
 	width: 1.7vw;
-
 	cursor: pointer;
 }
 .delete_icon {
@@ -558,17 +555,109 @@ input#search:focus {
 
 }
 
-
-
-
 .count_of_comments {
 	margin-left: 1vw;
 }
 
-
 .comments {
 	display: block;
 }
+
+/*Test for open idea*/
+.pic_and_video_full_view {
+	display: none;
+}
+
+.open_idea .pic_and_video_full_view {
+	display: block;
+}
+
+.open_idea .pic_and_video_preview {
+	display: none;
+}
+.open_idea .brain_in_bulb {
+	background: url(../img/icons_of_idea_list/idea_picture_brain.png) center no-repeat;
+	background-size: 30%;
+	width: 23vw;
+	height: 15vw;
+	margin-top: 1vw;
+	margin-bottom: 1vw;
+	-webkit-box-shadow: 2px 2px 6px 0px rgba(50, 50, 50, 0.26);
+	-moz-box-shadow:    2px 2px 6px 0px rgba(50, 50, 50, 0.26);
+	box-shadow:         2px 2px 6px 0px rgba(50, 50, 50, 0.26);
+	border-radius: 0.2vw;
+}
+
+.open_idea .left_side {
+	margin: 1vw;
+
+}
+
+.open_idea .center {
+	margin: 1vw 0 1vw 1vw;
+	width: 44vw;
+}
+
+.open_idea .right_side {
+	margin: 1vw  1vw 1vw 0;
+	width: 6vw;
+}
+
+
+.open_idea .idea_text {
+	overflow-y: scroll;
+	height: 34vw;
+}
+
+.open_idea .column_style {
+	line-height: 1.2vw;
+	vertical-align: top;
+	font-size: 1.2vw;
+
+}
+
+
+ul.img_preview_block li, ul.video_preview_block li {
+	display: inline-block;
+	margin-right: 0.4vw;
+	margin-left: 0;
+	padding: 0;
+	box-shadow: none;
+	border-radius: none;
+
+}
+
+.img_preview, .video_prev {
+	width: 6.8vw;
+	height: 6.8vw;
+}
+
+.open_idea .likes {
+	margin-top: 1vw;
+}
+
+
+.open_idea .comments_count_block {
+	margin-top: 27vw;
+}
+
+.hide_idea {
+	display: none;
+}
+.open_idea .hide_idea {
+	display: block;
+	height: 2vw;
+	width: 100%;
+	background: url(../img/icons_of_idea_list/hide.png) center no-repeat;
+}
+
+	/*end idea open*/
+
+
+
+
+
+
 /*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 /*Pages number*/
 .switch_pages {
