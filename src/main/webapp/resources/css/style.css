@@ -642,13 +642,12 @@ ul.img_preview_block li, ul.video_preview_block li {
 }
 
 .hide_idea {
-	display: none;
+	background: url(../img/icons_of_idea_list/open.png) center no-repeat;
+	height: 2vw;
 }
 .open_idea .hide_idea {
-	display: block;
-	height: 2vw;
-	width: 100%;
 	background: url(../img/icons_of_idea_list/hide.png) center no-repeat;
+	height: 2vw;
 }
 
 	/*end idea open*/

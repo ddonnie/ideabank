@@ -79,7 +79,7 @@
 
 <div class="ideas_list container" id="idea" ng-repeat="idea in ideas | filter:query | orderBy: '-creationDate'">
     <!--IDEA-->
-    <div class="idea" ng-class="{'open_idea': isActive}" ng-click="activeButton()"> <!--"Это мы добавляем класс для открытия идеи :)))-->
+    <div class="idea" ng-class="{'open_idea': isActive}"> <!--"Это мы добавляем класс для открытия идеи :)))-->
         <div class="left_side ib column_style"> <!--"ib" it's inline block-->
             <h5>{{idea.author.username}}</h5>
             <div class="pic_and_video_preview">
@@ -148,7 +148,7 @@
             </div>
 
         </div>
-        <div class="hide_idea" ng-click="closeIdea"></div>
+        <div class="hide_idea" ng-click="activeButton()"></div>
 
     </div>
     <div class="comments">
