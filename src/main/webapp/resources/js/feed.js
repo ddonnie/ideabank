@@ -2,7 +2,7 @@
  * Created by Orlov on 30.11.2016.
  */
 
-angular.module('feedApp',['ngMaterial', 'ngMessages', 'material.svgAssetsCache'])
+angular.module('feedApp',['ngMaterial', 'ngMessages', 'material.svgAssetsCache', 'angular-carousel'])
     .controller('feedCtrl', function($http, $scope, $mdDialog) {
 
         $http.get('/ideas')
@@ -97,5 +97,7 @@ angular.module('feedApp',['ngMaterial', 'ngMessages', 'material.svgAssetsCache']
                     window.location.replace('/resources/feed.html');
                 });
         }
+
+
 
     });
