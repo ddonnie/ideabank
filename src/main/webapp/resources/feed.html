@@ -79,7 +79,7 @@
 
 <div class="ideas_list container" id="idea" ng-repeat="idea in ideas | filter:query | orderBy: '-creationDate'">
     <!--IDEA-->
-    <div class="idea" ng-class="{'open_idea': isActive}"> <!--"Это мы добавляем класс для открытия идеи :)))-->
+    <div class="idea" ng-class="{'open_idea': showIdea}"> <!--"Это мы добавляем класс для открытия идеи :)))-->
         <div class="left_side ib column_style"> <!--"ib" it's inline block-->
             <h5>{{idea.author.username}}</h5>
             <div class="pic_and_video_preview">
@@ -90,7 +90,7 @@
             </div>
 
             <div class="brain_in_bulb"></div>
-            <div class="pic_and_video_full_view"><!--ng-click="action=true" ng-class="{'transform':action}"-->
+            <div class="pic_and_video_full_view">
                 <div class="idea_images">
                     <img src="img/icons_of_idea_list/photo_camera.png" class="camera_pic">
                     <div class="ib grey_font_color count_of_img">5</div>
@@ -127,7 +127,6 @@
         <div class="center ib column_style">
             <h4>{{idea.ideaName}}</h4>
             <time datetime="2016-11-21" class="ib grey_font_color">posted {{ idea.creationDate | date:"MM/dd/yyyy 'at' h:mma"}}</time>
-            <!--<time datetime="20:00" class="ib grey_font_color hours">03:33</time>-->
             <article class="idea_text">
                     {{idea.ideaText}}
 
@@ -150,7 +149,7 @@
             </div>
 
         </div>
-        <div class="hide_idea" ng-click="activeButton()"></div>
+        <div class="show-hide_idea_button" ng-click="showIdea = !showIdea"></div>
 
     </div>
     <div class="comments">
