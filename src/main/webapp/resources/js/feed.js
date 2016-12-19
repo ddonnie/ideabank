@@ -10,6 +10,10 @@ angular.module('feedApp',['ngMaterial', 'ngMessages', 'material.svgAssetsCache',
                 $scope.ideas = response.data;
             });
 
+        $http.get('/users/me')
+            .then(function(response) {
+                $scope.me = response.data;
+            });
 
         $scope.commentIdea = function(ideaId) {
             var commentData = {
