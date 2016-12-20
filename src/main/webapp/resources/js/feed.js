@@ -22,7 +22,7 @@ angular.module('feedApp',['ngMaterial', 'ngMessages', 'material.svgAssetsCache',
 
         $scope.commentIdea = function(ideaId) {
             var commentData = {
-                commentText: this.commentText
+                commentText: this.commentText,
             }
             var config = {
                 headers: {
@@ -34,6 +34,11 @@ angular.module('feedApp',['ngMaterial', 'ngMessages', 'material.svgAssetsCache',
                 .then(function(response) {
                     window.location.replace('/resources/feed.html');
                 })
+        };
+
+        /*count comments*/
+        $scope.sizeOf = function(obj) {
+            return Object.keys(obj || {}).length;
         };
 
         $scope.logout = function () {
@@ -66,7 +71,6 @@ angular.module('feedApp',['ngMaterial', 'ngMessages', 'material.svgAssetsCache',
             var ideadata = {
                 ideaName: $scope.ideaName,
                 ideaText: $scope.ideaText,
-
                 tags: ideaSplitTags
             };
 
@@ -100,14 +104,14 @@ angular.module('feedApp',['ngMaterial', 'ngMessages', 'material.svgAssetsCache',
             };
         }
 
-/*delete idea*/
+        /*delete idea*/
         $scope.remove = function(ideaId) {
             $http.delete('/ideas/'+ideaId)
                 .then(function(response) {
                     window.location.replace('/resources/feed.html');
                 });
         }
-/*show_slider*/
+        /*show_slider*/
         $scope.isActiveSlider = true;
         $scope.displayToggle = function () {
             $scope.isActiveSlider = !$scope.isActiveSlider;

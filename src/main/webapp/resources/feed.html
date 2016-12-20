@@ -162,7 +162,7 @@
             </div>
             <div class="show-hide_idea_button ib" ng-click="showIdea = !showIdea"></div><!--ShowIdeaButton-->
             <div class="comments_count_block ib">
-                <div class="count_of_comments ib grey_font_color">131</div>
+                <div class="count_of_comments ib grey_font_color">{{ sizeOf(idea.comments) }}</div>
                 <img src="img/icons_of_idea_list/comment_icon.png" class="comment_icon ib" ng-click="showComments = ! showComments">
             </div>
         </div>
@@ -217,10 +217,10 @@
 
                     <md-input-container class="md-block">
                         <label>Idea text</label>
-                        <textarea ng-model="ideaText" md-maxlength="1000" rows="5" md-select-on-focus></textarea>
+                        <textarea ng-model="ideaText" name="ideaText" md-maxlength="1000" rows="5" md-select-on-focus></textarea>
                     </md-input-container>
 
-                    // TODO add photos
+                    <!--TODO add photos-->
                     <label>
                         <input fileinput="file" filepreview="filepreview" type="file"
                                upload-file multiple name="ideaPic" ng-model="ideaPic" style="display: none;"
