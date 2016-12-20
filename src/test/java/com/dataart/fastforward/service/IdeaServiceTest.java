@@ -35,20 +35,8 @@ public class IdeaServiceTest {
     @Autowired
     private IdeaService ideaService;
 
-    @Autowired
-    private IdeaRepository ideaRepository;
-    @Autowired
-    private UserRepository userRepository;
-
     @Test
     public void addTest() {
-        IdeaDTO ideaDTO = new IdeaDTO();
-
-        for (int i = 0; i < 2223; i++) {
-            ideaDTO.setIdeaName("Re: " + i);
-            ideaDTO.setIdeaText("YOU KILLED HER");
-            ideaService.add(ideaDTO, "Test");
-        }
     }
 
     @Test
@@ -57,7 +45,10 @@ public class IdeaServiceTest {
 
     @Test
     public void deleteTest() {
-        for (int i = 863; i < 1110; i++)
-            ideaService.delete(i, "Test");
+    }
+
+    @Test
+    public void updateMarkCountersTest() {
+        ideaService.updateMarkCounters(2);
     }
 }
