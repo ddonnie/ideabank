@@ -460,7 +460,6 @@ input#search:focus {
 }
 
 
-
 .camera_pic {
 	width: 1.5vw;
 	margin-right: 0.3vw;
@@ -472,6 +471,8 @@ input#search:focus {
 	margin-right: 0.3vw;
 	vertical-align: bottom;
 }
+
+
 .count_of_img {
 	margin-right: 3vw;
 }
@@ -818,4 +819,21 @@ footer {
 footer .logo {
 	margin-top: 1vw;
 	margin-bottom: 0.5vw;
+}
+
+/***************IMPROVE ADD IDEA*******************/
+
+/*for icon*/
+.camera_up_pic {
+	margin-top: 0.5vw;
+	margin-left: 0.3vw;
+	width: 2vw;
+	margin-right: 0.8vw;
+	vertical-align: bottom;
+}
+
+/*for photo preview*/
+.up_pic {
+	width: 8vw;
+	height: 8vw;
 }

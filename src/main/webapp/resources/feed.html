@@ -203,22 +203,36 @@
 <!--Add Idea Form-->
     <div style="visibility: hidden">
         <div class="md-dialog-container" id="createIdeaDialog">
-            <md-dialog layout-padding>
+            <md-dialog layout-padding style="width: 35%">
                 <h2>Post new idea</h2>
                 <form name="postIdeaForm" ng-submit="postIdea()">
-                    <div layout="column">
-                        <md-input-container flex="50">
-                            <label>Idea title</label>
-                            <input type="text" name="ideaName" ng-model="ideaName">
-                        </md-input-container>
-                        <textarea cols="40" rows="5" name="ideaText" ng-model="ideaText">
-                        Idea text
-                      </textarea>
-                        <md-input-container flex="50">
-                            <label>Use comma to separate tags</label>
-                            <input type="text" name="ideaTags" ng-model="ideaTags">
-                        </md-input-container>
-                    </div>
+                    <md-input-container class="md-block">
+                        <label>Idea title</label>
+                        <input type="text" name="ideaName" ng-model="ideaName">
+                    </md-input-container>
+
+                    <md-input-container class="md-block">
+                        <label>Idea text</label>
+                        <textarea ng-model="ideaText" md-maxlength="1000" rows="5" md-select-on-focus></textarea>
+                    </md-input-container>
+
+                    // TODO add photos
+                    <label>
+                        <input fileinput="file" filepreview="filepreview" type="file"
+                               upload-file multiple name="ideaPic" ng-model="ideaPic" style="display: none;"
+                               accept="image/jpeg,image/png">
+                        <img src="img/icons_of_idea_list/photo_camera.png" class="camera_up_pic">
+                    </label>
+
+                    <md-input-container class="md-block">
+                        <img ng-src="{{filepreview}}"  ng-show="filepreview" class="up_pic" >
+                    </md-input-container>
+
+                    <md-input-container class="md-block">
+                        <label>Use comma to separate tags</label>
+                        <input type="text" name="ideaTags" ng-model="ideaTags">
+                    </md-input-container>
+
                     <md-button flex="" type="submit" id="postButton" class="md-raised">Post!</md-button>
                 </form>
             </md-dialog>
@@ -252,7 +266,6 @@
 <script src="/resources/js/feed.js"></script>
 <script type="text/javascript" src="js/dropdownmenu.js"></script>
 <script type="text/javascript" src="js/totop.js"></script>
-
 
 
 </body>
