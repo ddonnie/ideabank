@@ -15,6 +15,11 @@ angular.module('feedApp',['ngMaterial', 'ngMessages', 'material.svgAssetsCache',
                 $scope.me = response.data;
             });
 
+        $http.get('/users/me')
+            .then(function(response) {
+                $scope.currentuser = response.data;
+            });
+
         $scope.commentIdea = function(ideaId) {
             var commentData = {
                 commentText: this.commentText
