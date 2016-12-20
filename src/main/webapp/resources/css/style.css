@@ -666,9 +666,7 @@ ul.img_preview_block li, ul.video_preview_block li {
 	background-color: #666666;
 
 }
-.slider_wrap.dblock {
-	display: block;
-}
+
 .slider_wrap.dnone {
 	display: none;
 }

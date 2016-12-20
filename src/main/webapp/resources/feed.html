@@ -91,16 +91,16 @@
 
             <div class="brain_in_bulb"></div>
             <div class="pic_and_video_full_view">
-                <div class="idea_images" ng-click="hideSlider=true">
+                <div class="idea_images">
                     <img src="img/icons_of_idea_list/photo_camera.png" class="camera_pic">
                     <div class="ib grey_font_color count_of_img">5</div>
-                    <ul class="img_preview_block">
+                    <ul class="img_preview_block" ng-click="displayToggle()">
                         <li><div class="img_preview" style="background: url(slider/img/1.jpg) center/cover no-repeat"></div></li>
                         <li><div class="img_preview" style="background: url(slider/img/2.jpg) center/cover no-repeat"></div></li>
                         <li><div class="img_preview" style="background: url(slider/img/3.jpg) center/cover no-repeat"></div></li>
                     </ul>
-                    <div class="slider_wrap" ng-show="hideSlider" ng-init="hideSliderF=true" ng-hide="hideSliderF">
-                        <div class="hide_slider_button" ng-click="hideSliderF"></div>
+                    <div class="slider_wrap" ng-class="{'dnone': isActiveSlider}">
+                        <div class="hide_slider_button" ng-click="displayToggle()"></div>
                         <ul rn-carousel rn-carousel-controls rn-carousel-index="carouselIndex" rn-carousel-buffered class="slider_images_post">
                             <li><img src="slider/img/1.jpg"></li>
                             <li><img src="slider/img/2.jpg"></li>

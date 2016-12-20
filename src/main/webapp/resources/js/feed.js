@@ -101,6 +101,12 @@ angular.module('feedApp',['ngMaterial', 'ngMessages', 'material.svgAssetsCache',
                     window.location.replace('/resources/feed.html');
                 });
         }
+/*show_slider*/
+        $scope.isActiveSlider = true;
+        $scope.displayToggle = function () {
+            $scope.isActiveSlider = !$scope.isActiveSlider;
+
+        };
 
 
 
