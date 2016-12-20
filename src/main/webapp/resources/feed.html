@@ -151,10 +151,14 @@
         </div>
         <div class="footer_of_idea_preview">
             <div class="likes_block ib">
-                <img src="img/icons_of_idea_list/like.png" class="likes like">
-                <div class="ib grey_font_color count_of_like">235</div>
-                <img src="img/icons_of_idea_list/unlike.png" class="likes unlike">
-                <div class="ib grey_font_color count_of_unlike">24</div>
+                <div class="likes_block ib" ng-init="counter = 0">
+                    <img src="img/icons_of_idea_list/like.png" class="likes like"  ng-click="counter = counter + 1">
+                    {{counter}}
+                </div>
+                <div class="likes_block ib" ng-init="counter1 = 0">
+                    <img src="img/icons_of_idea_list/unlike.png" class="likes unlike"  ng-click="counter1 = counter1 - 1">
+                    {{counter1}}
+                </div>
             </div>
             <div class="show-hide_idea_button ib" ng-click="showIdea = !showIdea"></div><!--ShowIdeaButton-->
             <div class="comments_count_block ib">
