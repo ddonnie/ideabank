@@ -404,8 +404,6 @@ input#search:focus {
 
 }
 
-
-
 .idea_text {
 	height: 7vw;
 	margin-bottom: 1vw;
@@ -419,7 +417,7 @@ input#search:focus {
 
 .column_style {
 	line-height: 1.4vw;
-	vertical-align: middle;
+	vertical-align: top;
 	font-size: 1.2vw;
 
 }
@@ -442,6 +440,9 @@ input#search:focus {
 .right_side {
 	margin: 1vw  1vw 1vw 0;
 	width: 6vw;
+	position: relative;
+
+
 }
 
 .brain_in_bulb {
@@ -478,11 +479,12 @@ input#search:focus {
 .count_of_video, #count_of_img {
 	vertical-align: bottom;
 }
-
+.likes_block {
+	margin-left: 1.6vw;
+}
 .likes {
 	width: 1.5vw;
 	margin-right: 0.3vw;
-	vertical-align: bottom;
 	cursor: pointer;
 }
 
@@ -528,6 +530,11 @@ input#search:focus {
 	margin-top: 0.4vw;
 }
 
+
+.favorites_and_edit_icon_block {
+	height: 5vw;
+
+}
 .favorites_icon {
 	margin-left: 1vw;
 	width: 1.7vw;
@@ -541,14 +548,20 @@ input#search:focus {
 
 .edit_icon {
 	width: 1.5vw;
-	margin: 0.5vw 0 8.6vw 3.8vw;
+	margin: 0.5vw 0 0 3.8vw;
 	margin-top: 0.7vw;
-	margin-bottom: 8.2vw;
 	cursor: pointer;
 }
+
+
+.comments_count_block {
+	width: 6vw;
+	margin-left: 2vw;
+
+}
+
 .comment_icon {
 	width: 1.9vw;
-	vertical-align: top;
 	margin-left: 0.6vw;
 	cursor: pointer;
 
@@ -560,6 +573,14 @@ input#search:focus {
 
 .comments {
 	display: block;
+}
+
+.footer_of_idea_preview {
+	height: 3vw;
+	font-size: 1.2vw;
+	line-height: 3vw;
+	vertical-align: middle;
+
 }
 
 /*Open full idea view*/
@@ -634,22 +655,20 @@ ul.img_preview_block li, ul.video_preview_block li {
 	height: 6.8vw;
 }
 
-.open_idea .likes {
-	margin-top: 1vw;
-}
-
-
-.open_idea .comments_count_block {
-	margin-top: 27vw;
-}
 
 .show-hide_idea_button {
 	background: url(../img/icons_of_idea_list/open.png) center no-repeat;
-	height: 2vw;
+	height: 3vw;
 	cursor: pointer;
+	width: 57vw;
+	vertical-align: middle;
 }
 .open_idea .show-hide_idea_button {
 	background: url(../img/icons_of_idea_list/hide.png) center no-repeat;
+}
+
+.open_idea .footer_of_idea_preview {
+	height: 3vw;
 }
 
 

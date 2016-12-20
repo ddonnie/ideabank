@@ -125,12 +125,7 @@
                 </div>
 
             </div>
-            <div class="likes_block">
-                <img src="img/icons_of_idea_list/like.png" class="likes like">
-                <div class="ib grey_font_color count_of_like">235</div>
-                <img src="img/icons_of_idea_list/unlike.png" class="likes unlike">
-                <div class="ib grey_font_color count_of_unlike">24</div>
-            </div>
+
 
         </div>
         <div class="center ib column_style">
@@ -147,19 +142,27 @@
 
         </div>
         <div class="right_side ib column_style">
-            <img src="img/icons_of_idea_list/favorites_star.png" class="favorites_icon ib">
 
-            <img src="img/icons_of_idea_list/delete.png" class="delete_icon ib" ng-show="idea.author.username == me.username" ng-click="remove(idea.ideaId)">
-
-            <img src="img/icons_of_idea_list/edit.png" class="edit_icon" ng-show="idea.author.username == me.username">
-
-            <div class="comments_count_block">
+            <div class="favorites_and_edit_icon_block">
+                <img src="img/icons_of_idea_list/favorites_star.png" class="favorites_icon ib">
+                <img src="img/icons_of_idea_list/delete.png" class="delete_icon ib" ng-show="idea.author.username == me.username" ng-click="remove(idea.ideaId)">
+                <img src="img/icons_of_idea_list/edit.png" class="edit_icon" ng-show="idea.author.username == me.username">
+            </div>
+        </div>
+        <div class="footer_of_idea_preview">
+            <div class="likes_block ib">
+                <img src="img/icons_of_idea_list/like.png" class="likes like">
+                <div class="ib grey_font_color count_of_like">235</div>
+                <img src="img/icons_of_idea_list/unlike.png" class="likes unlike">
+                <div class="ib grey_font_color count_of_unlike">24</div>
+            </div>
+            <div class="show-hide_idea_button ib" ng-click="showIdea = !showIdea"></div><!--ShowIdeaButton-->
+            <div class="comments_count_block ib">
                 <div class="count_of_comments ib grey_font_color">131</div>
                 <img src="img/icons_of_idea_list/comment_icon.png" class="comment_icon ib" ng-click="showComments = ! showComments">
             </div>
-
         </div>
-        <div class="show-hide_idea_button" ng-click="showIdea = !showIdea"></div>
+
 
     </div>
     <div class="comments">
