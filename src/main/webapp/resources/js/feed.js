@@ -66,6 +66,7 @@ angular.module('feedApp',['ngMaterial', 'ngMessages', 'material.svgAssetsCache',
             var ideadata = {
                 ideaName: $scope.ideaName,
                 ideaText: $scope.ideaText,
+
                 tags: ideaSplitTags
             };
 
@@ -113,6 +114,26 @@ angular.module('feedApp',['ngMaterial', 'ngMessages', 'material.svgAssetsCache',
 
         };
 
+})
 
+/*directive for picture preview in add idea form*/
+.directive("fileinput", [function() {
+    return {
+        scope: {
+            fileinput: "=",
+            filepreview: "="
+        },
+        link: function (scope, element) {
+            element.bind("change", function (changeEvent) {
+                scope.fileinput = changeEvent.target.files[0];
+                var reader = new FileReader();
+                reader.onload = function (loadEvent) {
+                    scope.$apply(function () {
+                        scope.filepreview = loadEvent.target.result;
+                    });
+                }
+                reader.readAsDataURL(scope.fileinput);
 
-    });
+            });
+        }
+    }}]);
