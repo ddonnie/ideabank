@@ -1,7 +1,7 @@
 /**
  * Created by Orlov on 30.11.2016.
  */
-var app = angular.module('feedApp',['ngMaterial', 'ngMessages', 'material.svgAssetsCache']);
+var app = angular.module('feedApp',['ngMaterial', 'ngMessages', 'material.svgAssetsCache', 'angular-carousel']);
 
 app.directive('fileModel', [ '$parse', function($parse) {
     return {
