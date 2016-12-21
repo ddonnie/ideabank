@@ -49,6 +49,6 @@ public class IdeaServiceTest {
 
     @Test
     public void updateMarkCountersTest() {
-        ideaService.updateMarkCounters(2);
+//        ideaService.updateMarkCounters(2);
     }
 }
