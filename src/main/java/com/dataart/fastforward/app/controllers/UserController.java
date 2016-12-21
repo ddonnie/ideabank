@@ -2,6 +2,7 @@ package com.dataart.fastforward.app.controllers;
 
 import com.dataart.fastforward.app.dao.UserRepository;
 import com.dataart.fastforward.app.dto.NewUserDTO;
+import com.dataart.fastforward.app.dto.UserInfoDTO;
 import com.dataart.fastforward.app.model.User;
 import com.dataart.fastforward.app.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.jws.soap.SOAPBinding;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -35,10 +37,16 @@ public class UserController {
     }
 
     @GetMapping("/users/me")
-    public User getLoggedInUser() {
+    public UserInfoDTO getLoggedInUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
-        return userService.getUserByUsername(username);
+
+        User user = userService.getUserByUsername(username);
+        UserInfoDTO userInfo = new UserInfoDTO();
+        userInfo.setUsername(user.getUsername());
+        userInfo.setRole(user.getRole().getRoleName());
+
+        return userInfo;
     }
 
     @GetMapping("/users/{userId}")
