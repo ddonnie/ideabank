@@ -3,125 +3,251 @@
 <head>
     <meta charset="UTF-8">
     <title>IdeaBank</title>
-    <link rel="icon"
-          type="image/png"
-          href="http://www.iconsfind.com/wp-content/uploads/2016/11/20161102_581990d911320.png">
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
     <link rel='stylesheet prefetch'
           href='https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.1/angular-material.css'>
-    <link rel='stylesheet prefetch' href='https://material.angularjs.org/1.1.1/docs.css'>
-    <link rel="stylesheet" href="/resources/css/style.css">
+
+   <!-- <link rel='stylesheet prefetch' href='https://material.angularjs.org/1.1.1/docs.css'>-->
+
+    <link rel="stylesheet" media="screen,projection" href="to_top_button_plugin/css/ui.totop.css"/><!--button to top-->
+    <link type="text/css" rel="stylesheet" href="slider/angular-carousel.css">
+    <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet">
 
-
 </head>
 
-<body>
-
-<div ng-controller="feedCtrl" ng-cloak="" layout-gt-md="row" layout="column" ng-app="feedApp">
-
-    <div flex-gt-sm="50" flex="">
-
-        <md-toolbar style="background-color:#476076;">
-            <div class="md-toolbar-tools">
-                <md-button class="md-icon-button" ng-disabled="true">
-                    <i class="material-icons">search</i>
-                </md-button>
-                <span flex></span>
-                <md-button class="md-icon-button" style="color:yellow; width:48px; height:48px;" ng-click="createIdea($event)">
-                    <i class="material-icons">lightbulb_outline</i>
-                </md-button>
-                <span flex></span>
-                <md-button ng-click="logout()" class="md-icon-button">
-                    <i class="material-icons">exit_to_app</i>
-                </md-button>
-            </div>
-        </md-toolbar>
-
-        <md-content>
-            <md-list flex="">
-                <md-list-item class="md-3-line" ng-disabled="true" ng-repeat="idea in ideas | filter:query | orderBy: '-creationDate'">
-                    <div class="md-list-item-text"  layout="column" layout-align="start center">
-                        <md-card style="width: 600px;" >
-                            <md-card-title>
-                                <md-card-title-text>
-                                    <span class="md-headline">{{idea.ideaName}}</span>
-                                </md-card-title-text>
-                            </md-card-title>
-                            <md-card-content>
-                                <p>
-                                    <b>{{idea.author.username}}</b> posted {{ idea.creationDate | date:"MM/dd/yyyy 'at' h:mma"}}
-                                </p>
-                                <p>
-                                    {{idea.ideaText}}
-                                </p>
-                            </md-card-content>
-                            <md-card-actions layout="row" layout-align="end center">
-                                <md-button ng-click="showComments = ! showComments" class="md-icon-button" aria-label="Share">
-                                    <md-icon md-svg-icon="img/icons/share-arrow.svg"></md-icon>
-                                </md-button>
-                            </md-card-actions>
-                        </md-card>
-                        <md-list flex="">
-                            <md-list-item  ng-show="showComments" class="md-3-line check-element animate-show" ng-disabled="true" ng-repeat="comment in idea.comments | filter:query | orderBy: '+creationDate'">
-                                <div class="md-list-item-text"  layout="column" layout-align="start center">
-                                    <md-card style="width: 350px;" >
-                                        <md-card-content>
-                                            <p>
-                                                <b>{{comment.author.username}}</b> commented {{ comment.creationDate | date:"MM/dd/yyyy 'at' h:mma"}}
-                                            </p>
-                                            <p>
-                                                {{comment.commentText}}
-                                            </p>
-                                        </md-card-content>
-                                    </md-card>
-                                </div>
-                                <md-divider></md-divider>
-                            </md-list-item>
-                        </md-list>
-                        <md-card style="width: 350px;" >
-                            <md-card-content>
-                                <form name="postCommentForm" ng-submit="commentIdea(idea.ideaId)">
-                                    <textarea cols="30" rows="5" style="resize: vertical;" name="commentText" ng-model="commentText"></textarea>
-                                    <md-button style="color:grey;" class="md-icon-button" type="submit" aria-label="PostComment">
-                                        <i class="material-icons">question_answer</i>
-                                    </md-button>
-                                </form>
-                            </md-card-content>
-                        </md-card>
+<body ng-controller="feedCtrl" ng-cloak="" ng-app="feedApp">
+<!--It's my-->
+<!--Header-->
+<header>
+    <div ng-controller="headerCtrl" class="container">
+        <nav>
+            <div class="logo"><a href="feed.html">Idea Bank</a></div>
+            <ul>
+                <li>Feed</li>
+                <li>My Ideas</li>
+                <li>
+                    <button id="button_add_idea" ng-click="createIdea($event)">&nbsp&nbsp&nbspAdd Idea</button>
+                </li>
+                <li>
+                    <form role="form">
+                        <input type="text" id="search" placeholder="Search">
+                    </form>
+                </li>
+                <li><button id="button_user"> {{currentuser.username}} </button>
+                    <div class="dropdown_user">
+                        <ul class="dropdown_user_menu">
+                            <li><a href="#">Settings</a></li>
+                            <li><a href="#" ng-click="logout()">Log out</a></li>
+                        </ul>
                     </div>
-                    <md-divider></md-divider>
-                </md-list-item>
-            </md-list>
-        </md-content>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<!--Sorting-->
+<div class="sorting">
+    <div class="container">
+        <div class="wrap_for_sorting">
+            <h1>Fresh</h1>
+            <img src="img/arrow_down_select.png">
+            <div class="dropdown">
+                <ul class="dropdown-menu">
+                    <li><a href="#">Popular</a></li>
+                    <li><a href="#">Random</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="favourites">
+            <h2>Favourites</h2>
+            <span>(</span>
+            <div id="count_of_favorites">21</div>
+            <span>)</span>
+        </div>
 
     </div>
+</div>
+<!--Ideas List-->
+
+<div class="ideas_list container" id="idea" ng-repeat="idea in ideas | filter:query | orderBy: '-creationDate'">
+    <!--IDEA-->
+    <div class="idea" ng-class="{'open_idea': showIdea}"> <!--"Это мы добавляем класс для открытия идеи :)))-->
+        <div class="left_side ib column_style"> <!--"ib" it's inline block-->
+            <h5>{{idea.author.username}}</h5>
+            <div class="pic_and_video_preview">
+                <img src="img/icons_of_idea_list/photo_camera.png" class="camera_pic">
+                <div class="ib grey_font_color count_of_img">5</div>
+                <img src="img/icons_of_idea_list/video_camera.png" class="video_pic">
+                <div class="ib grey_font_color count_of_video">4</div>
+            </div>
+
+            <div class="brain_in_bulb"></div>
+            <div class="pic_and_video_full_view">
+                <div class="idea_images">
+                    <img src="img/icons_of_idea_list/photo_camera.png" class="camera_pic">
+                    <div class="ib grey_font_color count_of_img">5</div>
+                    <ul class="img_preview_block" ng-click="displayToggle()">
+                        <li><div class="img_preview" style="background: url(slider/img/1.jpg) center/cover no-repeat"></div></li>
+                        <li><div class="img_preview" style="background: url(slider/img/2.jpg) center/cover no-repeat"></div></li>
+                        <li><div class="img_preview" style="background: url(slider/img/3.jpg) center/cover no-repeat"></div></li>
+                    </ul>
+                    <div class="slider_wrap" ng-class="{'dnone': isActiveSlider}">
+                        <div class="hide_slider_button" ng-click="displayToggle()"></div>
+                        <ul rn-carousel rn-carousel-controls rn-carousel-index="carouselIndex" rn-carousel-buffered class="slider_images_post">
+                            <li><img src="slider/img/1.jpg"></li>
+                            <li><img src="slider/img/2.jpg"></li>
+                            <li><img src="slider/img/3.jpg" ></li>
+                            <li><img src="slider/img/4.jpg"></li>
+                            <li><img src="slider/img/5.jpg"></li>
+                            <li><img src="slider/img/6.jpg"></li>
+                            <!--<li ng-repeat="image in sportImages">
+                                <div class="layer">{{image}}</div>
+                            </li>-->
+                        </ul>
+                    </div>
+                </div>
+                <div class="video">
+                    <img src="img/icons_of_idea_list/video_camera.png" class="video_pic">
+                    <div class="ib grey_font_color count_of_video">4</div>
+                    <ul class="video_preview_block">
+                        <li><iframe class="video_prev" src="https://www.youtube.com/embed/aKdq25OwIhg" frameborder="0" allowfullscreen></iframe></li>
+                        <li><iframe class="video_prev" src="https://www.youtube.com/embed/aKdq25OwIhg" frameborder="0" allowfullscreen></iframe></li>
+                        <li><iframe class="video_prev" src="https://www.youtube.com/embed/aKdq25OwIhg" frameborder="0" allowfullscreen></iframe></li>
+                    </ul>
+                </div>
+
+            </div>
+
+
+        </div>
+        <div class="center ib column_style">
+            <h4>{{idea.ideaName}}</h4>
+            <time datetime="2016-11-21" class="ib grey_font_color">posted {{ idea.creationDate | date:"MM/dd/yyyy 'at' h:mma"}}</time>
+            <article class="idea_text">
+                {{idea.ideaText}}
+
+            </article>
+
+            <ul class="tags" >
+                <li ng-repeat="tag in idea.tags">#{{tag.tagName}}</li>
+            </ul>
+
+        </div>
+        <div class="right_side ib column_style">
+
+            <img src="img/icons_of_idea_list/favorites_star.png" class="favorites_icon ib">
+            <img src="img/icons_of_idea_list/delete.png" ng-click="deleteIdea(idea.ideaId)" class="delete_icon ib">
+            <img src="img/icons_of_idea_list/edit.png" class="edit_icon">
+
+
+            <div class="favorites_and_edit_icon_block">
+                <img src="img/icons_of_idea_list/favorites_star.png" class="favorites_icon ib">
+                <img src="img/icons_of_idea_list/delete.png" class="delete_icon ib" ng-show="idea.author.username == me.username" ng-click="remove(idea.ideaId)">
+                <img src="img/icons_of_idea_list/edit.png" class="edit_icon" ng-show="idea.author.username == me.username">
+            </div>
+        </div>
+        <div class="footer_of_idea_preview">
+            <div class="likes_block ib">
+                <div class="likes_block ib" ng-init="counter = 0">
+                    <img src="img/icons_of_idea_list/like_active.png" class="likes like"  ng-click="counter = counter + 1">
+                    {{counter}}
+                </div>
+                <div class="likes_block ib" ng-init="counter1 = 0">
+                    <img src="img/icons_of_idea_list/unlike_active.png" class="likes unlike"  ng-click="counter1 = counter1 + 1">
+                    {{counter1}}
+                </div>
+            </div>
+            <div class="show-hide_idea_button ib" ng-click="showIdea = !showIdea"></div><!--ShowIdeaButton-->
+            <div class="comments_count_block ib">
+                <div class="count_of_comments ib grey_font_color">{{ sizeOf(idea.comments) }}</div>
+                <img src="img/icons_of_idea_list/comment_icon.png" class="comment_icon ib" ng-click="showComments = ! showComments">
+            </div>
+        </div>
+
+
+    </div>
+    <div class="comments">
+        <md-list flex="">
+            <md-list-item  ng-show="showComments" class="md-3-line check-element animate-show" ng-disabled="true" ng-repeat="comment in idea.comments | filter:query | orderBy: '+creationDate'">
+                <div class="md-list-item-text"  layout="column" layout-align="start center">
+                    <md-card style="width: 350px;" >
+                        <md-card-content>
+                            <p>
+                                <b>{{comment.author.username}}</b> commented {{ comment.creationDate | date:"MM/dd/yyyy 'at' h:mma"}}
+                            </p>
+                            <p>
+                                {{comment.commentText}}
+                            </p>
+                        </md-card-content>
+                    </md-card>
+                </div>
+
+            </md-list-item>
+        </md-list>
+        <md-card style="width: 350px; margin-left: 55vw;">
+            <md-card-content>
+                <form name="postCommentForm" ng-submit="commentIdea(idea.ideaId)">
+                    <textarea cols="30" rows="5" style="resize: vertical;" name="commentText" ng-model="commentText"></textarea>
+                    <md-button style="color:grey;" class="md-icon-button" type="submit" aria-label="PostComment">
+                        <i class="material-icons">question_answer</i>
+                    </md-button>
+                </form>
+            </md-card-content>
+        </md-card>
+    </div>
+</div>
+
+<!--Add Idea Form-->
 
     <div style="visibility: hidden">
         <div class="md-dialog-container" id="createIdeaDialog">
-            <md-dialog layout-padding>
+            <md-dialog layout-padding style="width: 35%">
                 <h2>Post new idea</h2>
-                <form name="postIdeaForm" ng-submit="postIdea()">
-                    <div layout="column">
-                        <md-input-container flex="50">
-                            <label>Idea title</label>
-                            <input type="text" name="ideaName" ng-model="ideaName">
-                        </md-input-container>
-                        <textarea cols="40" rows="5" name="ideaText" ng-model="ideaText">
-                        Idea text
-                      </textarea>
-                        <md-input-container flex="50">
-                            <label>Use comma to separate tags</label>
-                            <input type="text" name="ideaTags" ng-model="ideaTags">
-                        </md-input-container>
-                    </div>
+                <form ng-controller="postCtrl" name="postIdeaForm" ng-submit="postIdea()">
+                    <md-input-container class="md-block">
+                        <label>Idea title</label>
+                        <input type="text" name="ideaName" ng-model="ideaName">
+                    </md-input-container>
+
+                    <md-input-container class="md-block">
+                        <label>Idea text</label>
+                        <textarea ng-model="ideaText" name="ideaText" md-maxlength="1000" rows="5" md-select-on-focus></textarea>
+                    </md-input-container>
+
+                    <!--TODO add photos-->
+                    <label>
+                        <input file-model="ideaAttachments" type="file" accept="image/jpeg,image/png" multiple>
+                        <img src="img/icons_of_idea_list/photo_camera.png" class="camera_up_pic">
+                    </label>
+
+                    <md-input-container class="md-block">
+                        <img ng-src="{{filepreview}}"  ng-show="filepreview" class="up_pic" >
+                    </md-input-container>
+
+                    <md-input-container class="md-block">
+                        <label>Use comma to separate tags</label>
+                        <input type="text" name="ideaTags" ng-model="ideaTags">
+                    </md-input-container>
+
                     <md-button flex="" type="submit" id="postButton" class="md-raised">Post!</md-button>
                 </form>
             </md-dialog>
         </div>
     </div>
-</div>
+
+
+
+<footer>
+    <div class="logo"><a href="index.html">Idea Bank</a></div>
+    <p>All rights reserved</p>
+</footer>
 
 
 <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.js'></script>
@@ -131,7 +257,21 @@
 <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js'></script>
 <script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/svg-assets-cache.js'></script>
 <script src='https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.1/angular-material.js'></script>
+
+<script type="text/javascript" src="js/jquery-2.2.1.js"></script>
+<!-- easing plugin ( optional ) -->
+<script src="to_top_button_plugin/js/easing.js" type="text/javascript"></script>
+<!-- UItoTop plugin -->
+<script src="to_top_button_plugin/js/jquery.ui.totop.js" type="text/javascript"></script>
+<!-- Slider -->
+<script src="slider/angular-carousel.js" type="text/javascript"></script>
+<script src="slider/angular-touch.js" type="text/javascript"></script>
+
+
+<script type="text/javascript" src="js/dropdownmenu.js"></script>
+<script type="text/javascript" src="js/totop.js"></script>
 <script src="/resources/js/feed.js"></script>
+
 
 </body>
 </html>

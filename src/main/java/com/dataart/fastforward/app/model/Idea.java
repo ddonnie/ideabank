@@ -1,7 +1,6 @@
 package com.dataart.fastforward.app.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -33,6 +32,15 @@ public class Idea {
     @Column(name = "idea_text")
     private String ideaText;
 
+    @Column(name = "upvotes")
+    private int upVoteCount;
+
+    @Column(name = "downvotes")
+    private int downVoteCount;
+
+    @Transient
+    private int userMark;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "creation_date")
     private Date creationDate;
@@ -52,7 +60,6 @@ public class Idea {
             joinColumns = @JoinColumn(name = "idea_id", referencedColumnName = "idea_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     )
-
     @JsonBackReference
     private Set<User> usersWhoBookmarked = new HashSet<>();
 
@@ -61,7 +68,7 @@ public class Idea {
             joinColumns = @JoinColumn(name="idea_id", referencedColumnName="idea_id"),
             inverseJoinColumns = @JoinColumn(name="tag_id", referencedColumnName="tag_id")
     )
-    @JsonBackReference
+
     private Set<Tag> tags = new HashSet<>();
 
     public Idea() {}
@@ -138,7 +145,30 @@ public class Idea {
         this.usersWhoBookmarked = users;
     }
 
-    @JsonIgnore
+    public int getUpVoteCount() {
+        return upVoteCount;
+    }
+
+    public void setUpVoteCount(int upVoteCount) {
+        this.upVoteCount = upVoteCount;
+    }
+
+    public int getDownVoteCount() {
+        return downVoteCount;
+    }
+
+    public void setDownVoteCount(int downVoteCount) {
+        this.downVoteCount = downVoteCount;
+    }
+
+    public int getUserMark() {
+        return userMark;
+    }
+
+    public void setUserMark(int userMark) {
+        this.userMark = userMark;
+    }
+
     public Set<Tag> getTags() {
         return tags;
     }

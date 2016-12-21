@@ -13,6 +13,10 @@ public class UnauthorisedIdeaUpdateException extends RuntimeException {
         super(message);
     }
 
+    public UnauthorisedIdeaUpdateException(Throwable cause) {
+        super(cause);
+    }
+
     public UnauthorisedIdeaUpdateException(String message, Throwable cause) {
         super(message, cause);
     }

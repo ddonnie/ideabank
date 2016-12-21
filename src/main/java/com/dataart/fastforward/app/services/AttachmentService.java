@@ -1,16 +1,14 @@
 package com.dataart.fastforward.app.services;
 
-import com.dataart.fastforward.app.dto.AttachmentDTO;
-import com.dataart.fastforward.app.model.Attachment;
+import com.dataart.fastforward.app.model.Idea;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
- * Created by logariett on 08.12.2016.
+ * Created by Orlov on 20.12.2016.
  */
 public interface AttachmentService {
 
-    Attachment add(AttachmentDTO attachmentDTO, long ideaId);
-    void delete(long attachmentId);
+    void add(MultipartFile ideaAttachment, Idea idea);
+    void delete(String attachmentName);
 
-    Attachment getAttachmentById(long attachmentId);
-    Attachment getAttachmentByAttachmentName(String attachmentName);
 }
