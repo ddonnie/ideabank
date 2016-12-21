@@ -32,12 +32,12 @@ public class UserServiceTest {
 
     @Test
     public void testGetAccountById() {
-        System.out.println(userService.getUserById(1));
+//        System.out.println(userService.getUserById(1));
     }
 
     @Test
     public void testGetUserByUsername() {
-        System.out.println(userService.getUserByUsername("Patty"));
+//        System.out.println(userService.getUserByUsername("Patty"));
     }
 
     @Test
@@ -47,27 +47,27 @@ public class UserServiceTest {
 
     @Test
     public void testCreateAccount() {
-        NewUserDTO newUserDTO = new NewUserDTO();
+/*        NewUserDTO newUserDTO = new NewUserDTO();
         newUserDTO.setFirstName("TestFirstName");
         newUserDTO.setLastName("TestLastName");
         newUserDTO.setUsername("TestLogin");
         newUserDTO.setPassword("TestPassword");
         userService.createUser(newUserDTO);
-        System.out.println(userService.getUserByUsername(newUserDTO.getUsername()));
+        System.out.println(userService.getUserByUsername(newUserDTO.getUsername()));*/
     }
 
     @Test
     public void getBookmarksTest() {
-        System.out.println(userService.getBookmarks(userService.getUserById(1)));
+//        System.out.println(userService.getBookmarks(userService.getUserById(1)));
     }
 
     @Test
     public void findNonExistLoginTest() {
-        if (userService.getUserByUsername("ASS")==null) {
+/*        if (userService.getUserByUsername("ASS")==null) {
             System.out.println("Not found");
         }
         else {
             System.out.println("Found.");
-        }
+        }*/
     }
 }
