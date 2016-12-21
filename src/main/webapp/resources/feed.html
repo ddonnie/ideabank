@@ -137,8 +137,8 @@
         <div class="right_side ib column_style">
             <div class="favorites_and_edit_icon_block">
                 <img src="img/icons_of_idea_list/favorites_star.png" class="favorites_icon ib">
-                <img src="img/icons_of_idea_list/delete.png" class="delete_icon ib" ng-show="idea.author.username == currentuser.username" ng-click="deleteIdea(idea.ideaId)">
-                <img src="img/icons_of_idea_list/edit.png" class="edit_icon" ng-show="idea.author.username == currentuser.username">
+                <img src="img/icons_of_idea_list/delete.png" class="delete_icon ib" ng-show="me.role == 'ADMIN' || idea.author.username == me.username" ng-click="remove(idea.ideaId)">
+                <img src="img/icons_of_idea_list/edit.png" class="edit_icon" ng-show="me.role == 'ADMIN' || idea.author.username == me.username">
             </div>
         </div>
         <div class="footer_of_idea_preview">
