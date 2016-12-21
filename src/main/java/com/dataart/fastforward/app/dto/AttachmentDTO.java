@@ -1,37 +1,19 @@
 package com.dataart.fastforward.app.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 /**
- * Created by logariett on 09.12.2016.
+ * Created by Orlov on 20.12.2016.
  */
 public class AttachmentDTO {
-    private String attachmentName;
-    private String extension;
-    private byte[] attachmentBytes;
 
-    public AttachmentDTO() {
+    MultipartFile[] attachments;
+
+    public MultipartFile[] getAttachments() {
+        return attachments;
     }
 
-    public String getExtension() {
-        return extension;
-    }
-
-    public void setExtension(String extension) {
-        this.extension = extension;
-    }
-
-    public byte[] getAttachmentBytes() {
-        return attachmentBytes;
-    }
-
-    public void setAttachmentBytes(byte[] attachmentBytes) {
-        this.attachmentBytes = attachmentBytes;
-    }
-
-    public String getAttachmentName() {
-        return attachmentName;
-    }
-
-    public void setAttachmentName(String attachmentName) {
-        this.attachmentName = attachmentName;
+    public void setAttachments(MultipartFile[] attachments) {
+        this.attachments = attachments;
     }
 }

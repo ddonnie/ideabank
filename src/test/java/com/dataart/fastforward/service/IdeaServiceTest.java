@@ -35,11 +35,6 @@ public class IdeaServiceTest {
     @Autowired
     private IdeaService ideaService;
 
-    @Autowired
-    private IdeaRepository ideaRepository;
-    @Autowired
-    private UserRepository userRepository;
-
     @Test
     public void addTest() {
     }
@@ -50,5 +45,10 @@ public class IdeaServiceTest {
 
     @Test
     public void deleteTest() {
+    }
+
+    @Test
+    public void updateMarkCountersTest() {
+        ideaService.updateMarkCounters(2);
     }
 }

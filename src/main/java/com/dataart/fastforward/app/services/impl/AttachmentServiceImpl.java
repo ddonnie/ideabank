@@ -1,49 +1,56 @@
 package com.dataart.fastforward.app.services.impl;
 
 import com.dataart.fastforward.app.dao.AttachmentRepository;
-import com.dataart.fastforward.app.dto.AttachmentDTO;
 import com.dataart.fastforward.app.model.Attachment;
+import com.dataart.fastforward.app.model.Idea;
 import com.dataart.fastforward.app.services.AttachmentService;
-import com.dataart.fastforward.app.services.IdeaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.ContextLoader;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.Date;
 
 /**
- * Created by logariett on 08.12.2016.
+ * Created by Orlov on 20.12.2016.
  */
 @Service
 public class AttachmentServiceImpl implements AttachmentService {
 
     @Autowired
     private AttachmentRepository attachmentRepository;
-    @Autowired
-    private IdeaService ideaService;
 
     @Override
-    public Attachment add(AttachmentDTO attachmentDTO, long ideaId) {
-        Attachment attachment = new Attachment();
-        attachment.setIdea(ideaService.getIdeaById(ideaId));
-        attachment.setAttachmentName(ideaId + "att" + new Date().getTime());
-        attachment.setExtension(attachmentDTO.getExtension());
-        attachment.setAttachmentBytes(attachmentDTO.getAttachmentBytes());
-        return attachmentRepository.saveAndFlush(attachment);
+    public void add(MultipartFile ideaAttachment, Idea idea) {
+        try {
+            String uploadsDir = "/upload/";
+            String filepath = ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath(uploadsDir);
+            if (!new File(filepath).exists()) {
+                new File(filepath).mkdir();
+            }
+            System.out.println("realPathtoUploads = " + filepath);
+            String orgName = (new Date().getTime()) + ideaAttachment.getOriginalFilename();
+            String filePath = filepath + orgName;
+            File dest = new File(filePath);
+            ideaAttachment.transferTo(dest);
+
+            Attachment attachment = new Attachment();
+            attachment.setIdea(idea);
+            attachment.setAttachmentName(orgName);
+            attachmentRepository.saveAndFlush(attachment);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
-    public void delete(long attachmentId) {
-        attachmentRepository.delete(getAttachmentById(attachmentId));
-    }
+    public void delete(String attachmentName) {
 
-    @Override
-    public Attachment getAttachmentById(long attachmentId) {
-        return attachmentRepository.getOne(attachmentId);
-    }
-
-    @Override
-    public Attachment getAttachmentByAttachmentName(String attachmentName) {
-        return attachmentRepository.findAttachmentByAttachmentName(attachmentName);
+        String uploadsDir = "/upload/";
+        String filepath = ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath(uploadsDir);
+        System.out.println("File to delete: "+filepath+attachmentName);
+        File file = new File(filepath+attachmentName);
+        file.delete();
     }
 }
