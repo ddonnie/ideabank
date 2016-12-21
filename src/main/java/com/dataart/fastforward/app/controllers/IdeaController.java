@@ -1,17 +1,23 @@
 package com.dataart.fastforward.app.controllers;
 
-import com.dataart.fastforward.app.dao.IdeaRepository;
 import com.dataart.fastforward.app.dto.IdeaDTO;
 import com.dataart.fastforward.app.dto.MarkDTO;
+import com.dataart.fastforward.app.model.Attachment;
 import com.dataart.fastforward.app.model.Idea;
+import com.dataart.fastforward.app.services.AttachmentService;
 import com.dataart.fastforward.app.services.IdeaService;
 import com.dataart.fastforward.app.services.MarkService;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -24,11 +30,11 @@ import java.util.List;
 public class IdeaController {
 
     @Autowired
-    private IdeaRepository ideaRepository;
-    @Autowired
     private IdeaService ideaService;
     @Autowired
     private MarkService markService;
+    @Autowired
+    private AttachmentService attachmentService;
 
     @GetMapping
     public List<Idea> getAllIdeas() {
@@ -38,11 +44,19 @@ public class IdeaController {
     }
 
     @PostMapping
-    public Idea addIdea(@RequestBody IdeaDTO ideaDTO) {
+    public void addIdea(
+            @RequestParam(value = "ideaDTO") String incomingIdeaDTO,
+            @RequestParam(value = "ideaAttachments") MultipartFile[] ideaAttachments)
+            throws JsonMappingException, JsonParseException, IOException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
-
-        return ideaService.add(ideaDTO, username);
+        System.out.println("before"+incomingIdeaDTO.toString());
+        IdeaDTO ideaDTO = new ObjectMapper().readValue(incomingIdeaDTO, IdeaDTO.class);
+        Idea idea = ideaService.add(ideaDTO, username);
+        for (MultipartFile ideaAttachment : ideaAttachments) {
+            System.out.println(ideaAttachment.getClass());
+            attachmentService.add(ideaAttachment, idea);
+        }
     }
 
     @GetMapping("/{ideaId}")
@@ -57,7 +71,6 @@ public class IdeaController {
     public Idea editIdea(@RequestBody IdeaDTO ideaDTO, @PathVariable long ideaId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
-
         return ideaService.edit(ideaDTO, ideaId, username);
     }
 
@@ -66,6 +79,9 @@ public class IdeaController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
 
+        for (Attachment attachment : ideaService.getIdeaById(ideaId).getAttachments()) {
+            attachmentService.delete(attachment.getAttachmentName());
+        }
         ideaService.delete(ideaId, username);
     }
 

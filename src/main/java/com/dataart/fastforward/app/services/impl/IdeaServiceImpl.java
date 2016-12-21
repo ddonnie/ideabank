@@ -1,17 +1,28 @@
 package com.dataart.fastforward.app.services.impl;
 
+import com.dataart.fastforward.app.dao.AttachmentRepository;
 import com.dataart.fastforward.app.dao.CommentRepository;
 import com.dataart.fastforward.app.dao.IdeaRepository;
 import com.dataart.fastforward.app.dao.TagRepository;
 import com.dataart.fastforward.app.dto.IdeaDTO;
 import com.dataart.fastforward.app.model.*;
 import com.dataart.fastforward.app.services.*;
+import com.dataart.fastforward.app.model.Attachment;
+import com.dataart.fastforward.app.model.Comment;
+import com.dataart.fastforward.app.model.Idea;
+import com.dataart.fastforward.app.model.Tag;
+import com.dataart.fastforward.app.services.IdeaService;
+import com.dataart.fastforward.app.services.TagService;
+import com.dataart.fastforward.app.services.UserService;
 import com.dataart.fastforward.app.services.validation.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 import static com.dataart.fastforward.app.services.validation.ValidationUtils.assertExistsNotBlank;
 
@@ -27,6 +38,9 @@ public class IdeaServiceImpl implements IdeaService {
     private TagRepository tagRepository;
     @Autowired
     private CommentRepository commentRepository;
+    @Autowired
+    private AttachmentRepository attachmentRepository;
+
 
     @Autowired
     private UserService userService;
@@ -34,6 +48,7 @@ public class IdeaServiceImpl implements IdeaService {
     private TagService tagService;
     @Autowired
     private MarkService markService;
+
 
 
     @Override
@@ -44,7 +59,12 @@ public class IdeaServiceImpl implements IdeaService {
         Idea idea = new Idea();
 
         idea.setAuthor(userService.getUserByUsername(userName));
-        idea.setIdeaName(ideaDTO.getIdeaName());
+        if (ideaDTO.getIdeaName()!=null) {
+            idea.setIdeaName(ideaDTO.getIdeaName());
+        }
+        else {
+            idea.setIdeaName("Без имени");
+        }
         idea.setIdeaText(ideaDTO.getIdeaText());
         updateTagSet(idea, ideaDTO);
         idea.setCreationDate(new Date());
@@ -102,6 +122,11 @@ public class IdeaServiceImpl implements IdeaService {
     @Transactional
     public List<Comment> getAllComments(long ideaId) {
         return commentRepository.getAllCommentsByIdea(getIdeaById(ideaId));
+    }
+
+    @Override
+    public List<Attachment> getAllAttachments(long ideaId) {
+        return attachmentRepository.getAllAttachmentsByIdea(getIdeaById(ideaId));
     }
 
     @Override
@@ -242,7 +267,6 @@ public class IdeaServiceImpl implements IdeaService {
                 idea.getTags().add(tag);
             }
         }
-
         return tagsToDelete;
     }
 }
