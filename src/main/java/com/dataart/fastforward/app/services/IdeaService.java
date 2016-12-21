@@ -1,6 +1,7 @@
 package com.dataart.fastforward.app.services;
 
 import com.dataart.fastforward.app.dto.IdeaDTO;
+import com.dataart.fastforward.app.model.Attachment;
 import com.dataart.fastforward.app.model.Comment;
 import com.dataart.fastforward.app.model.Idea;
 
@@ -22,6 +23,7 @@ public interface IdeaService {
     List<Idea> getAll(String username);
 
     List<Comment> getAllComments(long ideaId);
+    List<Attachment> getAllAttachments(long ideaId);
 
     void updateMarkCounters(Idea idea);
     void updateMarkCounters(long ideaId);

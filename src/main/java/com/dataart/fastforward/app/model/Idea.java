@@ -1,7 +1,6 @@
 package com.dataart.fastforward.app.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -52,6 +51,9 @@ public class Idea {
 
     @OneToMany(mappedBy = "idea", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<Comment> comments = new HashSet<>();
+
+    @OneToMany(mappedBy = "idea", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private Set<Attachment> attachments = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "Bookmarks",
@@ -125,6 +127,14 @@ public class Idea {
 
     public void setComments(Set<Comment> comments) {
         this.comments = comments;
+    }
+
+    public Set<Attachment> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(Set<Attachment> attachments) {
+        this.attachments = attachments;
     }
 
     public Set<User> getUsersWhoBookmarked() {

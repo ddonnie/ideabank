@@ -9,21 +9,20 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
     <link rel='stylesheet prefetch'
           href='https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.1/angular-material.css'>
-   <!-- <link rel='stylesheet prefetch' href='https://material.angularjs.org/1.1.1/docs.css'>-->
+    <!-- <link rel='stylesheet prefetch' href='https://material.angularjs.org/1.1.1/docs.css'>-->
     <link rel="stylesheet" media="screen,projection" href="to_top_button_plugin/css/ui.totop.css"/><!--button to top-->
     <link rel="stylesheet" href="/resources/css/style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet">
-    <script src="/resources/js/feed.js"></script>
 
 
 </head>
 
-<body ng-controller="feedCtrl" ng-cloak=""  ng-app="feedApp">
+<body ng-controller="feedCtrl" ng-cloak="" ng-app="feedApp">
 <!--It's my-->
 <!--Header-->
 <header>
-    <div class="container">
+    <div ng-controller="headerCtrl" class="container">
         <nav>
             <div class="logo"><a href="feed.html">Idea Bank</a></div>
             <ul>
@@ -95,7 +94,7 @@
             <time datetime="2016-11-21" class="ib grey_font_color">posted {{ idea.creationDate | date:"MM/dd/yyyy 'at' h:mma"}}</time>
             <!--<time datetime="20:00" class="ib grey_font_color hours">03:33</time>-->
             <article class="idea_text">
-                    {{idea.ideaText}}
+                {{idea.ideaText}}
 
             </article>
 
@@ -106,7 +105,7 @@
         </div>
         <div class="right_side ib column_style">
             <img src="img/icons_of_idea_list/favorites_star.png" class="favorites_icon ib">
-            <img src="img/icons_of_idea_list/delete.png" class="delete_icon ib">
+            <img src="img/icons_of_idea_list/delete.png" ng-click="deleteIdea(idea.ideaId)" class="delete_icon ib">
             <img src="img/icons_of_idea_list/edit.png" class="edit_icon">
 
             <div class="count_of_comments ib grey_font_color">131</div>
@@ -146,29 +145,30 @@
 </div>
 
 <!--Add Idea Form-->
-    <div style="visibility: hidden">
-        <div class="md-dialog-container" id="createIdeaDialog">
-            <md-dialog layout-padding>
-                <h2>Post new idea</h2>
-                <form name="postIdeaForm" ng-submit="postIdea()">
-                    <div layout="column">
-                        <md-input-container flex="50">
-                            <label>Idea title</label>
-                            <input type="text" name="ideaName" ng-model="ideaName">
-                        </md-input-container>
-                        <textarea cols="40" rows="5" name="ideaText" ng-model="ideaText">
+<div style="visibility: hidden">
+    <div class="md-dialog-container" id="createIdeaDialog">
+        <md-dialog layout-padding>
+            <h2>Post new idea</h2>
+            <form ng-controller="postCtrl" name="postIdeaForm" ng-submit="postIdea()">
+                <div layout="column">
+                    <md-input-container flex="50">
+                        <label>Idea title</label>
+                        <input type="text" name="ideaName" ng-model="ideaName">
+                    </md-input-container>
+                    <textarea cols="40" rows="5" name="ideaText" ng-model="ideaText">
                         Idea text
                       </textarea>
-                        <md-input-container flex="50">
-                            <label>Use comma to separate tags</label>
-                            <input type="text" name="ideaTags" ng-model="ideaTags">
-                        </md-input-container>
-                    </div>
-                    <md-button flex="" type="submit" id="postButton" class="md-raised">Post!</md-button>
-                </form>
-            </md-dialog>
-        </div>
+                    <md-input-container flex="50">
+                        <label>Use comma to separate tags</label>
+                        <input type="text" name="ideaTags" ng-model="ideaTags">
+                    </md-input-container>
+                    <input file-model="ideaAttachments" type="file" accept="image/jpeg,image/png" multiple>
+                </div>
+                <md-button flex="" type="submit" id="postButton" class="md-raised">Post!</md-button>
+            </form>
+        </md-dialog>
     </div>
+</div>
 
 
 <footer>
@@ -185,14 +185,15 @@
 <script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/svg-assets-cache.js'></script>
 <script src='https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.1/angular-material.js'></script>
 <script type="text/javascript" src="js/jquery-2.2.1.js"></script>
-    <!-- easing plugin ( optional ) -->
+<!-- easing plugin ( optional ) -->
 <script src="to_top_button_plugin/js/easing.js" type="text/javascript"></script>
-    <!-- UItoTop plugin -->
+<!-- UItoTop plugin -->
 <script src="to_top_button_plugin/js/jquery.ui.totop.js" type="text/javascript"></script>
 
-<script src="/resources/js/feed.js"></script>
+
 <script type="text/javascript" src="js/dropdownmenu.js"></script>
 <script type="text/javascript" src="js/totop.js"></script>
+<script src="/resources/js/feed.js"></script>
 
 
 </body>
