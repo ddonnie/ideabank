@@ -3,10 +3,6 @@
  */
 var app = angular.module('feedApp',['ngMaterial', 'ngMessages', 'material.svgAssetsCache']);
 
-
-angular.module('feedApp',['ngMaterial', 'ngMessages', 'material.svgAssetsCache', 'angular-carousel'])
-    .controller('feedCtrl', function($http, $scope, $mdDialog) {
-
 app.directive('fileModel', [ '$parse', function($parse) {
     return {
         restrict : 'A',
@@ -89,7 +85,7 @@ app.controller('feedCtrl', function($http, $scope, updateFeed) {
     $scope.commentIdea = function(ideaId) {
         var commentData = {
             commentText: this.commentText
-        }
+        };
         var config = {
             headers: {
                 'Content-Type': 'application/json'
@@ -143,7 +139,6 @@ app.controller('headerCtrl', function ($http, $scope, $mdDialog) {
   
     $http.get('/users/me')
             .then(function(response) {
-                $scope.me = response.data;
                 $scope.currentuser = response.data;
             });
   
@@ -174,7 +169,7 @@ app.controller('postCtrl', [ '$scope', 'fileUpload',
             var uploadUrl = "/ideas";
             fileUpload.uploadFileToUrl(uploadUrl, ideaName, ideaText, tags, ideaAttachments);
         };
-    } ]);
+}]);
 
 
 /*directive for picture preview in add idea form
