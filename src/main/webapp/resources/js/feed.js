@@ -3,21 +3,9 @@
  */
 var app = angular.module('feedApp',['ngMaterial', 'ngMessages', 'material.svgAssetsCache']);
 
-// app.directive('fileModel', [ '$parse', function($parse) {
-//     return {
-//         restrict : 'A',
-//         link : function(scope, element, attrs) {
-//             var model = $parse(attrs.fileModel);
-//             var modelSetter = model.assign;
-//             element.bind('change', function() {
-//                 scope.$apply(function() {
-//                     console.log(element[0].files[0]);
-//                     modelSetter(scope, element[0].files[0]);
-//                 });
-//             });
-//         }
-//     };
-// }]);
+
+angular.module('feedApp',['ngMaterial', 'ngMessages', 'material.svgAssetsCache', 'angular-carousel'])
+    .controller('feedCtrl', function($http, $scope, $mdDialog) {
 
 app.directive('fileModel', [ '$parse', function($parse) {
     return {
@@ -91,6 +79,12 @@ app.service('updateFeed', ['$http', '$rootScope', function($http, $rootScope) {
 app.controller('feedCtrl', function($http, $scope, updateFeed) {
 
     updateFeed.getUpdatedFeed();
+  
+    /*show_slider*/
+        $scope.isActiveSlider = true;
+        $scope.displayToggle = function () {
+            $scope.isActiveSlider = !$scope.isActiveSlider;
+        };
 
     $scope.commentIdea = function(ideaId) {
         var commentData = {
@@ -107,6 +101,10 @@ app.controller('feedCtrl', function($http, $scope, updateFeed) {
                 updateFeed.getUpdatedFeed();
             })
     };
+        /*count comments*/
+        $scope.sizeOf = function(obj) {
+            return Object.keys(obj || {}).length;
+        };
 
 
     $scope.deleteIdea = function(ideaId) {
@@ -142,7 +140,13 @@ app.controller('headerCtrl', function ($http, $scope, $mdDialog) {
             clickOutsideToClose: true
         });
     };
-
+  
+    $http.get('/users/me')
+            .then(function(response) {
+                $scope.me = response.data;
+                $scope.currentuser = response.data;
+            });
+  
     function DialogController($scope, $mdDialog) {
         $scope.hide = function() {
             $mdDialog.hide();
@@ -162,8 +166,7 @@ app.controller('headerCtrl', function ($http, $scope, $mdDialog) {
 app.controller('postCtrl', [ '$scope', 'fileUpload',
     function($scope, fileUpload) {
         $scope.postIdea = function() {
-
-            var ideaName = $scope.ideaName;
+          var ideaName = $scope.ideaName;
             var ideaText = $scope.ideaText;
             var tags = $scope.ideaTags;
             var ideaAttachments = $scope.ideaAttachments;
@@ -172,3 +175,27 @@ app.controller('postCtrl', [ '$scope', 'fileUpload',
             fileUpload.uploadFileToUrl(uploadUrl, ideaName, ideaText, tags, ideaAttachments);
         };
     } ]);
+
+
+/*directive for picture preview in add idea form
+.directive("fileinput", [function() {
+    return {
+        scope: {
+            fileinput: "=",
+            filepreview: "="
+        },
+        link: function (scope, element) {
+            element.bind("change", function (changeEvent) {
+                scope.fileinput = changeEvent.target.files[0];
+                var reader = new FileReader();
+                reader.onload = function (loadEvent) {
+                    scope.$apply(function () {
+                        scope.filepreview = loadEvent.target.result;
+                    });
+                }
+                reader.readAsDataURL(scope.fileinput);
+
+            });
+        }
+    }}]);*/
+

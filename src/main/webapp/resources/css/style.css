@@ -104,6 +104,7 @@ h2 {
 
 
 
+
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 /*HEADER*/
 
@@ -389,13 +390,9 @@ input#search:focus {
 
 .ideas_list.container {
 	overflow: visible;
-	background-color: #fff;
-	
-
 }
 .ideas_list {
 	margin-top: 2vw;
-	background-color: #fff;
 }
 
 .idea {
@@ -404,23 +401,23 @@ input#search:focus {
 	-webkit-box-shadow: 0px 0px 9px 0px rgba(50, 50, 50, 0.4);
    -moz-box-shadow:    0px 0px 9px 0px rgba(50, 50, 50, 0.4);
     box-shadow:         0px 0px 9px 0px rgba(50, 50, 50, 0.4);
-    margin-bottom: 2vw;
-	background-color: #fff;
+
 }
 
 .idea_text {
-	height: 7.4vw;
+	height: 7vw;
 	margin-bottom: 1vw;
 	margin-top: 1vw;
 	overflow: hidden;
 	word-wrap: break-word;
-	background-color: #fff;
+	transition: 0.5s;
 
 }
 
+
 .column_style {
-	line-height: 1.2vw;
-	vertical-align: middle;
+	line-height: 1.4vw;
+	vertical-align: top;
 	font-size: 1.2vw;
 
 }
@@ -433,10 +430,7 @@ input#search:focus {
 
 .left_side {
 	margin: 1vw;
-	width: 10vw;
-	
 }
-
 
 .center {
 	margin: 1vw 0 1vw 1vw;
@@ -446,8 +440,10 @@ input#search:focus {
 .right_side {
 	margin: 1vw  1vw 1vw 0;
 	width: 6vw;
-}
+	position: relative;
 
+
+}
 
 .brain_in_bulb {
 	background: url(../img/icons_of_idea_list/idea_picture_brain.png) center no-repeat;
@@ -460,8 +456,8 @@ input#search:focus {
     -moz-box-shadow:    2px 2px 6px 0px rgba(50, 50, 50, 0.26);
     box-shadow:         2px 2px 6px 0px rgba(50, 50, 50, 0.26);
     border-radius: 0.2vw;
+	transition: 0.5s;
 }
-
 
 
 .camera_pic {
@@ -475,6 +471,8 @@ input#search:focus {
 	margin-right: 0.3vw;
 	vertical-align: bottom;
 }
+
+
 .count_of_img {
 	margin-right: 3vw;
 }
@@ -482,11 +480,12 @@ input#search:focus {
 .count_of_video, #count_of_img {
 	vertical-align: bottom;
 }
-
+.likes_block {
+	margin-left: 1.6vw;
+}
 .likes {
 	width: 1.5vw;
 	margin-right: 0.3vw;
-	vertical-align: bottom;
 	cursor: pointer;
 }
 
@@ -512,12 +511,13 @@ input#search:focus {
 }
 
 .column_style ul li {
+	font-size: 1vw;
 	cursor: pointer;
 	display: inline-block;
 	background-color: #ececec;
 	border-radius: 0.2vw;
 	padding: 0.2vw 0.5vw 0.4vw 0.5vw;
-	margin: 0.8vw;
+	margin: 0.3vw;
 	-webkit-box-shadow: 1px 1px 4px 0px rgba(50, 50, 50, 0.26);
     -moz-box-shadow:    1px 1px 4px 0px rgba(50, 50, 50, 0.26);
     box-shadow:         1px 1px 4px 0px rgba(50, 50, 50, 0.26);
@@ -531,10 +531,14 @@ input#search:focus {
 	margin-top: 0.4vw;
 }
 
+
+.favorites_and_edit_icon_block {
+	height: 5vw;
+
+}
 .favorites_icon {
 	margin-left: 1vw;
 	width: 1.7vw;
-
 	cursor: pointer;
 }
 .delete_icon {
@@ -545,30 +549,195 @@ input#search:focus {
 
 .edit_icon {
 	width: 1.5vw;
-	margin: 0.5vw 0 8.6vw 3.8vw;
+	margin: 0.5vw 0 0 3.8vw;
 	margin-top: 0.7vw;
-	margin-bottom: 8.2vw;
 	cursor: pointer;
 }
+
+
+.comments_count_block {
+	width: 6vw;
+	margin-left: 2vw;
+
+}
+
 .comment_icon {
 	width: 1.9vw;
-	vertical-align: top;
 	margin-left: 0.6vw;
 	cursor: pointer;
 
 }
 
-
-
-
 .count_of_comments {
 	margin-left: 1vw;
 }
 
-
 .comments {
 	display: block;
 }
+
+.footer_of_idea_preview {
+	height: 3vw;
+	font-size: 1.2vw;
+	line-height: 3vw;
+	vertical-align: middle;
+
+}
+
+/*Open full idea view*/
+
+.pic_and_video_full_view {
+	display: none;
+}
+
+.open_idea .pic_and_video_full_view {
+	display: block;
+}
+
+.open_idea .pic_and_video_preview {
+	display: none;
+}
+.open_idea .brain_in_bulb {
+	background: url(../img/icons_of_idea_list/idea_picture_brain.png) center no-repeat;
+	background-size: 30%;
+	width: 23vw;
+	height: 15vw;
+	margin-top: 1vw;
+	margin-bottom: 1vw;
+	-webkit-box-shadow: 2px 2px 6px 0px rgba(50, 50, 50, 0.26);
+	-moz-box-shadow:    2px 2px 6px 0px rgba(50, 50, 50, 0.26);
+	box-shadow:         2px 2px 6px 0px rgba(50, 50, 50, 0.26);
+	border-radius: 0.2vw;
+	transition: 0.5s;
+}
+
+.open_idea .left_side {
+	margin: 1vw;
+
+}
+
+.open_idea .center {
+	margin: 1vw 0 1vw 1vw;
+	width: 44vw;
+}
+
+.open_idea .right_side {
+	margin: 1vw  1vw 1vw 0;
+	width: 6vw;
+}
+
+
+.open_idea .idea_text {
+	overflow-y: scroll;
+	height: 34vw;
+	transition: 0.5s;
+}
+
+.open_idea .column_style {
+	line-height: 1.2vw;
+	vertical-align: top;
+	font-size: 1.2vw;
+
+}
+
+
+ul.img_preview_block li, ul.video_preview_block li {
+	display: inline-block;
+	margin-right: 0.4vw;
+	margin-left: 0;
+	padding: 0;
+	box-shadow: none;
+	border-radius: none;
+
+}
+
+.img_preview, .video_prev {
+	width: 6.8vw;
+	height: 6.8vw;
+}
+
+
+.show-hide_idea_button {
+	background: url(../img/icons_of_idea_list/open.png) center no-repeat;
+	height: 3vw;
+	cursor: pointer;
+	width: 57vw;
+	vertical-align: middle;
+}
+.open_idea .show-hide_idea_button {
+	background: url(../img/icons_of_idea_list/hide.png) center no-repeat;
+}
+
+.open_idea .footer_of_idea_preview {
+	height: 3vw;
+}
+
+
+
+/*SLIDER*/
+.slider_wrap {
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+	position: fixed;
+	z-index: 1000;
+	background-color: #666666;
+
+}
+
+.slider_wrap.dnone {
+	display: none;
+}
+
+.slider_images_post {
+	width: 80vw;
+	height: 60vw;
+	color: green;
+	position: relative;
+	background-color: lightcyan;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+	color: rgba(255,255,255,1);
+	text-align: center;
+
+}
+.slider_images_post img {
+	width: 100%;
+	height:auto;
+}
+
+.rn-carousel-control {
+	z-index: 1001;
+	position: absolute;
+}
+.rn-carousel-control.rn-carousel-control-prev,
+.rn-carousel-control.rn-carousel-control-next {
+	background-color: lightgrey;
+	font-size: 14vw;
+	color: #F5F6FA;
+}
+
+.hide_slider_button {
+	width: 2vw;
+	height: 2vw;
+	background: url("../img/icons_of_idea_list/close.png") center/cover no-repeat;
+	position: absolute;
+	z-index: 1003;
+	top: 2vw;
+	right: 3.2vw;
+	cursor: pointer;
+	opacity: 0.8;
+}
+
+.hide_slider_button:hover {
+	opacity: 0.6;
+}
+
 /*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 /*Pages number*/
 .switch_pages {
@@ -650,4 +819,21 @@ footer {
 footer .logo {
 	margin-top: 1vw;
 	margin-bottom: 0.5vw;
+}
+
+/***************IMPROVE ADD IDEA*******************/
+
+/*for icon*/
+.camera_up_pic {
+	margin-top: 0.5vw;
+	margin-left: 0.3vw;
+	width: 2vw;
+	margin-right: 0.8vw;
+	vertical-align: bottom;
+}
+
+/*for photo preview*/
+.up_pic {
+	width: 8vw;
+	height: 8vw;
 }
