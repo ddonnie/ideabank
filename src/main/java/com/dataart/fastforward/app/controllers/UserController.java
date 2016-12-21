@@ -9,8 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -47,13 +49,13 @@ public class UserController {
 
     @PostMapping("/registration")
     @ResponseStatus(HttpStatus.OK)
-    public void createUser(@RequestBody NewUserDTO newUserDTO) {
+    public void createUser(@Valid @RequestBody NewUserDTO newUserDTO) {
         userService.createUser(newUserDTO);
     }
 
-    @ExceptionHandler(Exception.class)
+/*    @ExceptionHandler(Exception.class)
     public ResponseEntity<String> errorHandler(Exception exc) {
         return new ResponseEntity<>(exc.getMessage(), HttpStatus.BAD_REQUEST);
-    }
+    }*/
 
 }
