@@ -31,7 +31,7 @@ public class AttachmentServiceImpl implements AttachmentService {
             }
             System.out.println("realPathtoUploads = " + filepath);
             String orgName = (new Date().getTime()) + ideaAttachment.getOriginalFilename();
-            String filePath = filepath + orgName;
+            String filePath = filepath + "\\" + orgName;
             File dest = new File(filePath);
             ideaAttachment.transferTo(dest);
 

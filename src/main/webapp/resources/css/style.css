@@ -640,6 +640,11 @@ input#search:focus {
 
 }
 
+.img_preview_block_wrap {
+	width: 21.9vw;
+	height: 7.8vw;
+	overflow: hidden;
+}
 
 ul.img_preview_block li, ul.video_preview_block li {
 	display: inline-block;
