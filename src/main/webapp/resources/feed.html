@@ -171,8 +171,8 @@
                     </md-card>
                 </div>
                 <div class="delete_and_edit_comment_icon_block ib">
-                    <img src="img/icons_of_idea_list/delete.png" class="delete_icon_in_comments">
-                    <img src="img/icons_of_idea_list/edit.png" class="edit_icon_in_comments">
+                    <img src="img/icons_of_idea_list/delete.png" class="delete_icon_in_comments" ng-show="me.role == 'ADMIN' || idea.author.username == me.username" ng-click="removed(comment.commentId, idea.ideaId)">
+                    <img src="img/icons_of_idea_list/edit.png" class="edit_icon_in_comments" ng-show="me.role == 'ADMIN' || idea.author.username == me.username">
                 </div>
 
             </md-list-item>

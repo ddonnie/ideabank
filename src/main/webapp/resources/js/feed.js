@@ -139,6 +139,13 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
 
     };
 
+    $scope.removed = function(commentId, ideaId) {
+        $http.delete('/ideas/'+ideaId+'/comments/'+commentId)
+            .then(function(response) {
+                window.location.replace('/resources/feed.html');
+            });
+    }
+
   });
 
 function DialogController($scope, $mdDialog) {
