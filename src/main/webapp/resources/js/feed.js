@@ -97,11 +97,10 @@ app.controller('feedCtrl', function($http, $scope, updateFeed) {
                 updateFeed.getUpdatedFeed();
             })
     };
-        /*count comments*/
+        /*counter*/
         $scope.sizeOf = function(obj) {
             return Object.keys(obj || {}).length;
         };
-
 
     /*$scope.deleteIdea = function(ideaId) {
         ideatideleteurl = '/ideas/'+ideaId;
@@ -117,7 +116,6 @@ app.controller('feedCtrl', function($http, $scope, updateFeed) {
                 window.location.replace('/resources/feed.html');
             });
     }
-
 
     $http.get('/users/me')
         .then(function(response) {

@@ -83,7 +83,7 @@
             <h5>{{idea.author.username}}</h5>
             <div class="pic_and_video_preview">
                 <img src="img/icons_of_idea_list/photo_camera.png" class="camera_pic">
-                <div class="ib grey_font_color count_of_img">5</div>
+                <div class="ib grey_font_color count_of_img">{{sizeOf(idea.attachments)}}</div>
                 <img src="img/icons_of_idea_list/video_camera.png" class="video_pic">
                 <div class="ib grey_font_color count_of_video">4</div>
             </div>
@@ -92,10 +92,10 @@
             <div class="pic_and_video_full_view">
                 <div class="idea_images">
                     <img src="img/icons_of_idea_list/photo_camera.png" class="camera_pic">
-                    <div class="ib grey_font_color count_of_img">5</div>
+                    <div class="ib grey_font_color count_of_img">{{sizeOf(idea.attachments)}}</div>
                     <div class="img_preview_block_wrap">
                         <ul class="img_preview_block" ng-click="displayToggle()">
-                            <li ng-repeat="attachment in idea.attachments">
+                            <li  ng-repeat="attachment in idea.attachments">
                                 <div class="img_preview" style="background: url(../upload/{{attachment.attachmentName}}) center/cover no-repeat"></div>
                             </li>
                         </ul>
@@ -212,8 +212,8 @@
 
                     <!--TODO add photos-->
                     <label>
-                        <input file-model="ideaAttachments" type="file" accept="image/jpeg,image/png" multiple>
-                        <img src="img/icons_of_idea_list/photo_camera.png" class="camera_up_pic">
+                        <input file-model="ideaAttachments" type="file" accept="image/jpeg,image/png" multiple> <!--style="display: none"-->
+                        <img src="img/upload_photo_icon.jpg" class="camera_up_pic">
                     </label>
 
                     <md-input-container class="md-block">
