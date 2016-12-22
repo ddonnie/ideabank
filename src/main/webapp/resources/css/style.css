@@ -52,7 +52,7 @@
 html, body {
 	 height: 100%;
 	 width: 100%;
-	background-color: white;
+	 background-color: #fff;
 }
 body {
 	margin: 0;
@@ -61,7 +61,6 @@ body {
     color: #1b1b1b;
     font-size: 0;
     font-weight: normal;
-
 }
 
 a {
@@ -116,6 +115,7 @@ header {
     line-height: 6vw;
     position: relative;
     z-index: 2;
+	background-color: white;
 }
 
 header a {
@@ -389,12 +389,15 @@ input#search:focus {
 
 
 .ideas_list.container {
+	background-color:	white;
 	overflow: visible;
 }
 .ideas_list {
 	margin-top: 2vw;
 }
-
+#idea {
+	background-color:	white;
+}
 .idea {
 	width: 100%;
 	line-height: 16vw;
@@ -565,7 +568,6 @@ input#search:focus {
 	width: 1.9vw;
 	margin-left: 0.6vw;
 	cursor: pointer;
-
 }
 
 .count_of_comments {
@@ -576,6 +578,41 @@ input#search:focus {
 	display: block;
 }
 
+md-card {
+	width: 60vw;
+}
+
+md-card-content {
+	width: 60vw;
+	margin: 0 auto;
+}
+
+.delete_and_edit_comment_icon_block {
+	margin-left: 0;
+	vertical-align: top;
+	width: 1.5vw;
+	margin-top: 0.5vw;
+	position: relative;
+	right: 6vw;
+	top: 0.5vw;
+}
+
+.delete_icon_in_comments {
+	width: 1.2vw;
+	cursor: pointer;
+
+
+}
+
+.edit_icon_in_comments {
+	width: 1.2vw;
+	cursor: pointer;
+	margin-top: 0.7vw;
+}
+
+
+/*footer of idea*/
+
 .footer_of_idea_preview {
 	height: 3vw;
 	font-size: 1.2vw;
@@ -583,6 +620,8 @@ input#search:focus {
 	vertical-align: middle;
 
 }
+
+
 
 /*Open full idea view*/
 

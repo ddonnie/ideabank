@@ -97,19 +97,30 @@ app.controller('feedCtrl', function($http, $scope, updateFeed) {
                 updateFeed.getUpdatedFeed();
             })
     };
-        /*count comments*/
+        /*counter*/
         $scope.sizeOf = function(obj) {
             return Object.keys(obj || {}).length;
         };
 
-
-    $scope.deleteIdea = function(ideaId) {
+    /*$scope.deleteIdea = function(ideaId) {
         ideatideleteurl = '/ideas/'+ideaId;
         $http.delete(ideatideleteurl).
         then(function() {
             updateFeed.getUpdatedFeed();
         });
+    }*/
+
+    $scope.remove = function(ideaId) {
+        $http.delete('/ideas/'+ideaId)
+            .then(function(response) {
+                window.location.replace('/resources/feed.html');
+            });
     }
+
+    $http.get('/users/me')
+        .then(function(response) {
+            $scope.me = response.data;
+        });
 
 });
 
