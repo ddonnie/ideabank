@@ -159,34 +159,37 @@
             </div>
         </div>
     </div>
-    <div class="comments">
+    <div class="comments" ng-show="showComments" ng-disabled="true">
         <md-list flex="">
-            <md-list-item  ng-show="showComments" class="md-3-line check-element animate-show" ng-disabled="true" ng-repeat="comment in idea.comments | filter:query | orderBy: '+creationDate'">
+            <md-list-item   class="md-3-line check-element animate-show"  ng-repeat="comment in idea.comments | filter:query | orderBy: '+creationDate'">
                 <div class="md-list-item-text"  layout="column" layout-align="start center">
-                    <md-card style="width: 350px;" >
+                    <md-card>
                         <md-card-content>
-                            <p>
-                                <b>{{comment.author.username}}</b> commented {{ comment.creationDate | date:"MM/dd/yyyy 'at' h:mma"}}
-                            </p>
-                            <p>
-                                {{comment.commentText}}
-                            </p>
+                            <p><b>{{comment.author.username}}</b> commented {{ comment.creationDate | date:"MM/dd/yyyy 'at' h:mma"}}</p>
+                            <p>{{comment.commentText}}</p>
                         </md-card-content>
                     </md-card>
+                </div>
+                <div class="delete_and_edit_comment_icon_block ib">
+                    <img src="img/icons_of_idea_list/delete.png" class="delete_icon_in_comments">
+                    <img src="img/icons_of_idea_list/edit.png" class="edit_icon_in_comments">
                 </div>
 
             </md-list-item>
         </md-list>
-        <md-card style="width: 350px; margin-left: 55vw;">
-            <md-card-content>
-                <form name="postCommentForm" ng-submit="commentIdea(idea.ideaId)">
-                    <textarea cols="30" rows="5" style="resize: vertical;" name="commentText" ng-model="commentText"></textarea>
-                    <md-button style="color:grey;" class="md-icon-button" type="submit" aria-label="PostComment">
-                        <i class="material-icons">question_answer</i>
-                    </md-button>
-                </form>
-            </md-card-content>
-        </md-card>
+        <div class="md-list-item-text"  layout="column" layout-align="start center">
+            <md-card >
+                <md-card-content>
+                    <form name="postCommentForm" ng-submit="commentIdea(idea.ideaId)">
+                        <textarea cols="130" rows="3" style="/*resize: vertical;*/ width: 55vw; height: auto;" name="commentText" ng-model="commentText"></textarea>
+                        <md-button style="color:grey;" class="md-icon-button" type="submit" aria-label="PostComment">
+                            <i class="material-icons">question_answer</i>
+                        </md-button>
+                    </form>
+                </md-card-content>
+            </md-card>
+        </div>
+
     </div>
 </div>
 
