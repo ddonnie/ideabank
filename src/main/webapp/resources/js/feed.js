@@ -144,7 +144,29 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
             .then(function(response) {
                 window.location.replace('/resources/feed.html');
             });
-    }
+    };
+
+    $scope.like = function(userMark,ideaId) {
+
+        var ideadata = {
+            mark: userMark
+        };
+
+        var config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        $http.post('/ideas/'+ideaId+'/vote', ideadata, config)
+            .then(function (response) {
+                if (response.status == 200) {
+                    window.location.replace('/resources/feed.html');
+                }
+                else {
+                    alert("Failed!")
+                }
+            });
+    };
 
   });
 
