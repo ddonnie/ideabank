@@ -143,21 +143,15 @@
         </div>
         <div class="footer_of_idea_preview">
             <div class="likes_block ib">
-                <div class="likes_block ib">
-                    <div class="likes_block ib" ng-switch on="userMark">
-                        <img ng-switch-default src="img/icons_of_idea_list/like.png" class="likes like" ng-click="like(1,idea.ideaId)" >
-                        <img ng-switch-when="1" src="img/icons_of_idea_list/like_active.png" class="likes like" >
-                        {{idea.upVoteCount}}
-                    </div>
-                    <div class="likes_block ib" ng-switch on="userMark">
-                        <img ng-switch-default src="img/icons_of_idea_list/unlike.png" class="likes unlike"  ng-click="like(-1,idea.ideaId)">
-                        <img ng-switch-when="-1" src="img/icons_of_idea_list/unlike_active.png" class="likes unlike">
-                        {{idea.downVoteCount}}
-                    </div>
+                <div class="likes_block ib" ng-switch on="userMark">
+                    <img ng-switch-default src="img/icons_of_idea_list/like.png" class="likes like" ng-click="like(1,idea.ideaId)" >
+                    <img ng-switch-when="1" src="img/icons_of_idea_list/like_active.png" class="likes like" >
+                    {{idea.upVoteCount}}
                 </div>
-                <div class="likes_block ib" ng-init="counter1 = 0">
-                    <img src="img/icons_of_idea_list/unlike_active.png" class="likes unlike"  ng-click="counter1 = counter1 + 1">
-                    {{counter1}}
+                <div class="likes_block ib" ng-switch on="userMark">
+                    <img ng-switch-default src="img/icons_of_idea_list/unlike.png" class="likes unlike"  ng-click="like(-1,idea.ideaId)">
+                    <img ng-switch-when="-1" src="img/icons_of_idea_list/unlike_active.png" class="likes unlike">
+                    {{idea.downVoteCount}}
                 </div>
             </div>
             <div class="show-hide_idea_button ib" ng-click="showIdea = !showIdea"></div><!--ShowIdeaButton-->
