@@ -72,7 +72,7 @@ app.service('updateFeed', ['$http', '$rootScope', function($http, $rootScope) {
     }
 }]);
 
-app.controller('feedCtrl', function($http, $scope, updateFeed) {
+app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
 
     updateFeed.getUpdatedFeed();
   
@@ -122,7 +122,39 @@ app.controller('feedCtrl', function($http, $scope, updateFeed) {
             $scope.me = response.data;
         });
 
-});
+    $scope.editIdea = function(ev, ideaId)  {
+        $mdDialog.show({
+            controller: DialogController,
+            contentElement: '#createIdeaEditDialog',
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            clickOutsideToClose: true
+        });
+
+        var ideaNameUrl = "/ideas/" + ideaId;
+
+        $scope.editIdeaName = "Name to edit";
+        $scope.editIdeaText = "Text to edit";
+
+
+    };
+
+  });
+
+function DialogController($scope, $mdDialog) {
+    $scope.hide = function() {
+        $mdDialog.hide();
+    };
+
+    $scope.cancel = function() {
+        $mdDialog.cancel();
+    };
+
+    $scope.answer = function(answer) {
+        $mdDialog.hide(answer);
+    };
+}
+
 
 app.controller('headerCtrl', function ($http, $scope, $mdDialog) {
 
@@ -147,32 +179,17 @@ app.controller('headerCtrl', function ($http, $scope, $mdDialog) {
             clickOutsideToClose: true
         });
     };
-  
+
     $http.get('/users/me')
             .then(function(response) {
                 $scope.currentuser = response.data;
             });
-  
-    function DialogController($scope, $mdDialog) {
-        $scope.hide = function() {
-            $mdDialog.hide();
-        };
-
-        $scope.cancel = function() {
-            $mdDialog.cancel();
-        };
-
-        $scope.answer = function(answer) {
-            $mdDialog.hide(answer);
-        };
-    }
-
 });
 
 app.controller('postCtrl', [ '$scope', 'fileUpload',
     function($scope, fileUpload) {
         $scope.postIdea = function() {
-          var ideaName = $scope.ideaName;
+            var ideaName = $scope.ideaName;
             var ideaText = $scope.ideaText;
             var tags = $scope.ideaTags;
             var ideaAttachments = $scope.ideaAttachments;

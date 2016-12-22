@@ -138,7 +138,7 @@
             <div class="favorites_and_edit_icon_block">
                 <img src="img/icons_of_idea_list/favorites_star.png" class="favorites_icon ib">
                 <img src="img/icons_of_idea_list/delete.png" class="delete_icon ib" ng-show="me.role == 'ADMIN' || idea.author.username == me.username" ng-click="remove(idea.ideaId)">
-                <img src="img/icons_of_idea_list/edit.png" class="edit_icon" ng-show="me.role == 'ADMIN' || idea.author.username == me.username">
+                <img src="img/icons_of_idea_list/edit.png" class="edit_icon" ng-show="me.role == 'ADMIN' || idea.author.username == me.username" ng-click="editIdea($event, idea.ideaId)">
             </div>
         </div>
         <div class="footer_of_idea_preview">
@@ -194,7 +194,6 @@
 </div>
 
 <!--Add Idea Form-->
-
     <div style="visibility: hidden">
         <div class="md-dialog-container" id="createIdeaDialog">
             <md-dialog layout-padding style="width: 35%">
@@ -212,7 +211,7 @@
 
                     <!--TODO add photos-->
                     <label>
-                        <input file-model="ideaAttachments" type="file" accept="image/jpeg,image/png" multiple> <!--style="display: none"-->
+                        <input file-model="ideaAttachments" type="file" accept="image/jpeg,image/png" multiple style="/*display: none*/">
                         <img src="img/upload_photo_icon.jpg" class="camera_up_pic">
                     </label>
 
@@ -230,6 +229,42 @@
             </md-dialog>
         </div>
     </div>
+
+<!--Edit Idea Form-->
+<div style="visibility: hidden">
+    <div class="md-dialog-container" id="createIdeaEditDialog">
+        <md-dialog layout-padding style="width: 35%">
+            <h2>Edit idea</h2>
+            <form ng-controller="postCtrl" name="editIdeaForm" ng-submit="">
+                <md-input-container class="md-block">
+                    <label>Idea title</label>
+                    <input type="text" name="editIdeaName" ng-model="editIdeaName">
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>Idea text</label>
+                    <textarea ng-model="editIdeaText" name="editIdeaText" md-maxlength="1000" rows="5" md-select-on-focus></textarea>
+                </md-input-container>
+
+                <label>
+                    <input file-model="editIdeaAttachments" type="file" accept="image/jpeg,image/png" multiple style="/*display: none*/">
+                    <img src="img/upload_photo_icon.jpg" class="camera_up_pic">
+                </label>
+
+                <md-input-container class="md-block">
+                    <img ng-src="{{filepreview}}"  ng-show="filepreview" class="up_pic" >
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>Use comma to separate tags</label>
+                    <input type="text" name="editIdeaTags" ng-model="editIdeaTags">
+                </md-input-container>
+
+                <md-button flex="" type="submit" id="postButton" class="md-raised">Edit!</md-button>
+            </form>
+        </md-dialog>
+    </div>
+</div>
 
 
 
