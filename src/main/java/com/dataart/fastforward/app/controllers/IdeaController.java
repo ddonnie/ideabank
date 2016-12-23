@@ -4,9 +4,11 @@ import com.dataart.fastforward.app.dto.IdeaDTO;
 import com.dataart.fastforward.app.dto.MarkDTO;
 import com.dataart.fastforward.app.model.Attachment;
 import com.dataart.fastforward.app.model.Idea;
+import com.dataart.fastforward.app.model.User;
 import com.dataart.fastforward.app.services.AttachmentService;
 import com.dataart.fastforward.app.services.IdeaService;
 import com.dataart.fastforward.app.services.MarkService;
+import com.dataart.fastforward.app.services.UserService;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,7 +20,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Orlov on 23.11.2016.
@@ -32,6 +36,8 @@ public class IdeaController {
     @Autowired
     private IdeaService ideaService;
     @Autowired
+    private UserService userService;
+    @Autowired
     private MarkService markService;
     @Autowired
     private AttachmentService attachmentService;
@@ -40,7 +46,11 @@ public class IdeaController {
     public List<Idea> getAllIdeas() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
-        return ideaService.getAll(username);
+        User loggedUser = userService.getUserByUsername(username);
+
+        List<Idea> ideas = ideaService.getAll();
+        ideaService.setMarkInfoForCurrUser(ideas, loggedUser);
+        return ideas;
     }
 
     @PostMapping
@@ -63,8 +73,11 @@ public class IdeaController {
     public Idea getIdeaById(@PathVariable long ideaId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
+        User loggedUser = userService.getUserByUsername(username);
 
-        return ideaService.getIdeaById(ideaId, username);
+        Idea idea = ideaService.getIdeaById(ideaId);
+        ideaService.setMarkInfoForCurrUser(idea, loggedUser);
+        return idea;
     }
 
     @PutMapping("/{ideaId}")
@@ -84,6 +97,8 @@ public class IdeaController {
         }
         ideaService.delete(ideaId, username);
     }
+
+
 
     @PostMapping("/{ideaId}/vote")
     public void addVoteForIdea(@RequestBody MarkDTO markDTO, @PathVariable long ideaId) {

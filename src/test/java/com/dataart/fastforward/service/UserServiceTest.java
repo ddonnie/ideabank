@@ -32,12 +32,12 @@ public class UserServiceTest {
 
     @Test
     public void testGetAccountById() {
-        System.out.println(userService.getUserById(1));
+//        System.out.println(userService.getUserById(1));
     }
 
     @Test
     public void testGetUserByUsername() {
-        System.out.println(userService.getUserByUsername("Patty"));
+//        System.out.println(userService.getUserByUsername("Patty"));
     }
 
     @Test
@@ -58,7 +58,7 @@ public class UserServiceTest {
 
     @Test
     public void getBookmarksTest() {
-        System.out.println(userService.getBookmarks(userService.getUserById(1)));
+//        System.out.println(userService.getBookmarks(userService.getUserById(1)));
     }
 
     @Test

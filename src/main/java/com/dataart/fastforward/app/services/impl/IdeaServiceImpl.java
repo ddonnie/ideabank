@@ -19,10 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static com.dataart.fastforward.app.services.validation.ValidationUtils.assertExistsNotBlank;
 
@@ -76,20 +73,6 @@ public class IdeaServiceImpl implements IdeaService {
 
     @Override
     @Transactional
-    public void delete(long ideaId, String userName) {
-        Idea idea = ideaRepository.getOne(ideaId);
-        ValidationUtils.assertAuthor(idea, userService.getUserByUsername(userName));
-
-        List<Long> tagsToDelete = updateTagSet(idea, null);
-        ideaRepository.delete(ideaId);
-
-        for (Long tagId : tagsToDelete)
-            tagService.delete(tagId);
-
-    }
-
-    @Override
-    @Transactional
     public Idea edit(IdeaDTO ideaDTO, long ideaId, String userName) {
         Idea idea = getIdeaById(ideaId);
         ValidationUtils.assertAuthor(idea, userService.getUserByUsername(userName));
@@ -107,15 +90,39 @@ public class IdeaServiceImpl implements IdeaService {
 
     @Override
     @Transactional
-    public Idea getIdeaById(long ideaId, String username) {
-        Idea idea = ideaRepository.findOne(ideaId);
-        setUserRating(idea, username);
-        return idea;
+    public void delete(long ideaId, String userName) {
+        Idea idea = ideaRepository.getOne(ideaId);
+        ValidationUtils.assertAuthor(idea, userService.getUserByUsername(userName));
+
+        List<Long> tagsToDelete = updateTagSet(idea, null);
+        ideaRepository.delete(ideaId);
+
+        for (Long tagId : tagsToDelete)
+            tagService.delete(tagId);
     }
 
     @Override
     public Idea getIdeaById(long ideaId) {
         return ideaRepository.findOne(ideaId);
+    }
+
+    @Override
+    public List<Idea> getAll() {
+        return ideaRepository.findAll();
+    }
+
+    @Override
+    @Transactional
+    public Idea setMarkInfoForCurrUser(Idea idea, User loggedUser) {
+        setUserRating(idea, loggedUser);
+        return idea;
+    }
+    @Override
+    @Transactional
+    public Collection<Idea> setMarkInfoForCurrUser(Collection<Idea> ideas, User loggedUser) {
+        for (Idea idea : ideas)
+            setUserRating(idea, loggedUser);
+        return ideas;
     }
 
     @Override
@@ -127,20 +134,6 @@ public class IdeaServiceImpl implements IdeaService {
     @Override
     public List<Attachment> getAllAttachments(long ideaId) {
         return attachmentRepository.getAllAttachmentsByIdea(getIdeaById(ideaId));
-    }
-
-    @Override
-    public List<Idea> getAll() {
-        return ideaRepository.findAll();
-    }
-
-    @Override
-    @Transactional
-    public List<Idea> getAll(String username) {
-        List<Idea> ideas = ideaRepository.findAll();
-        for (Idea idea : ideas)
-            setUserRating(idea, username);
-        return ideas;
     }
 
     @Override
@@ -214,8 +207,8 @@ public class IdeaServiceImpl implements IdeaService {
 
     /* tekhnicheskie funkcii jeee */
 
-    private void setUserRating(Idea idea, String username) {
-        Mark mark = markService.getMark(idea, userService.getUserByUsername(username));
+    private void setUserRating(Idea idea, User loggedUser) {
+        Mark mark = markService.getMark(idea, loggedUser);
         idea.setUserMark(mark == null ? 0 : mark.getMark());
     }
 

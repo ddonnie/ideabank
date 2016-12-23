@@ -10,7 +10,7 @@
     <link rel='stylesheet prefetch'
           href='https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.1/angular-material.css'>
 
-   <!-- <link rel='stylesheet prefetch' href='https://material.angularjs.org/1.1.1/docs.css'>-->
+    <!-- <link rel='stylesheet prefetch' href='https://material.angularjs.org/1.1.1/docs.css'>-->
 
     <link rel="stylesheet" media="screen,projection" href="to_top_button_plugin/css/ui.totop.css"/><!--button to top-->
     <link type="text/css" rel="stylesheet" href="slider/angular-carousel.css">
@@ -61,6 +61,7 @@
                 <ul class="dropdown-menu">
                     <li><a href="#">Popular</a></li>
                     <li><a href="#">Random</a></li>
+                    <li><a href="#" ng-click="setOrder('creationDate', false)">Date</a></li>
                 </ul>
             </div>
         </div>
@@ -76,14 +77,14 @@
 </div>
 <!--Ideas List-->
 
-<div class="ideas_list container" id="idea" ng-repeat="idea in ideas | filter:query | orderBy: '-creationDate'">
+<div class="ideas_list container" id="idea" ng-repeat="idea in ideas | filter:query | orderBy: orderOptions.field:reverseOptions[orderOptions.field]">
     <!--IDEA-->
     <div class="idea" ng-class="{'open_idea': showIdea}"> <!--"Это мы добавляем класс для открытия идеи :)))-->
         <div class="left_side ib column_style"> <!--"ib" it's inline block-->
             <h5>{{idea.author.username}}</h5>
             <div class="pic_and_video_preview">
                 <img src="img/icons_of_idea_list/photo_camera.png" class="camera_pic">
-                <div class="ib grey_font_color count_of_img">5</div>
+                <div class="ib grey_font_color count_of_img">{{sizeOf(idea.attachments)}}</div>
                 <img src="img/icons_of_idea_list/video_camera.png" class="video_pic">
                 <div class="ib grey_font_color count_of_video">4</div>
             </div>
@@ -92,24 +93,19 @@
             <div class="pic_and_video_full_view">
                 <div class="idea_images">
                     <img src="img/icons_of_idea_list/photo_camera.png" class="camera_pic">
-                    <div class="ib grey_font_color count_of_img">5</div>
-                    <ul class="img_preview_block" ng-click="displayToggle()">
-                        <li><div class="img_preview" style="background: url(slider/img/1.jpg) center/cover no-repeat"></div></li>
-                        <li><div class="img_preview" style="background: url(slider/img/2.jpg) center/cover no-repeat"></div></li>
-                        <li><div class="img_preview" style="background: url(slider/img/3.jpg) center/cover no-repeat"></div></li>
-                    </ul>
+                    <div class="ib grey_font_color count_of_img">{{sizeOf(idea.attachments)}}</div>
+                    <div class="img_preview_block_wrap">
+                        <ul class="img_preview_block" ng-click="displayToggle()">
+                            <li  ng-repeat="attachment in idea.attachments">
+                                <div class="img_preview" style="background: url(../upload/{{attachment.attachmentName}}) center/cover no-repeat"></div>
+                            </li>
+                        </ul>
+                    </div>
+
                     <div class="slider_wrap" ng-class="{'dnone': isActiveSlider}">
                         <div class="hide_slider_button" ng-click="displayToggle()"></div>
                         <ul rn-carousel rn-carousel-controls rn-carousel-index="carouselIndex" rn-carousel-buffered class="slider_images_post">
-                            <li><img src="slider/img/1.jpg"></li>
-                            <li><img src="slider/img/2.jpg"></li>
-                            <li><img src="slider/img/3.jpg" ></li>
-                            <li><img src="slider/img/4.jpg"></li>
-                            <li><img src="slider/img/5.jpg"></li>
-                            <li><img src="slider/img/6.jpg"></li>
-                            <!--<li ng-repeat="image in sportImages">
-                                <div class="layer">{{image}}</div>
-                            </li>-->
+                            <li ng-repeat="attachment in idea.attachments"><div class="img_slider" style="background: url(../upload/{{attachment.attachmentName}}) center/cover no-repeat"></div></li>
                         </ul>
                     </div>
                 </div>
@@ -125,7 +121,6 @@
 
             </div>
 
-
         </div>
         <div class="center ib column_style">
             <h4>{{idea.ideaName}}</h4>
@@ -136,26 +131,30 @@
             </article>
 
             <ul class="tags" >
-                <li ng-repeat="tag in idea.tags">#{{tag.tagName}}</li>
+                <li ng-repeat="tag in idea.tags">
+                    <p ng-click="filterByTag(tag.tagName)">#{{tag.tagName}}</p>
+                </li>
             </ul>
 
         </div>
         <div class="right_side ib column_style">
             <div class="favorites_and_edit_icon_block">
                 <img src="img/icons_of_idea_list/favorites_star.png" class="favorites_icon ib">
-                <img src="img/icons_of_idea_list/delete.png" class="delete_icon ib" ng-show="idea.author.username == currentuser.username" ng-click="deleteIdea(idea.ideaId)">
-                <img src="img/icons_of_idea_list/edit.png" class="edit_icon" ng-show="idea.author.username == currentuser.username">
+                <img src="img/icons_of_idea_list/delete.png" class="delete_icon ib" ng-show="me.role == 'ADMIN' || idea.author.username == me.username" ng-click="remove(idea.ideaId)">
+                <img src="img/icons_of_idea_list/edit.png" class="edit_icon" ng-show="me.role == 'ADMIN' || idea.author.username == me.username" ng-click="editIdea($event, idea.ideaId)">
             </div>
         </div>
         <div class="footer_of_idea_preview">
             <div class="likes_block ib">
-                <div class="likes_block ib" ng-init="counter = 0">
-                    <img src="img/icons_of_idea_list/like_active.png" class="likes like"  ng-click="counter = counter + 1">
-                    {{counter}}
+                <div class="likes_block ib" ng-switch on="userMark">
+                    <img ng-switch-default src="img/icons_of_idea_list/like.png" class="likes like" ng-click="like(1,idea.ideaId)" >
+                    <img ng-switch-when="1" src="img/icons_of_idea_list/like_active.png" class="likes like" >
+                    {{idea.upVoteCount}}
                 </div>
-                <div class="likes_block ib" ng-init="counter1 = 0">
-                    <img src="img/icons_of_idea_list/unlike_active.png" class="likes unlike"  ng-click="counter1 = counter1 + 1">
-                    {{counter1}}
+                <div class="likes_block ib" ng-switch on="userMark">
+                    <img ng-switch-default src="img/icons_of_idea_list/unlike.png" class="likes unlike"  ng-click="like(-1,idea.ideaId)">
+                    <img ng-switch-when="-1" src="img/icons_of_idea_list/unlike_active.png" class="likes unlike">
+                    {{idea.downVoteCount}}
                 </div>
             </div>
             <div class="show-hide_idea_button ib" ng-click="showIdea = !showIdea"></div><!--ShowIdeaButton-->
@@ -164,77 +163,113 @@
                 <img src="img/icons_of_idea_list/comment_icon.png" class="comment_icon ib" ng-click="showComments = ! showComments">
             </div>
         </div>
-
-
     </div>
-    <div class="comments">
+    <div class="comments" ng-show="showComments" ng-disabled="true">
         <md-list flex="">
-            <md-list-item  ng-show="showComments" class="md-3-line check-element animate-show" ng-disabled="true" ng-repeat="comment in idea.comments | filter:query | orderBy: '+creationDate'">
+            <md-list-item   class="md-3-line check-element animate-show"  ng-repeat="comment in idea.comments | filter:query | orderBy: '+creationDate'">
                 <div class="md-list-item-text"  layout="column" layout-align="start center">
-                    <md-card style="width: 350px;" >
+                    <md-card>
                         <md-card-content>
-                            <p>
-                                <b>{{comment.author.username}}</b> commented {{ comment.creationDate | date:"MM/dd/yyyy 'at' h:mma"}}
-                            </p>
-                            <p>
-                                {{comment.commentText}}
-                            </p>
+                            <p><b>{{comment.author.username}}</b> commented {{ comment.creationDate | date:"MM/dd/yyyy 'at' h:mma"}}</p>
+                            <p>{{comment.commentText}}</p>
                         </md-card-content>
                     </md-card>
+                </div>
+                <div class="delete_and_edit_comment_icon_block ib">
+                    <img src="img/icons_of_idea_list/delete.png" class="delete_icon_in_comments" ng-show="me.role == 'ADMIN' || idea.author.username == me.username" ng-click="removed(comment.commentId, idea.ideaId)">
+                    <img src="img/icons_of_idea_list/edit.png" class="edit_icon_in_comments" ng-show="me.role == 'ADMIN' || idea.author.username == me.username">
                 </div>
 
             </md-list-item>
         </md-list>
-        <md-card style="width: 350px; margin-left: 55vw;">
-            <md-card-content>
-                <form name="postCommentForm" ng-submit="commentIdea(idea.ideaId)">
-                    <textarea cols="30" rows="5" style="resize: vertical;" name="commentText" ng-model="commentText"></textarea>
-                    <md-button style="color:grey;" class="md-icon-button" type="submit" aria-label="PostComment">
-                        <i class="material-icons">question_answer</i>
-                    </md-button>
-                </form>
-            </md-card-content>
-        </md-card>
+        <div class="md-list-item-text"  layout="column" layout-align="start center">
+            <md-card >
+                <md-card-content>
+                    <form name="postCommentForm" ng-submit="commentIdea(idea.ideaId)">
+                        <textarea cols="130" rows="3" style="/*resize: vertical;*/ width: 55vw; height: auto;" name="commentText" ng-model="commentText"></textarea>
+                        <md-button style="color:grey;" class="md-icon-button" type="submit" aria-label="PostComment">
+                            <i class="material-icons">question_answer</i>
+                        </md-button>
+                    </form>
+                </md-card-content>
+            </md-card>
+        </div>
+
     </div>
 </div>
 
 <!--Add Idea Form-->
+<div style="visibility: hidden">
+    <div class="md-dialog-container" id="createIdeaDialog">
+        <md-dialog layout-padding style="width: 35%">
+            <h2>Post new idea</h2>
+            <form ng-controller="postCtrl" name="postIdeaForm" ng-submit="postIdea()">
+                <md-input-container class="md-block">
+                    <label>Idea title</label>
+                    <input type="text" name="ideaName" ng-model="ideaName">
+                </md-input-container>
 
-    <div style="visibility: hidden">
-        <div class="md-dialog-container" id="createIdeaDialog">
-            <md-dialog layout-padding style="width: 35%">
-                <h2>Post new idea</h2>
-                <form ng-controller="postCtrl" name="postIdeaForm" ng-submit="postIdea()">
-                    <md-input-container class="md-block">
-                        <label>Idea title</label>
-                        <input type="text" name="ideaName" ng-model="ideaName">
-                    </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Idea text</label>
+                    <textarea ng-model="ideaText" name="ideaText" md-maxlength="1000" rows="5" md-select-on-focus></textarea>
+                </md-input-container>
 
-                    <md-input-container class="md-block">
-                        <label>Idea text</label>
-                        <textarea ng-model="ideaText" name="ideaText" md-maxlength="1000" rows="5" md-select-on-focus></textarea>
-                    </md-input-container>
+                <!--TODO add photos-->
+                <label>
+                    <input file-model="ideaAttachments" type="file" accept="image/jpeg,image/png" multiple style="display: none">
+                    <img src="img/upload_photo_icon.jpg" class="camera_up_pic">
+                </label>
 
-                    <!--TODO add photos-->
-                    <label>
-                        <input file-model="ideaAttachments" type="file" accept="image/jpeg,image/png" multiple>
-                        <img src="img/icons_of_idea_list/photo_camera.png" class="camera_up_pic">
-                    </label>
+                <md-input-container class="md-block">
+                    <img ng-src="{{filepreview}}"  ng-show="filepreview" class="up_pic" >
+                </md-input-container>
 
-                    <md-input-container class="md-block">
-                        <img ng-src="{{filepreview}}"  ng-show="filepreview" class="up_pic" >
-                    </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Use comma to separate tags</label>
+                    <input type="text" name="ideaTags" ng-model="ideaTags">
+                </md-input-container>
 
-                    <md-input-container class="md-block">
-                        <label>Use comma to separate tags</label>
-                        <input type="text" name="ideaTags" ng-model="ideaTags">
-                    </md-input-container>
-
-                    <md-button flex="" type="submit" id="postButton" class="md-raised">Post!</md-button>
-                </form>
-            </md-dialog>
-        </div>
+                <md-button flex="" type="submit" id="postButton" class="md-raised">Post!</md-button>
+            </form>
+        </md-dialog>
     </div>
+</div>
+
+<!--Edit Idea Form-->
+<div style="visibility: hidden">
+    <div class="md-dialog-container" id="createIdeaEditDialog">
+        <md-dialog layout-padding style="width: 35%">
+            <h2>Edit idea</h2>
+            <form ng-controller="postCtrl" name="editIdeaForm" ng-submit="">
+                <md-input-container class="md-block">
+                    <label>Idea title</label>
+                    <input type="text" name="editIdeaName" ng-model="editIdeaName">
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>Idea text</label>
+                    <textarea ng-model="editIdeaText" name="editIdeaText" md-maxlength="1000" rows="5" md-select-on-focus></textarea>
+                </md-input-container>
+
+                <label>
+                    <input file-model="editIdeaAttachments" type="file" accept="image/jpeg,image/png" multiple style="display: none">
+                    <img src="img/upload_photo_icon.jpg" class="camera_up_pic">
+                </label>
+
+                <md-input-container class="md-block">
+                    <img ng-src="{{filepreview}}"  ng-show="filepreview" class="up_pic" >
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>Use comma to separate tags</label>
+                    <input type="text" name="editIdeaTags" ng-model="editIdeaTags">
+                </md-input-container>
+
+                <md-button flex="" type="submit" id="postButton" class="md-raised">Edit!</md-button>
+            </form>
+        </md-dialog>
+    </div>
+</div>
 
 
 

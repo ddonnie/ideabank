@@ -4,7 +4,9 @@ import com.dataart.fastforward.app.dto.IdeaDTO;
 import com.dataart.fastforward.app.model.Attachment;
 import com.dataart.fastforward.app.model.Comment;
 import com.dataart.fastforward.app.model.Idea;
+import com.dataart.fastforward.app.model.User;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -17,10 +19,10 @@ public interface IdeaService {
     void delete(long ideaId, String userName);
 
     Idea getIdeaById(long ideaId);
-    Idea getIdeaById(long ideaId, String username);
-
     List<Idea> getAll();
-    List<Idea> getAll(String username);
+
+    Idea setMarkInfoForCurrUser(Idea idea, User loggedUser);
+    Collection<Idea> setMarkInfoForCurrUser (Collection<Idea> ideas, User loggedUser);
 
     List<Comment> getAllComments(long ideaId);
     List<Attachment> getAllAttachments(long ideaId);
