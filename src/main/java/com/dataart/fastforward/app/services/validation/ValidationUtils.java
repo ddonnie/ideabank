@@ -42,7 +42,7 @@ public class ValidationUtils {
     }
 
     public static void assertAuthor(Idea idea, User user) {
-        if (!idea.getAuthor().equals(user)) {
+        if (!idea.getAuthor().equals(user) && !"ADMIN".equals(user.getRole().getRoleName()) ) {
             RuntimeException ex = new UnauthorisedIdeaUpdateException("Idea {id:"
                     + idea.getIdeaId() + "} doesn't belong to User {id:"
                     + user.getUserId() +",username:" + user.getUsername()
