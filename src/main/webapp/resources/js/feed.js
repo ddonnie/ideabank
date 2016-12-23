@@ -145,8 +145,15 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
             .then(function(response){
                 $scope.editIdeaName = response.data.ideaName;
                 $scope.editIdeaText = response.data.ideaText;
-                angular.forEach(response.data.tags, function (tag) {
-                    $scope.editIdeaTags = tag;
+
+                var tagsArray = response.data.tags;
+                $scope.editIdeaTags = '';
+                tagsArray.forEach(function (tag, index) {
+                    if(index == tagsArray.length - 1){
+                        $scope.editIdeaTags += tag.tagName;
+                    } else {
+                        $scope.editIdeaTags += tag.tagName + ',';
+                    }
                 });
 
             })
