@@ -5,6 +5,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.ContextLoader;
 
 /**
  * Created by Orlov on 20.12.2016.
@@ -22,8 +23,9 @@ public class AttachmentController {
     public Resource getAttachment(@PathVariable String attachmentName, @PathVariable String extension) {
         System.out.println(attachmentName+"."+extension);
         String uploadsDir = "/upload/";
+        String filepath = ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath(uploadsDir);
         System.out.println(attachmentName);
-        return resourceLoader.getResource(uploadsDir+attachmentName+"."+extension);
+        return resourceLoader.getResource(filepath+attachmentName+"."+extension);
     }
 
 }

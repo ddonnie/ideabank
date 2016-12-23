@@ -26,6 +26,7 @@ public class AttachmentServiceImpl implements AttachmentService {
         try {
             String uploadsDir = "/upload/";
             String filepath = ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath(uploadsDir);
+            System.out.println("Filepath: "+filepath);
             if (!new File(filepath).exists()) {
                 new File(filepath).mkdir();
             }
