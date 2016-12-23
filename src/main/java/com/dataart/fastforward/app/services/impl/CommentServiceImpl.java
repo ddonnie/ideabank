@@ -9,6 +9,7 @@ import com.dataart.fastforward.app.services.IdeaService;
 import com.dataart.fastforward.app.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -45,6 +46,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Transactional
     public void delete(long commentId) {
         Comment comment = commentRepository.findOne(commentId);
         comment.getIdea().getComments().remove(comment);

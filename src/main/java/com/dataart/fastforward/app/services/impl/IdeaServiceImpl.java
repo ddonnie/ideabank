@@ -73,20 +73,6 @@ public class IdeaServiceImpl implements IdeaService {
 
     @Override
     @Transactional
-    public void delete(long ideaId, String userName) {
-        Idea idea = ideaRepository.getOne(ideaId);
-        ValidationUtils.assertAuthor(idea, userService.getUserByUsername(userName));
-
-        List<Long> tagsToDelete = updateTagSet(idea, null);
-        ideaRepository.delete(ideaId);
-
-        for (Long tagId : tagsToDelete)
-            tagService.delete(tagId);
-
-    }
-
-    @Override
-    @Transactional
     public Idea edit(IdeaDTO ideaDTO, long ideaId, String userName) {
         Idea idea = getIdeaById(ideaId);
         ValidationUtils.assertAuthor(idea, userService.getUserByUsername(userName));
@@ -103,6 +89,19 @@ public class IdeaServiceImpl implements IdeaService {
     }
 
     @Override
+    @Transactional
+    public void delete(long ideaId, String userName) {
+        Idea idea = ideaRepository.getOne(ideaId);
+        ValidationUtils.assertAuthor(idea, userService.getUserByUsername(userName));
+
+        List<Long> tagsToDelete = updateTagSet(idea, null);
+        ideaRepository.delete(ideaId);
+
+        for (Long tagId : tagsToDelete)
+            tagService.delete(tagId);
+    }
+
+    @Override
     public Idea getIdeaById(long ideaId) {
         return ideaRepository.findOne(ideaId);
     }
@@ -114,14 +113,13 @@ public class IdeaServiceImpl implements IdeaService {
 
     @Override
     @Transactional
-    public Idea setInfoForCurrUser(Idea idea, User loggedUser) {
+    public Idea setMarkInfoForCurrUser(Idea idea, User loggedUser) {
         setUserRating(idea, loggedUser);
         return idea;
     }
-
     @Override
     @Transactional
-    public Collection<Idea> setInfoForCurrUser(Collection<Idea> ideas, User loggedUser) {
+    public Collection<Idea> setMarkInfoForCurrUser(Collection<Idea> ideas, User loggedUser) {
         for (Idea idea : ideas)
             setUserRating(idea, loggedUser);
         return ideas;
@@ -213,7 +211,6 @@ public class IdeaServiceImpl implements IdeaService {
         Mark mark = markService.getMark(idea, loggedUser);
         idea.setUserMark(mark == null ? 0 : mark.getMark());
     }
-
 
     private List<Long> updateTagSet(Idea idea, IdeaDTO ideaDTO) {
         List<Long> tagsToDelete = new ArrayList<>(idea.getTags().size());

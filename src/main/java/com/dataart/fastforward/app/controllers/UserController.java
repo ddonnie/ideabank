@@ -54,12 +54,6 @@ public class UserController {
         return userInfo;
     }
 
-/*    @GetMapping("/users/{userId}")
-    @ResponseStatus(HttpStatus.OK)
-    public User getUserById(@PathVariable long userId) {
-        return userService.getUserById(userId);
-    }*/
-
     @GetMapping("/users/{username}")
     @ResponseStatus(HttpStatus.OK)
     public User getUserById(@PathVariable String username) {
@@ -75,7 +69,7 @@ public class UserController {
 
         User userWithIdeas = userService.getUserByUsername(username);
         Set<Idea> ideas = userWithIdeas.getIdeas();
-        ideaService.setInfoForCurrUser(ideas, loggedUser);
+        ideaService.setMarkInfoForCurrUser(ideas, loggedUser);
 
         return ideas;
     }
@@ -86,6 +80,11 @@ public class UserController {
         userService.createUser(newUserDTO);
     }
 
+    /*    @GetMapping("/users/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    public User getUserById(@PathVariable long userId) {
+        return userService.getUserById(userId);
+    }*/
 /*    @ExceptionHandler(Exception.class)
     public ResponseEntity<String> errorHandler(Exception exc) {
         return new ResponseEntity<>(exc.getMessage(), HttpStatus.BAD_REQUEST);

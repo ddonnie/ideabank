@@ -49,7 +49,7 @@ public class IdeaController {
         User loggedUser = userService.getUserByUsername(username);
 
         List<Idea> ideas = ideaService.getAll();
-        ideaService.setInfoForCurrUser(ideas, loggedUser);
+        ideaService.setMarkInfoForCurrUser(ideas, loggedUser);
         return ideas;
     }
 
@@ -76,7 +76,7 @@ public class IdeaController {
         User loggedUser = userService.getUserByUsername(username);
 
         Idea idea = ideaService.getIdeaById(ideaId);
-        ideaService.setInfoForCurrUser(idea, loggedUser);
+        ideaService.setMarkInfoForCurrUser(idea, loggedUser);
         return idea;
     }
 

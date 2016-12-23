@@ -2,6 +2,7 @@ package com.dataart.fastforward.app.controllers;
 
 import com.dataart.fastforward.app.dto.CommentDTO;
 import com.dataart.fastforward.app.model.Comment;
+import com.dataart.fastforward.app.model.User;
 import com.dataart.fastforward.app.services.CommentService;
 import com.dataart.fastforward.app.services.IdeaService;
 import com.dataart.fastforward.app.services.UserService;
@@ -42,9 +43,10 @@ public class CommentController {
     public void deleteComment(@PathVariable(name = "ideaId") long ideaId, @PathVariable(name = "commentId") long commentId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userName = auth.getName();
+        User loggedUser = userService.getUserByUsername(userName);
 
         Comment comment = commentService.getCommentById(commentId);
-        if (comment.getAuthor().getUsername().equals(userName))
+        if (comment.getAuthor().getUsername().equals(userName) || "ADMIN".equals(loggedUser.getRole().getRoleName()))
             commentService.delete(commentId);
     }
 }
