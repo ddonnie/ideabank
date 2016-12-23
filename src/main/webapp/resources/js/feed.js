@@ -167,7 +167,20 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
                 }
             });
     };
+    $scope.orderOptions = {
+        field: '-creationDate'
+    };
+    $scope.reverseOptions = {};
+    $scope.setOrder = function(field, reverse) {
+        if ($scope.orderOptions.field != field) {
+            $scope.reverseOptions[field] = reverse;
+        } else {
+            $scope.reverseOptions[field] = !$scope.reverseOptions[field];
+        }
+        $scope.orderOptions.field = field;
 
+        return false;
+    }
   });
 
 function DialogController($scope, $mdDialog) {

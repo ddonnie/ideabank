@@ -61,6 +61,7 @@
                 <ul class="dropdown-menu">
                     <li><a href="#">Popular</a></li>
                     <li><a href="#">Random</a></li>
+                    <li><a href="#" ng-click="setOrder('creationDate', false)">Date</a></li>
                 </ul>
             </div>
         </div>
@@ -76,7 +77,7 @@
 </div>
 <!--Ideas List-->
 
-<div class="ideas_list container" id="idea" ng-repeat="idea in ideas | filter:query | orderBy: '-creationDate'">
+<div class="ideas_list container" id="idea" ng-repeat="idea in ideas | filter:query | orderBy: orderOptions.field:reverseOptions[orderOptions.field]">
     <!--IDEA-->
     <div class="idea" ng-class="{'open_idea': showIdea}"> <!--"Это мы добавляем класс для открытия идеи :)))-->
         <div class="left_side ib column_style"> <!--"ib" it's inline block-->
