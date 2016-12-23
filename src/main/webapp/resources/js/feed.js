@@ -140,11 +140,16 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
             clickOutsideToClose: true
         });
 
-        var ideaNameUrl = "/ideas/" + ideaId;
+        var ideaUrl = "/ideas/" + ideaId;
+        $http.get(ideaUrl)
+            .then(function(response){
+                $scope.editIdeaName = response.data.ideaName;
+                $scope.editIdeaText = response.data.ideaText;
+                /*angular.forEach(response.data.tags, function (tag) {
+                    $scope.editIdeaText = response.data.tag;
+                });*/
 
-        $scope.editIdeaName = "Name to edit";
-        $scope.editIdeaText = "Text to edit";
-
+            })
 
     };
 
