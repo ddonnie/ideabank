@@ -10,7 +10,7 @@
     <link rel='stylesheet prefetch'
           href='https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.1/angular-material.css'>
 
-   <!-- <link rel='stylesheet prefetch' href='https://material.angularjs.org/1.1.1/docs.css'>-->
+    <!-- <link rel='stylesheet prefetch' href='https://material.angularjs.org/1.1.1/docs.css'>-->
 
     <link rel="stylesheet" media="screen,projection" href="to_top_button_plugin/css/ui.totop.css"/><!--button to top-->
     <link type="text/css" rel="stylesheet" href="slider/angular-carousel.css">
@@ -131,7 +131,9 @@
             </article>
 
             <ul class="tags" >
-                <li ng-repeat="tag in idea.tags">#{{tag.tagName}}</li>
+                <li ng-repeat="tag in idea.tags">
+                    <p ng-click="filterByTag(tag.tagName)">#{{tag.tagName}}</p>
+                </li>
             </ul>
 
         </div>
@@ -197,41 +199,41 @@
 </div>
 
 <!--Add Idea Form-->
-    <div style="visibility: hidden">
-        <div class="md-dialog-container" id="createIdeaDialog">
-            <md-dialog layout-padding style="width: 35%">
-                <h2>Post new idea</h2>
-                <form ng-controller="postCtrl" name="postIdeaForm" ng-submit="postIdea()">
-                    <md-input-container class="md-block">
-                        <label>Idea title</label>
-                        <input type="text" name="ideaName" ng-model="ideaName">
-                    </md-input-container>
+<div style="visibility: hidden">
+    <div class="md-dialog-container" id="createIdeaDialog">
+        <md-dialog layout-padding style="width: 35%">
+            <h2>Post new idea</h2>
+            <form ng-controller="postCtrl" name="postIdeaForm" ng-submit="postIdea()">
+                <md-input-container class="md-block">
+                    <label>Idea title</label>
+                    <input type="text" name="ideaName" ng-model="ideaName">
+                </md-input-container>
 
-                    <md-input-container class="md-block">
-                        <label>Idea text</label>
-                        <textarea ng-model="ideaText" name="ideaText" md-maxlength="1000" rows="5" md-select-on-focus></textarea>
-                    </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Idea text</label>
+                    <textarea ng-model="ideaText" name="ideaText" md-maxlength="1000" rows="5" md-select-on-focus></textarea>
+                </md-input-container>
 
-                    <!--TODO add photos-->
-                    <label>
-                        <input file-model="ideaAttachments" type="file" accept="image/jpeg,image/png" multiple style="/*display: none*/">
-                        <img src="img/upload_photo_icon.jpg" class="camera_up_pic">
-                    </label>
+                <!--TODO add photos-->
+                <label>
+                    <input file-model="ideaAttachments" type="file" accept="image/jpeg,image/png" multiple style="/*display: none*/">
+                    <img src="img/upload_photo_icon.jpg" class="camera_up_pic">
+                </label>
 
-                    <md-input-container class="md-block">
-                        <img ng-src="{{filepreview}}"  ng-show="filepreview" class="up_pic" >
-                    </md-input-container>
+                <md-input-container class="md-block">
+                    <img ng-src="{{filepreview}}"  ng-show="filepreview" class="up_pic" >
+                </md-input-container>
 
-                    <md-input-container class="md-block">
-                        <label>Use comma to separate tags</label>
-                        <input type="text" name="ideaTags" ng-model="ideaTags">
-                    </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Use comma to separate tags</label>
+                    <input type="text" name="ideaTags" ng-model="ideaTags">
+                </md-input-container>
 
-                    <md-button flex="" type="submit" id="postButton" class="md-raised">Post!</md-button>
-                </form>
-            </md-dialog>
-        </div>
+                <md-button flex="" type="submit" id="postButton" class="md-raised">Post!</md-button>
+            </form>
+        </md-dialog>
     </div>
+</div>
 
 <!--Edit Idea Form-->
 <div style="visibility: hidden">
