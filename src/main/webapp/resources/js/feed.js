@@ -100,6 +100,22 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
         );
     };
 
+/*My ideas filter*/
+
+    $scope.filterByMyIdeas = function() {
+        $http.get('/users/me')
+            .then(function(response) {
+                $scope.me = response.data;
+                var meUser = response.data.username;
+                var userMeUrl = "/users/"+meUser+"/ideas";
+                $http.get(userMeUrl).success(
+                    function(response) {
+                        $scope.ideas = response;
+                    }
+                );
+            });
+    };
+
 
 
     $scope.commentIdea = function(ideaId) {
@@ -141,6 +157,10 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
         .then(function(response) {
             $scope.me = response.data;
         });
+
+
+
+
 
     $scope.editIdea = function(ev, ideaId)  {
         $mdDialog.show({
