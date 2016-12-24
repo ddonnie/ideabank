@@ -21,11 +21,9 @@ public class AttachmentController {
 
     @GetMapping
     public Resource getAttachment(@PathVariable String attachmentName, @PathVariable String extension) {
-        System.out.println(attachmentName+"."+extension);
         String uploadsDir = "/upload/";
         String filepath = ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath(uploadsDir);
-        System.out.println(attachmentName);
-        return resourceLoader.getResource(filepath+attachmentName+"."+extension);
+        return resourceLoader.getResource("file:"+filepath+attachmentName+"."+extension);
     }
 
 }
