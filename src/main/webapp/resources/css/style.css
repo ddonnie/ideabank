@@ -530,8 +530,6 @@ input#search:focus {
 .column_style p {
 	font-size: 1.3vw;
 	line-height: 1.5vw;
-	margin-bottom: 1vw;
-	margin-top: 0.4vw;
 }
 
 
@@ -611,6 +609,12 @@ md-card-content {
 }
 
 
+/*
+.tags li p {
+	margin-bottom: 0;
+}
+*/
+
 /*footer of idea*/
 
 .footer_of_idea_preview {
@@ -620,6 +624,7 @@ md-card-content {
 	vertical-align: middle;
 
 }
+
 
 
 
@@ -673,7 +678,7 @@ md-card-content {
 }
 
 .open_idea .column_style {
-	line-height: 1.2vw;
+	line-height: 1.6vw;
 	vertical-align: top;
 	font-size: 1.2vw;
 

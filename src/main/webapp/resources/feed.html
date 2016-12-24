@@ -21,7 +21,7 @@
 </head>
 
 <body ng-controller="feedCtrl" ng-cloak="" ng-app="feedApp">
-<!--It's my-->
+
 <!--Header-->
 <header>
     <div ng-controller="headerCtrl" class="container">
@@ -55,7 +55,7 @@
 <div class="sorting">
     <div class="container">
         <div class="wrap_for_sorting">
-            <h1>Fresh</h1>
+            <h1>Sorting</h1>
             <img src="img/arrow_down_select.png">
             <div class="dropdown">
                 <ul class="dropdown-menu">
@@ -67,7 +67,7 @@
         </div>
 
         <div class="favourites">
-            <h2>Favourites</h2>
+            <h2>Favorite</h2>
             <span>(</span>
             <div id="count_of_favorites">21</div>
             <span>)</span>
@@ -79,7 +79,7 @@
 
 <div class="ideas_list container" id="idea" ng-repeat="idea in ideas | filter:query | orderBy: orderOptions.field:reverseOptions[orderOptions.field]">
     <!--IDEA-->
-    <div class="idea" ng-class="{'open_idea': showIdea}"> <!--"Это мы добавляем класс для открытия идеи :)))-->
+    <div class="idea" ng-class="{'open_idea': showIdea}">
         <div class="left_side ib column_style"> <!--"ib" it's inline block-->
             <h5>{{idea.author.username}}</h5>
             <div class="pic_and_video_preview">
@@ -131,8 +131,8 @@
             </article>
 
             <ul class="tags" >
-                <li ng-repeat="tag in idea.tags">
-                    <p ng-click="filterByTag(tag.tagName)">#{{tag.tagName}}</p>
+                <li  ng-repeat="tag in idea.tags">
+                    <p  ng-click="filterByTag(tag.tagName)">#{{tag.tagName}}</p>
                 </li>
             </ul>
 
