@@ -81,7 +81,7 @@
     <!--IDEA-->
     <div class="idea" ng-class="{'open_idea': showIdea}">
         <div class="left_side ib column_style"> <!--"ib" it's inline block-->
-            <h5>{{idea.author.username}}</h5>
+            <h5 ng-click="filterByUser(idea.author.username)">{{idea.author.username}}</h5>
             <div class="pic_and_video_preview">
                 <img src="img/icons_of_idea_list/photo_camera.png" class="camera_pic">
                 <div class="ib grey_font_color count_of_img">{{sizeOf(idea.attachments)}}</div>

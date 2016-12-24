@@ -428,7 +428,13 @@ input#search:focus {
 	padding-bottom: 1vw;
 	font-size: 1.4vw;
 	line-height: 1.5vw;
+	cursor: pointer;
 
+
+}
+
+.column_style h5:hover {
+	opacity: 0.6;
 }
 
 .left_side {

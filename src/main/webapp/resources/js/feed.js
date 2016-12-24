@@ -81,7 +81,7 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
     $scope.displayToggle = function () {
         $scope.isActiveSlider = !$scope.isActiveSlider;
     };
-
+/*Tag filter*/
     $scope.filterByTag = function(tag) {
         var tagUrl = "/tags/"+tag;
         $http.get(tagUrl).success(
@@ -90,6 +90,17 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
             }
         );
     };
+/*user filter*/
+    $scope.filterByUser = function(user) {
+        var userUrl = "/users/"+user+"/ideas";
+        $http.get(userUrl).success(
+            function(response) {
+                $scope.ideas = response;
+            }
+        );
+    };
+
+
 
     $scope.commentIdea = function(ideaId) {
         var commentData = {
