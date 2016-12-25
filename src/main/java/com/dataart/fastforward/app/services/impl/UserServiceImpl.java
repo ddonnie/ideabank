@@ -1,5 +1,6 @@
 package com.dataart.fastforward.app.services.impl;
 
+import com.dataart.fastforward.app.dao.IdeaRepository;
 import com.dataart.fastforward.app.dao.UserRepository;
 import com.dataart.fastforward.app.dto.NewUserDTO;
 import com.dataart.fastforward.app.model.User;
@@ -24,6 +25,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private IdeaRepository ideaRepository;
+
     @Autowired
     RoleService roleService;
     @Autowired
@@ -69,6 +73,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAll() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public void addBookmark(Idea idea, User user) {
+        user.getBookmarkedIdeas().add(idea);
+        userRepository.saveAndFlush(user);
+
+        idea.getUsersWhoBookmarked().add(user);
+        ideaRepository.saveAndFlush(idea);
+    }
+
+    @Override
+    public void deleteBookmark(Idea idea, User user) {
+        user.getBookmarkedIdeas().remove(idea);
+        userRepository.saveAndFlush(user);
+
+        idea.getUsersWhoBookmarked().remove(user);
+        ideaRepository.saveAndFlush(idea);
     }
 
     @Override

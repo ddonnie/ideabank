@@ -49,7 +49,7 @@ public class IdeaController {
         User loggedUser = userService.getUserByUsername(username);
 
         List<Idea> ideas = ideaService.getAll();
-        ideaService.setMarkInfoForCurrUser(ideas, loggedUser);
+        ideaService.setInfoForCurrUser(ideas, loggedUser);
         return ideas;
     }
 
@@ -76,7 +76,7 @@ public class IdeaController {
         User loggedUser = userService.getUserByUsername(username);
 
         Idea idea = ideaService.getIdeaById(ideaId);
-        ideaService.setMarkInfoForCurrUser(idea, loggedUser);
+        ideaService.setInfoForCurrUser(idea, loggedUser);
         return idea;
     }
 
@@ -99,6 +99,25 @@ public class IdeaController {
     }
 
 
+    @PostMapping("/{ideaId}/bookmark")
+    public void addToBookmarks(@PathVariable long ideaId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        User loggedUser = userService.getUserByUsername(username);
+        Idea idea = ideaService.getIdeaById(ideaId);
+
+        userService.addBookmark(idea,loggedUser);
+    }
+
+    @DeleteMapping("/{ideaId}/bookmark")
+    public void removeFromBookmarks(@PathVariable long ideaId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        User loggedUser = userService.getUserByUsername(username);
+        Idea idea = ideaService.getIdeaById(ideaId);
+
+        userService.deleteBookmark(idea,loggedUser);
+    }
 
     @PostMapping("/{ideaId}/vote")
     public void addVoteForIdea(@RequestBody MarkDTO markDTO, @PathVariable long ideaId) {

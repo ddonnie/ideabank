@@ -113,15 +113,18 @@ public class IdeaServiceImpl implements IdeaService {
 
     @Override
     @Transactional
-    public Idea setMarkInfoForCurrUser(Idea idea, User loggedUser) {
+    public Idea setInfoForCurrUser(Idea idea, User loggedUser) {
         setUserRating(idea, loggedUser);
+        setBookmarked(idea, loggedUser);
         return idea;
     }
     @Override
     @Transactional
-    public Collection<Idea> setMarkInfoForCurrUser(Collection<Idea> ideas, User loggedUser) {
-        for (Idea idea : ideas)
+    public Collection<Idea> setInfoForCurrUser(Collection<Idea> ideas, User loggedUser) {
+        for (Idea idea : ideas) {
             setUserRating(idea, loggedUser);
+            setBookmarked(idea, loggedUser);
+        }
         return ideas;
     }
 
@@ -210,6 +213,10 @@ public class IdeaServiceImpl implements IdeaService {
     private void setUserRating(Idea idea, User loggedUser) {
         Mark mark = markService.getMark(idea, loggedUser);
         idea.setUserMark(mark == null ? 0 : mark.getMark());
+    }
+
+    private void setBookmarked(Idea idea, User loggedUser) {
+        idea.setBookmarked(loggedUser.getBookmarkedIdeas().contains(idea));
     }
 
     private List<Long> updateTagSet(Idea idea, IdeaDTO ideaDTO) {

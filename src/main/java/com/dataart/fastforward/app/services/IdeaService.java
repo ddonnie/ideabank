@@ -21,8 +21,8 @@ public interface IdeaService {
     Idea getIdeaById(long ideaId);
     List<Idea> getAll();
 
-    Idea setMarkInfoForCurrUser(Idea idea, User loggedUser);
-    Collection<Idea> setMarkInfoForCurrUser (Collection<Idea> ideas, User loggedUser);
+    Idea setInfoForCurrUser(Idea idea, User loggedUser);
+    Collection<Idea> setInfoForCurrUser (Collection<Idea> ideas, User loggedUser);
 
     List<Comment> getAllComments(long ideaId);
     List<Attachment> getAllAttachments(long ideaId);
