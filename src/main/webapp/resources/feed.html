@@ -142,8 +142,8 @@
         <div class="right_side ib column_style">
             <div class="favorites_and_edit_icon_block">
                 <img src="img/icons_of_idea_list/favorites_star.png" class="favorites_icon ib">
-                <img src="img/icons_of_idea_list/delete.png" class="delete_icon ib" ng-show="me.role == 'ADMIN' || idea.author.username == me.username" ng-click="remove(idea.ideaId)">
-                <img src="img/icons_of_idea_list/edit.png" class="edit_icon" ng-show="me.role == 'ADMIN' || idea.author.username == me.username" ng-click="editIdea($event, idea.ideaId)">
+                <img src="img/icons_of_idea_list/delete.png" class="delete_icon ib" ng-show="loggedUser.role == 'ADMIN' || idea.author.username == loggedUser.username" ng-click="remove(idea.ideaId)">
+                <img src="img/icons_of_idea_list/edit.png" class="edit_icon" ng-show="loggedUser.role == 'ADMIN' || idea.author.username == loggedUser.username" ng-click="editIdea($event, idea.ideaId)">
             </div>
         </div>
         <div class="footer_of_idea_preview">
@@ -178,8 +178,8 @@
                     </md-card>
                 </div>
                 <div class="delete_and_edit_comment_icon_block ib">
-                    <img src="img/icons_of_idea_list/delete.png" class="delete_icon_in_comments" ng-show="me.role == 'ADMIN' || idea.author.username == me.username" ng-click="removed(comment.commentId, idea.ideaId)">
-                    <img src="img/icons_of_idea_list/edit.png" class="edit_icon_in_comments" ng-show="me.role == 'ADMIN' || idea.author.username == me.username">
+                    <img src="img/icons_of_idea_list/delete.png" class="delete_icon_in_comments" ng-show="loggedUser.role == 'ADMIN' || idea.author.username == loggedUser.username" ng-click="removed(comment.commentId, idea.ideaId)">
+                    <img src="img/icons_of_idea_list/edit.png" class="edit_icon_in_comments" ng-show="loggedUser.role == 'ADMIN' || idea.author.username == loggedUser.username">
                 </div>
 
             </md-list-item>
@@ -218,13 +218,15 @@
 
                 <!--TODO add photos-->
                 <label>
-                    <input file-model="ideaAttachments" type="file" accept="image/jpeg,image/png" multiple style="display: none">
+                    <input file-model="ideaAttachments" type="file" accept="image/jpeg,image/png" multiple
+                          style="display: none">
                     <img src="img/upload_photo_icon.jpg" class="camera_up_pic">
                 </label>
 
-                <md-input-container class="md-block">
-                    <img ng-src="{{filepreview}}"  ng-show="filepreview" class="up_pic" >
-                </md-input-container>
+                <!--<md-input-container class="md-block" ng-repeat="item in ideaAttachments">
+                    <img ng-show="item" class="up_pic" >
+                </md-input-container>-->
+
 
                 <md-input-container class="md-block">
                     <label>Use comma to separate tags</label>
@@ -242,7 +244,7 @@
     <div class="md-dialog-container" id="createIdeaEditDialog">
         <md-dialog layout-padding style="width: 35%">
             <h2>Edit idea</h2>
-            <form ng-controller="postCtrl" name="editIdeaForm" ng-submit="">
+            <form ng-controller="postCtrl" name="editIdeaForm" ng-submit="postEditIdea(ideaId)">
                 <md-input-container class="md-block">
                     <label>Idea title</label>
                     <input type="text" name="editIdeaName" ng-model="editIdeaName">
@@ -254,7 +256,7 @@
                 </md-input-container>
 
                 <label>
-                    <input file-model="editIdeaAttachments" type="file" accept="image/jpeg,image/png" multiple style="display: none">
+                    <input file-model="editIdeaAttachments" name="editIdeaAttachments" type="file" accept="image/jpeg,image/png" multiple style="display: none">
                     <img src="img/upload_photo_icon.jpg" class="camera_up_pic">
                 </label>
 
@@ -302,7 +304,6 @@
 <script type="text/javascript" src="js/dropdownmenu.js"></script>
 <script type="text/javascript" src="js/totop.js"></script>
 <script src="/resources/js/feed.js"></script>
-
 
 </body>
 </html>

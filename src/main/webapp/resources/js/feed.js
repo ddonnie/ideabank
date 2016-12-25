@@ -1,6 +1,7 @@
 /**
  * Created by Orlov on 30.11.2016.
  */
+
 var app = angular.module('feedApp',['ngMaterial', 'ngMessages', 'material.svgAssetsCache', 'angular-carousel']);
 
 app.directive('fileModel', [ '$parse', function($parse) {
@@ -17,6 +18,7 @@ app.directive('fileModel', [ '$parse', function($parse) {
                 angular.forEach(element[0].files, function (item) {
                     console.log(item);
                     values.push(item);
+
                 });
                 scope.$apply(function () {
                     if (isMultiple) {
@@ -50,6 +52,37 @@ app.service('fileUpload', ['$http', 'updateFeed', '$mdDialog', function($http, u
         });
 
         $http.post(uploadUrl, fd, {
+            transformRequest : angular.identity,
+            headers : {
+                'Content-Type' : undefined
+            }
+        }).success(function() {
+            $mdDialog.cancel();
+            updateFeed.getUpdatedFeed();
+        }).error(function() {
+            alert("Nope");
+        });
+    }
+    this.uploadModifiedFileToUrl = function(uploadUrl, ideaName, ideaText, tags, ideaAttachments) {
+
+        var fd = new FormData();
+        var procTags = [];
+        if (tags != null) {
+            procTags = tags.split([',']);
+        };
+        var ideaDTO = {
+            "ideaName": ideaName,
+            "ideaText": ideaText,
+            "tags": procTags
+        };
+        console.log(ideaDTO);
+        fd.append('ideaDTO', JSON.stringify(ideaDTO));
+
+        angular.forEach(ideaAttachments, function(attachment) {
+            fd.append('ideaAttachments', attachment);
+        });
+
+        $http.put(uploadUrl, fd, {
             transformRequest : angular.identity,
             headers : {
                 'Content-Type' : undefined
@@ -103,12 +136,12 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
 /*My ideas filter*/
 
     $scope.filterByMyIdeas = function() {
-        $http.get('/users/me')
+        $http.get('/users/loggedUser')
             .then(function(response) {
-                $scope.me = response.data;
-                var meUser = response.data.username;
-                var userMeUrl = "/users/"+meUser+"/ideas";
-                $http.get(userMeUrl).success(
+                $scope.loggedUser = response.data;
+                var loggedUser = response.data.username;
+                var loggedUserUrl = "/users/"+loggedUser+"/ideas";
+                $http.get(loggedUserUrl).success(
                     function(response) {
                         $scope.ideas = response;
                     }
@@ -153,16 +186,16 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
             });
     }
 
-    $http.get('/users/me')
+    $http.get('/users/loggedUser')
         .then(function(response) {
-            $scope.me = response.data;
+            $scope.loggedUser = response.data;
         });
 
 
 
 
-
     $scope.editIdea = function(ev, ideaId)  {
+        $scope.ideaId = ideaId;
         $mdDialog.show({
             controller: DialogController,
             contentElement: '#createIdeaEditDialog',
@@ -274,7 +307,7 @@ app.controller('headerCtrl', function ($http, $scope, $mdDialog) {
         });
     };
 
-    $http.get('/users/me')
+    $http.get('/users/loggedUser')
         .then(function(response) {
             $scope.currentuser = response.data;
         });
@@ -291,27 +324,81 @@ app.controller('postCtrl', [ '$scope', 'fileUpload',
             var uploadUrl = "/ideas";
             fileUpload.uploadFileToUrl(uploadUrl, ideaName, ideaText, tags, ideaAttachments);
         };
+        $scope.postEditIdea = function(ideaId) {
+            var ideaName = $scope.editIdeaName;
+            var ideaText = $scope.editIdeaText;
+            var tags = $scope.editIdeaTags;
+            var ideaAttachments = $scope.editIdeaAttachments;
+            console.log('file is ' + angular.toJson(ideaAttachments));
+            var uploadUrl = "/ideas/" + ideaId;
+            fileUpload.uploadModifiedFileToUrl(uploadUrl, ideaName, ideaText, tags, ideaAttachments);
+        };
     }]);
 
 
-/*directive for picture preview in add idea form
- .directive("fileinput", [function() {
- return {
- scope: {
- fileinput: "=",
- filepreview: "="
- },
- link: function (scope, element) {
- element.bind("change", function (changeEvent) {
- scope.fileinput = changeEvent.target.files[0];
- var reader = new FileReader();
- reader.onload = function (loadEvent) {
- scope.$apply(function () {
- scope.filepreview = loadEvent.target.result;
- });
- }
- reader.readAsDataURL(scope.fileinput);
+/*directive for picture preview in add idea form*/
+/*
+app.directive("fileinput", [function() {
+     return {
+     scope: {
+         fileinput: "=",
+         filepreview: "="
+         },
+         link: function (scope, element) {
+             element.bind("change", function (changeEvent) {
+                 /!*scope.fileinput = changeEvent.target.files[0];*!/
 
- });
- }
- }}]);*/
+                 scope.fileinput = angular.forEach(element[0].files, function (item) {
+                     changeEvent.target.item;
+                 });
+
+                 console.log("Fileinput" + scope.fileinput);
+
+                 var reader = new FileReader();
+
+                 reader.onload = function (loadEvent) {
+                     scope.$apply(function () {
+                        scope.filepreview = loadEvent.target.result;
+                         console.log("Filepreview" + scope.filepreview);
+                     });
+                 }
+
+                 reader.readAsDataURL(scope.fileinput);
+                 console.log("Reader" + reader);
+
+
+         });
+     }
+ }}]);
+*/
+
+/*function previewFiles() {
+
+    var preview = angular.element(document.querySelector('#preview'));
+    var files   = angular.element(document.querySelector('input[type=file]').files);
+
+    function readAndPreview(file) {
+
+        // Make sure `file.name` matches our extensions criteria
+        if ( /\.(jpe?g|png|gif)$/i.test(file.name) ) {
+            var reader = new FileReader();
+
+            reader.addEventListener("load", function () {
+                var image = new Image();
+                image.height = 100;
+                image.title = file.name;
+                image.src = this.result;
+                preview.appendChild( image );
+            }, false);
+
+            reader.readAsDataURL(file);
+        }
+
+    }
+
+    if (files) {
+        [].forEach.call(files, readAndPreview);
+    }
+
+}*/
+
