@@ -28,8 +28,8 @@
         <nav>
             <div class="logo"><a href="feed.html">Idea Bank</a></div>
             <ul>
-                <li>Feed</li>
-                <li ng-click="filterByMyIdeas()">My Ideas</li>
+                <li><a href="feed.html"  ng-class="{'active_menu_link': isActiveFeed}">Feed</a></li>
+                <li ng-click="filterByMyIdeas()" ng-class="{'active_menu_link': isActiveMyIdeas}">My Ideas</li>
                 <li>
                     <button id="button_add_idea" ng-click="createIdea($event)">&nbsp&nbsp&nbspAdd Idea</button>
                 </li>

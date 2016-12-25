@@ -109,12 +109,13 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
 
     updateFeed.getUpdatedFeed();
 
-    /*show_slider*/
+ /*show_slider*/
     $scope.isActiveSlider = true;
     $scope.displayToggle = function () {
         $scope.isActiveSlider = !$scope.isActiveSlider;
     };
-/*Tag filter*/
+
+ /*Tag filter*/
     $scope.filterByTag = function(tag) {
         var tagUrl = "/tags/"+tag;
         $http.get(tagUrl).success(
@@ -133,6 +134,11 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
         );
     };
 
+
+/*toggle menu class active*/
+    $scope.isActiveFeed = true;
+    $scope.isActiveMyIdeas = false;
+
 /*My ideas filter*/
 
     $scope.filterByMyIdeas = function() {
@@ -144,6 +150,8 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
                 $http.get(loggedUserUrl).success(
                     function(response) {
                         $scope.ideas = response;
+                        $scope.isActiveFeed = false;/*toggle menu class active*/
+                        $scope.isActiveMyIdeas = true;/*toggle menu class active*/
                     }
                 );
             });

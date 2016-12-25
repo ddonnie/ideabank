@@ -35,9 +35,7 @@
     url('../fonts/poiret/poiretone-regular-webfont.svg#poiret_oneregular') format('svg');
     font-weight: normal;
     font-style: normal;
-
 }
-
 
 * {
     margin: 0;
@@ -53,13 +51,12 @@ html {
     font-family: 'robotoregular';;
 }
 body {
-    /*background: url('../img/brain.png') bottom/50% no-repeat, radial-gradient(circle farthest-side at 20vw 10vw, #006dce, #002c46);*/
+
     background: radial-gradient(circle farthest-side at 20vw 10vw, #006dce, #002c46);
     height: 100%;
     width: 100%;
     color: #fff;
     text-align: center;
-
 }
 
 .transparent {
