@@ -268,7 +268,12 @@ input#search:focus {
   opacity: 0.5;
 }
 
-
+*:focus {
+	outline: -webkit-focus-ring-color auto 0px;
+	outline-color: -webkit-focus-ring-color;
+	outline-style: none;
+	outline-width: 0px;
+}
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 /*THE FIRST UNDER HEADER*/
