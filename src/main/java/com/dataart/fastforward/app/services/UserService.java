@@ -18,5 +18,8 @@ public interface UserService {
     User getUserById(long userId);
     User getUserByUsername(String username);
     List<User> getAll();
+
+    void addBookmark(Idea idea, User user);
+    void deleteBookmark(Idea idea, User user);
     List<Idea> getBookmarks(User user);
 }
