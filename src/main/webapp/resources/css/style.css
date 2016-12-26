@@ -513,10 +513,33 @@ input#search:focus {
 .likes_block {
 	margin-left: 1.6vw;
 }
-.likes {
+/*.likes {
 	width: 1.5vw;
+	height: ;
 	margin-right: 0.3vw;
 	cursor: pointer;
+}*/
+
+.likes {
+	width: 1.5vw;
+	height: 1.5vw;
+	margin-right: 0.3vw;
+	cursor: pointer;
+}
+
+.like {
+	background: url(../img/icons_of_idea_list/like.png) center/cover no-repeat;
+}
+.dislike {
+	background: url(../img/icons_of_idea_list/unlike.png) center/cover no-repeat;
+}
+
+.active_like {
+	background: url(../img/icons_of_idea_list/like_active.png) center/cover no-repeat;
+}
+
+.active_dislike {
+	background: url(../img/icons_of_idea_list/unlike_active.png) center/cover no-repeat;
 }
 
 .count_of_like {
@@ -943,3 +966,4 @@ footer .logo {
 	width: 8vw;
 	height: 8vw;
 }
+

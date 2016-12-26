@@ -148,17 +148,18 @@
         </div>
         <div class="footer_of_idea_preview">
             <div class="likes_block ib">
-                <div class="likes_block ib" ng-switch on="userMark">
+                <div class="likes_block ib" ng-switch on="idea.userMark">
                     <img ng-switch-default src="img/icons_of_idea_list/like.png" class="likes like" ng-click="like(1,idea.ideaId)" >
                     <img ng-switch-when="1" src="img/icons_of_idea_list/like_active.png" class="likes like" >
                     {{idea.upVoteCount}}
                 </div>
-                <div class="likes_block ib" ng-switch on="userMark">
+                <div class="likes_block ib" ng-switch on="idea.userMark">
                     <img ng-switch-default src="img/icons_of_idea_list/unlike.png" class="likes unlike"  ng-click="like(-1,idea.ideaId)">
                     <img ng-switch-when="-1" src="img/icons_of_idea_list/unlike_active.png" class="likes unlike">
                     {{idea.downVoteCount}}
                 </div>
             </div>
+
             <div class="show-hide_idea_button ib" ng-click="showIdea = !showIdea"></div><!--ShowIdeaButton-->
             <div class="comments_count_block ib">
                 <div class="count_of_comments ib grey_font_color">{{ sizeOf(idea.comments) }}</div>
@@ -216,17 +217,16 @@
                     <textarea ng-model="ideaText" name="ideaText" md-maxlength="1000" rows="5" md-select-on-focus></textarea>
                 </md-input-container>
 
-                <!--TODO add photos-->
+               <!--TODO add photos-->
                 <label>
                     <input file-model="ideaAttachments" type="file" accept="image/jpeg,image/png" multiple
                           style="display: none">
                     <img src="img/upload_photo_icon.jpg" class="camera_up_pic">
                 </label>
 
-                <!--<md-input-container class="md-block" ng-repeat="item in ideaAttachments">
-                    <img ng-show="item" class="up_pic" >
-                </md-input-container>-->
-
+                <md-input-container class="md-block" ng-repeat="file in ideaAttachments">
+                    <p>{{ file }}</p>
+                </md-input-container>
 
                 <md-input-container class="md-block">
                     <label>Use comma to separate tags</label>

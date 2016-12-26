@@ -18,7 +18,6 @@ app.directive('fileModel', [ '$parse', function($parse) {
                 angular.forEach(element[0].files, function (item) {
                     console.log(item);
                     values.push(item);
-
                 });
                 scope.$apply(function () {
                     if (isMultiple) {
@@ -203,7 +202,6 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
 
 
     $scope.editIdea = function(ev, ideaId)  {
-        $scope.ideaId = ideaId;
         $mdDialog.show({
             controller: DialogController,
             contentElement: '#createIdeaEditDialog',
@@ -213,6 +211,7 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
         });
 
         var ideaUrl = "/ideas/" + ideaId;
+        $scope.ideaId = ideaId;
         $http.get(ideaUrl)
             .then(function(response){
                 $scope.editIdeaName = response.data.ideaName;
@@ -239,7 +238,7 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
             });
     };
 
-    $scope.like = function(userMark,ideaId) {
+    $scope.like = function(userMark, ideaId) {
 
         var ideadata = {
             mark: userMark
@@ -250,6 +249,7 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
                 'Content-Type': 'application/json'
             }
         }
+
         $http.post('/ideas/'+ideaId+'/vote', ideadata, config)
             .then(function (response) {
                 if (response.status == 200) {
@@ -345,7 +345,6 @@ app.controller('postCtrl', [ '$scope', 'fileUpload',
 
 
 /*directive for picture preview in add idea form*/
-/*
 app.directive("fileinput", [function() {
      return {
      scope: {
@@ -354,11 +353,9 @@ app.directive("fileinput", [function() {
          },
          link: function (scope, element) {
              element.bind("change", function (changeEvent) {
-                 /!*scope.fileinput = changeEvent.target.files[0];*!/
-
-                 scope.fileinput = angular.forEach(element[0].files, function (item) {
-                     changeEvent.target.item;
-                 });
+                 for (var i = 0; i < element.files.length; i++) {
+                    scope.fileinput = changeEvent.target.files[i];
+                 }
 
                  console.log("Fileinput" + scope.fileinput);
 
@@ -378,35 +375,3 @@ app.directive("fileinput", [function() {
          });
      }
  }}]);
-*/
-
-/*function previewFiles() {
-
-    var preview = angular.element(document.querySelector('#preview'));
-    var files   = angular.element(document.querySelector('input[type=file]').files);
-
-    function readAndPreview(file) {
-
-        // Make sure `file.name` matches our extensions criteria
-        if ( /\.(jpe?g|png|gif)$/i.test(file.name) ) {
-            var reader = new FileReader();
-
-            reader.addEventListener("load", function () {
-                var image = new Image();
-                image.height = 100;
-                image.title = file.name;
-                image.src = this.result;
-                preview.appendChild( image );
-            }, false);
-
-            reader.readAsDataURL(file);
-        }
-
-    }
-
-    if (files) {
-        [].forEach.call(files, readAndPreview);
-    }
-
-}*/
-
