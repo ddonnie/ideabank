@@ -7,10 +7,12 @@ import com.dataart.fastforward.app.services.CommentService;
 import com.dataart.fastforward.app.services.IdeaService;
 import com.dataart.fastforward.app.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -33,13 +35,15 @@ public class CommentController {
     }
 
     @PostMapping
-    public void addComment(@RequestBody CommentDTO commentDTO, @PathVariable long ideaId) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addComment(@Valid @RequestBody CommentDTO commentDTO, @PathVariable long ideaId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userName = auth.getName();
         commentService.add(commentDTO, userName, ideaId);
     }
 
     @DeleteMapping("/{commentId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteComment(@PathVariable(name = "ideaId") long ideaId, @PathVariable(name = "commentId") long commentId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userName = auth.getName();

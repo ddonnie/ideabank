@@ -14,14 +14,15 @@ import com.dataart.fastforward.app.model.Tag;
 import com.dataart.fastforward.app.services.IdeaService;
 import com.dataart.fastforward.app.services.TagService;
 import com.dataart.fastforward.app.services.UserService;
-import com.dataart.fastforward.app.services.validation.ValidationUtils;
+import com.dataart.fastforward.app.validation.ValidationUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
-import static com.dataart.fastforward.app.services.validation.ValidationUtils.assertExistsNotBlank;
+import static com.dataart.fastforward.app.validation.ValidationUtils.assertExistsNotBlank;
 
 /**
  * Created by logariett on 23.11.16.
@@ -222,6 +223,13 @@ public class IdeaServiceImpl implements IdeaService {
     private List<Long> updateTagSet(Idea idea, IdeaDTO ideaDTO) {
         List<Long> tagsToDelete = new ArrayList<>(idea.getTags().size());
 
+        if ( ideaDTO != null && ideaDTO.getTags() != null) {
+            for (String tag : ideaDTO.getTags()) {
+                tag = StringUtils.normalizeSpace(tag);
+                tag = "".equals(tag) ? null : tag;
+            }
+        }
+
         if (ideaDTO == null || ideaDTO.getTags().length == 0) {
             for (Tag tag : idea.getTags()) {
                 tag.getIdeasWithThisTag().remove(idea);
@@ -234,15 +242,19 @@ public class IdeaServiceImpl implements IdeaService {
         } else if (idea.getTags().size() == 0) {
             Tag tag;
             for (String tagToAdd : ideaDTO.getTags()) {
-                if ((tag = tagService.getTagByTagName(tagToAdd)) == null)
-                    tag = tagService.add(tagToAdd);
+                if (! "".equals(tagToAdd)) {
+                    if ((tag = tagService.getTagByTagName(tagToAdd)) == null)
+                        tag = tagService.add(tagToAdd);
 
-                idea.getTags().add(tag);
+                    idea.getTags().add(tag);
+                }
             }
 
         } else {
             List<String> tagsToRemove = new ArrayList(idea.getTags().size());
             List<String> tagsToAdd = new ArrayList<>(Arrays.asList(ideaDTO.getTags()));
+            while(tagsToAdd.remove(null)); // REFACTOR THIS
+            // tourists.removeIf(Objects::isNull); //TEST ME
 
             for (Tag tag : idea.getTags())
                 tagsToRemove.add(tag.getTagName());

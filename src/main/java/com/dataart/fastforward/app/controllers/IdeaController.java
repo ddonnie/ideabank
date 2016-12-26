@@ -54,19 +54,42 @@ public class IdeaController {
     }
 
     @PostMapping
-    public void addIdea(
-            @RequestParam(value = "ideaDTO") String incomingIdeaDTO,
-            @RequestParam(value = "ideaAttachments") MultipartFile[] ideaAttachments)
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addIdea(@RequestParam(value = "ideaDTO") String incomingIdeaDTO,
+                        @RequestParam(value = "ideaAttachments") MultipartFile[] ideaAttachments)
             throws JsonMappingException, JsonParseException, IOException {
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
-        System.out.println("before"+incomingIdeaDTO.toString());
+
         IdeaDTO ideaDTO = new ObjectMapper().readValue(incomingIdeaDTO, IdeaDTO.class);
         Idea idea = ideaService.add(ideaDTO, username);
+
         for (MultipartFile ideaAttachment : ideaAttachments) {
-            System.out.println(ideaAttachment.getClass());
             attachmentService.add(ideaAttachment, idea);
         }
+    }
+
+    @PutMapping("/{ideaId}")
+    public void editIdea(@RequestParam(value = "ideaDTO") String incomingIdeaDTO,
+                         @RequestParam(value = "ideaAttachments") MultipartFile[] ideaAttachments,
+                         @PathVariable long ideaId)
+            throws JsonMappingException, JsonParseException, IOException {
+/*
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        IdeaDTO ideaDTO = new ObjectMapper().readValue(incomingIdeaDTO, IdeaDTO.class);
+        Idea idea = ideaService.edit(ideaDTO, ideaId, username);
+
+        idea.getAttachments().clear();
+        for (MultipartFile ideaAttachment : ideaAttachments) {
+            attachmentService.add(ideaAttachment, idea);
+        }
+
+        return idea;*/
+
+        System.out.println("OVER HERE");
     }
 
     @GetMapping("/{ideaId}")
@@ -80,14 +103,8 @@ public class IdeaController {
         return idea;
     }
 
-    @PutMapping("/{ideaId}")
-    public Idea editIdea(@RequestBody IdeaDTO ideaDTO, @PathVariable long ideaId) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
-        return ideaService.edit(ideaDTO, ideaId, username);
-    }
-
     @DeleteMapping("/{ideaId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteIdea(@PathVariable long ideaId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
@@ -100,26 +117,29 @@ public class IdeaController {
 
 
     @PostMapping("/{ideaId}/bookmark")
+    @ResponseStatus(HttpStatus.CREATED)
     public void addToBookmarks(@PathVariable long ideaId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         User loggedUser = userService.getUserByUsername(username);
         Idea idea = ideaService.getIdeaById(ideaId);
 
-        userService.addBookmark(idea,loggedUser);
+        userService.addBookmark(idea, loggedUser);
     }
 
     @DeleteMapping("/{ideaId}/bookmark")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeFromBookmarks(@PathVariable long ideaId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         User loggedUser = userService.getUserByUsername(username);
         Idea idea = ideaService.getIdeaById(ideaId);
 
-        userService.deleteBookmark(idea,loggedUser);
+        userService.deleteBookmark(idea, loggedUser);
     }
 
     @PostMapping("/{ideaId}/vote")
+    @ResponseStatus(HttpStatus.CREATED)
     public void addVoteForIdea(@RequestBody MarkDTO markDTO, @PathVariable long ideaId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
@@ -138,6 +158,7 @@ public class IdeaController {
     }
 
     @DeleteMapping("/{ideaId}/vote")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteVoteForIdea(@PathVariable long ideaId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();

@@ -6,6 +6,7 @@ import com.dataart.fastforward.app.model.Idea;
 import com.dataart.fastforward.app.services.AttachmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,6 +23,7 @@ public class AttachmentServiceImpl implements AttachmentService {
     private AttachmentRepository attachmentRepository;
 
     @Override
+    @Transactional
     public void add(MultipartFile ideaAttachment, Idea idea) {
         try {
             String uploadsDir = "/upload/";

@@ -1,4 +1,4 @@
-package com.dataart.fastforward.app.services.validation;
+package com.dataart.fastforward.app.validation;
 
 /**
  * @author logariett on 21.12.2016.
