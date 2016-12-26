@@ -1,6 +1,7 @@
 package com.dataart.fastforward.app.dto;
 
 import com.dataart.fastforward.app.validation.Alphabetic;
+import com.dataart.fastforward.app.validation.NotWhitespace;
 import com.dataart.fastforward.app.validation.Password;
 import com.dataart.fastforward.app.validation.Username;
 import org.hibernate.validator.constraints.*;
@@ -13,11 +14,13 @@ import javax.validation.constraints.*;
 public class NewUserDTO {
 
     @NotNull(message = "error.firstName.notnull")
+    @NotWhitespace
     @Alphabetic
     @Size(min = 1, max = 30, message = "error.firstName.size")
     private String firstName;
 
     @NotNull(message = "error.lastName.notnull")
+    @NotWhitespace
     @Alphabetic
     @Size(min = 1, max = 30, message = "error.lastName.size")
     private String lastName;
