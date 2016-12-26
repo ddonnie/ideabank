@@ -69,7 +69,7 @@
         <div class="favourites">
             <h2>Favorite</h2>
             <span>(</span>
-            <div id="count_of_favorites">21</div>
+            <div id="count_of_favorites">{{ currentuser.bookmarksCount }}</div>
             <span>)</span>
         </div>
 
@@ -141,7 +141,11 @@
         </div>
         <div class="right_side ib column_style">
             <div class="favorites_and_edit_icon_block">
-                <img src="img/icons_of_idea_list/favorites_star.png" class="favorites_icon ib">
+
+                <div ng-switch on="idea.bookmarked">
+                    <img ng-switch-when="false" src="img/icons_of_idea_list/favorites_star.png" class="favorites_icon ib" ng-click="addToFavorites(true, idea.ideaId)">
+                    <img ng-switch-when="true" src="img/icons_of_idea_list/active_favorites_star.png" class="favorites_icon ib" ng-click="addToFavorites(false, idea.ideaId)">
+                </div>
                 <img src="img/icons_of_idea_list/delete.png" class="delete_icon ib" ng-show="loggedUser.role == 'ADMIN' || idea.author.username == loggedUser.username" ng-click="remove(idea.ideaId)">
                 <img src="img/icons_of_idea_list/edit.png" class="edit_icon" ng-show="loggedUser.role == 'ADMIN' || idea.author.username == loggedUser.username" ng-click="editIdea($event, idea.ideaId)">
             </div>

@@ -248,7 +248,7 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
             headers: {
                 'Content-Type': 'application/json'
             }
-        }
+        };
 
         $http.post('/ideas/'+ideaId+'/vote', ideadata, config)
             .then(function (response) {
@@ -260,6 +260,39 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
                 }
             });
     };
+
+    $scope.addToFavorites = function (fav, ideaId) {
+
+        var config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+
+        if(fav == true){
+            $http.post('/ideas/'+ideaId +'/bookmark', fav)
+                .then(function (response) {
+                    if (response.status == 200) {
+                        updateFeed.getUpdatedFeed();
+                    }
+                    else {
+                        alert("Failed!")
+                    }
+                });
+        } else {
+            $http.delete('/ideas/'+ideaId +'/bookmark', fav)
+                .then(function (response) {
+                    if (response.status == 200) {
+                        updateFeed.getUpdatedFeed();
+                    }
+                    else {
+                        alert("Failed!")
+                    }
+                });
+        }
+
+    };
+
     $scope.orderOptions = {
         field: '-creationDate'
     };
