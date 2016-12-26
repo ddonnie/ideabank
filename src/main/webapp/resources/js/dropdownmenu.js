@@ -12,7 +12,7 @@
 
 //Sorting drop down menu
 
-	$('.sorting img').click(function() {
+	$('.wrap_for_sorting').click(function() {
   		$('.dropdown-menu').toggle();
  	 });
   

@@ -118,16 +118,24 @@ header {
 	background-color: white;
 }
 
-header a {
+.active_menu_link {
+	color: #2294d6;
+}
+
+.logo >a {
 	font-weight: bold;
 }
+
+
 .logo {
 	font-family: 'poiret_oneregular';
-	font-weight: bold;
 	font-size: 2.3vw;
 	vertical-align: middle;
 	display: inline-block;
-	
+}
+
+.logo:hover {
+	opacity: 0.7;
 }
 
 
@@ -144,6 +152,7 @@ header ul li{
 	font-size: 1.2vw;
 	margin-right: 2vw;
 	color: #909090;
+
 	
 }
 
@@ -328,6 +337,10 @@ input#search:focus {
   opacity: 0.5;
 }
 
+.wrap_for_sorting {
+	cursor: pointer;
+}
+
 .sorting img {
 	margin-left: 1.4vw;
 	width: 0.9vw;
@@ -374,6 +387,9 @@ input#search:focus {
 	vertical-align: middle;
 }
 
+.wrap_for_sorting h1:hover{
+	opacity: 0.7;
+}
 
 .main_content {
 	background-color: #fff;
