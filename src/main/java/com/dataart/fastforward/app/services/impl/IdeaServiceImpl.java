@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.Valid;
 import java.util.*;
 
 import static com.dataart.fastforward.app.validation.ValidationUtils.assertExistsNotBlank;
@@ -58,12 +59,12 @@ public class IdeaServiceImpl implements IdeaService {
 
         idea.setAuthor(userService.getUserByUsername(userName));
         if (ideaDTO.getIdeaName()!=null) {
-            idea.setIdeaName(ideaDTO.getIdeaName());
+            idea.setIdeaName(StringUtils.normalizeSpace(ideaDTO.getIdeaName()));
         }
         else {
             idea.setIdeaName("Без имени");
         }
-        idea.setIdeaText(ideaDTO.getIdeaText());
+        idea.setIdeaText(StringUtils.normalizeSpace(ideaDTO.getIdeaText()));
         updateTagSet(idea, ideaDTO);
         idea.setCreationDate(new Date());
 
@@ -78,8 +79,8 @@ public class IdeaServiceImpl implements IdeaService {
         Idea idea = getIdeaById(ideaId);
         ValidationUtils.assertAuthor(idea, userService.getUserByUsername(userName));
 
-        idea.setIdeaName(ideaDTO.getIdeaName());
-        idea.setIdeaText(ideaDTO.getIdeaText());
+        idea.setIdeaName(StringUtils.normalizeSpace(ideaDTO.getIdeaName()));
+        idea.setIdeaText(StringUtils.normalizeSpace(ideaDTO.getIdeaText()));
         List<Long> tagsToDelete = updateTagSet(idea, ideaDTO);
         idea.setLastModifiedDate(new Date());
 
