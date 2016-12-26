@@ -50,6 +50,7 @@ public class UserController {
         UserInfoDTO userInfo = new UserInfoDTO();
         userInfo.setUsername(user.getUsername());
         userInfo.setRole(user.getRole().getRoleName());
+        userInfo.setBookmarksCount(user.getBookmarkedIdeas().size());
 
         return userInfo;
     }

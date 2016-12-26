@@ -14,6 +14,7 @@ public class UserInfoDTO {
     private String lastName;*/
     private String username;
     private String role;
+    private int bookmarksCount;
 
     public UserInfoDTO() {
     }
@@ -48,5 +49,13 @@ public class UserInfoDTO {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public int getBookmarksCount() {
+        return bookmarksCount;
+    }
+
+    public void setBookmarksCount(int bookmarksCount) {
+        this.bookmarksCount = bookmarksCount;
     }
 }
