@@ -35,7 +35,6 @@ public class CommentController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
     public void addComment(@Valid @RequestBody CommentDTO commentDTO, @PathVariable long ideaId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userName = auth.getName();
@@ -43,7 +42,6 @@ public class CommentController {
     }
 
     @DeleteMapping("/{commentId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteComment(@PathVariable(name = "ideaId") long ideaId, @PathVariable(name = "commentId") long commentId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userName = auth.getName();
