@@ -1,4 +1,4 @@
-package com.dataart.fastforward.app.services.validation;
+package com.dataart.fastforward.app.validation;
 
 import com.dataart.fastforward.app.exceptions.UnauthorisedIdeaUpdateException;
 import com.dataart.fastforward.app.model.Idea;

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.dataart.fastforward.app.services.validation.ValidationUtils.assertNotBlank;
+import static com.dataart.fastforward.app.validation.ValidationUtils.assertNotBlank;
 
 /**
  * Created by logariett on 19.11.2016.

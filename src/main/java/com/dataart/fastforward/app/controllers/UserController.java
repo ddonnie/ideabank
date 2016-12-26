@@ -102,7 +102,7 @@ public class UserController {
     }
 
     @PostMapping("/registration")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     public void createUser(@Valid @RequestBody NewUserDTO newUserDTO) {
         userService.createUser(newUserDTO);
     }

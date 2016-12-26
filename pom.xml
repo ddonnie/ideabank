@@ -201,6 +201,13 @@
             <version>5.3.4.Final</version>
         </dependency>
 
+        <!-- Utilities -->
+        <dependency>
+            <groupId>com.google.collections</groupId>
+            <artifactId>google-collections</artifactId>
+            <version>1.0</version>
+        </dependency>
+
 
     </dependencies>
 </project>
