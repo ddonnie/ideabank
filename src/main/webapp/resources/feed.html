@@ -142,7 +142,7 @@
         <div class="right_side ib column_style">
             <div class="favorites_and_edit_icon_block">
 
-                <div ng-switch on="idea.bookmarked">
+                <div ng-switch on="idea.bookmarked" class="ib">
                     <img ng-switch-when="false" src="img/icons_of_idea_list/favorites_star.png" class="favorites_icon ib" ng-click="addToFavorites(true, idea.ideaId)">
                     <img ng-switch-when="true" src="img/icons_of_idea_list/active_favorites_star.png" class="favorites_icon ib" ng-click="addToFavorites(false, idea.ideaId)">
                 </div>
