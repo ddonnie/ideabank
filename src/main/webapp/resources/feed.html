@@ -67,10 +67,10 @@
             </div>
         </div>
 
-        <div class="favourites" ng-click="filterByFav(sizeOf(favs), favs)">
+        <div class="favourites">
             <h2>Favorite</h2>
             <span>(</span>
-            <div id="count_of_favorites">{{ sizeOf(favs) }}</div>
+            <div id="count_of_favorites" ng-click="filterByFav(sizeOf(favs), favs)">{{ sizeOf(favs) }}</div>
             <span>)</span>
         </div>
 
