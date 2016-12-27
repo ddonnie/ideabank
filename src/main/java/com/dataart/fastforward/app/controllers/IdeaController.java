@@ -16,8 +16,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
+
+import static com.dataart.fastforward.app.services.utils.Utills.normalizeAllStrings;
 
 /**
  * Created by Orlov on 23.11.2016.
@@ -50,15 +53,23 @@ public class IdeaController {
     }
 
     @PostMapping
-    public void addIdea(@RequestBody IdeaDTO ideaDTO)
+    public void addIdea(@Valid @RequestBody IdeaDTO ideaDTO)
             throws JsonMappingException, JsonParseException, IOException {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
 
+        normalizeAllStrings(ideaDTO);
         ideaService.add(ideaDTO, username);
     }
 
+    @PutMapping("/{ideaId}")
+    public void deleteIdeaById(@RequestBody IdeaDTO ideaDTO, @PathVariable long ideaId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        ideaService.edit(ideaDTO,ideaId,username);
+    }
 
     @GetMapping("/{ideaId}")
     public Idea getIdeaById(@PathVariable long ideaId) {
@@ -68,6 +79,7 @@ public class IdeaController {
 
         Idea idea = ideaService.getIdeaById(ideaId);
         ideaService.setInfoForCurrUser(idea, loggedUser);
+
         return idea;
     }
 

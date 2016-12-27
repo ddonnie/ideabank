@@ -17,7 +17,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Documented
 @Constraint(validatedBy = {})
-@Pattern(regexp = "^[A-Za-z -]+$", message = "{error.validation.alphabetic_violated}")
+@Pattern(regexp = "^[А-Яа-яA-Za-z -]+$", message = "{error.validation.alphabetic_violated}")
 public @interface Alphabetic {
     String message() default "Field doesn't match bean validation constraints.";
     Class<?>[] groups() default {};

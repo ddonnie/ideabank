@@ -70,7 +70,7 @@
         <div class="favourites">
             <h2>Favorite</h2>
             <span>(</span>
-            <div id="count_of_favorites">{{ currentuser.bookmarksCount }}</div>
+            <div id="count_of_favorites" ng-click="filterByFav(favs)">{{ sizeOf(favs) }}</div>
             <span>)</span>
         </div>
 
@@ -98,8 +98,11 @@
                     <div class="img_preview_block_wrap">
                         <ul class="img_preview_block" ng-click="displayToggle()">
                             <li  ng-repeat="attachment in idea.attachments">
-                                <img data-ng-src="{{attachment.attachmentData}}"/>
+                                <div class="img_preview" style="background: url({{attachment.attachmentData}}) center/cover no-repeat"></div>
                             </li>
+                            <!--<li  ng-repeat="attachment in idea.attachments">
+                                <img class="img_preview" data-ng-src="{{attachment.attachmentData}}"/>
+                            </li>-->
                         </ul>
                     </div>
 
@@ -114,8 +117,8 @@
                     <img src="img/icons_of_idea_list/video_camera.png" class="video_pic">
                     <div class="ib grey_font_color count_of_video">4</div>
                     <ul class="video_preview_block">
-                        <li><video class="video_prev" src="video/newyear2017.mp4" controls></video></li>
-                        <li><video class="video_prev" src="video/smeshnye.mp4" controls></video></li>
+                        <li><video class="video_prev" src="video/newyear2017.mp4" controls poster="video/prev1.jpg"></video></li>
+                        <li><video class="video_prev" src="video/smeshnye.mp4" controls poster="video/prev2.jpg"></video></li>
 
                         <li><!--<iframe class="video_prev" src="https://www.youtube.com/embed/aKdq25OwIhg" frameborder="0" allowfullscreen></iframe>--></li>
                         <li></li>
@@ -148,7 +151,7 @@
                     <img ng-switch-when="true" src="img/icons_of_idea_list/active_favorites_star.png" class="favorites_icon ib" ng-click="addToFavorites(false, idea.ideaId)">
                 </div>
                 <img src="img/icons_of_idea_list/delete.png" class="delete_icon ib" ng-show="loggedUser.role == 'ADMIN' || idea.author.username == loggedUser.username" ng-click="remove(idea.ideaId)">
-                <img src="img/icons_of_idea_list/edit.png" class="edit_icon" ng-show="loggedUser.role == 'ADMIN' || idea.author.username == loggedUser.username" ng-click="editIdea($event, idea.ideaId)">
+                <img src="img/icons_of_idea_list/edit.png" class="edit_icon" ng-show="loggedUser.role == 'ADMIN' || idea.author.username == loggedUser.username" ng-click="createEditIdeaDialog($event,idea.ideaId)">
             </div>
         </div>
         <div class="footer_of_idea_preview">
@@ -211,7 +214,7 @@
     <div class="md-dialog-container" id="postIdeaDialog">
         <md-dialog layout-padding style="width: 35%">
             <h2>Post new idea</h2>
-            <form ng-controller="postCtrl" name="postIdeaForm" ng-submit="postIdea()">
+            <form ng-controller="postCtrl" flow-init flow-name="post.flow" name="postIdeaForm" ng-submit="postIdea()">
                 <md-input-container class="md-block">
                     <label>Idea title</label>
                     <input type="text" name="ideaName" ng-model="ideaName">
@@ -224,10 +227,10 @@
 
                 <!--TODO add photos-->
                 <label>
-                    <div flow-init flow-name="uploader.flow" flow-files-added="processFiles($files)">
-                        <input flow-btn type="file">Upload Images</input>
-                        <div ng-repeat="image in uploader.flow.files track by $index">
-                            <img style="width:400px" class="preview" flow-img="image"/><br>
+                    <div flow-files-added="processFiles($files)">
+                        <input flow-btn type="file" multiple/>
+                        <div ng-repeat="attachment in post.flow.files track by $index">
+                            <img ng-click="$flow.files[$index].cancel()" style="width:400px" class="preview" flow-img="attachment"/><br>
                         </div>
                     </div>
                 </label>
@@ -238,6 +241,45 @@
                 </md-input-container>
 
                 <md-button flex="" type="submit" id="postButton" class="md-raised">Post!</md-button>
+            </form>
+        </md-dialog>
+    </div>
+</div>
+
+<!--Edit Idea Form-->
+<div style="visibility: hidden">
+    <div class="md-dialog-container" id="editIdeaDialog">
+        <md-dialog layout-padding style="width: 35%">
+            <h2>Edit idea</h2>
+            <form ng-controller="editCtrl" flow-init flow-name="edit.flow" name="editIdeaForm" ng-submit="editIdea(ideaId)">
+                <md-input-container class="md-block">
+                    <label>Idea title</label>
+                    <input type="text" name="editIdeaName" ng-model="editIdeaName">
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>Idea text</label>
+                    <textarea ng-model="editIdeaText" name="editIdeaText" md-maxlength="1000" rows="5" md-select-on-focus></textarea>
+                </md-input-container>
+
+                <!--TODO add photos-->
+                <label>
+                    <div flow-files-added="processFiles($files)">
+                        <input flow-btn type="file" multiple/>
+                        <div ng-repeat="attachment in edit.flow.files track by $index">
+                            <img ng-click="$flow.files[$index].cancel()" style="width:400px" class="preview" flow-img="attachment"/><br>
+                        </div>
+                        <div ng-repeat="attachment in editedIdeaAttachments">
+                            <img ng-click="removeAttachment(attachment)" src="{{attachment}}"/>
+                        </div>
+                </label>
+
+                <md-input-container class="md-block">
+                    <label>Use comma to separate tags</label>
+                    <input type="text" name="editIdeaTags" ng-model="editIdeaTags">
+                </md-input-container>
+
+                <md-button flex="" type="submit" id="editButton" class="md-raised">Edit!</md-button>
             </form>
         </md-dialog>
     </div>

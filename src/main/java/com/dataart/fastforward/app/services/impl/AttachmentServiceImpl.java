@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Created by Orlov on 20.12.2016.
  */
@@ -30,6 +32,9 @@ public class AttachmentServiceImpl implements AttachmentService {
     }
 
     @Override
-    public void delete(String attachmentName) {
+    @Transactional
+    public void deleteAttachmentsByIdea(Idea idea) {
+        List<Attachment> attachments = attachmentRepository.getAllAttachmentsByIdea(idea);
+        attachmentRepository.delete(attachments);
     }
 }

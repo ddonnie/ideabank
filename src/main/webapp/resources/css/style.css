@@ -740,7 +740,6 @@ ul.img_preview_block li, ul.video_preview_block li {
 	height: 6.8vw;
 }
 
-
 .show-hide_idea_button {
 	background: url(../img/icons_of_idea_list/open.png) center no-repeat;
 	background-size: 6%;
@@ -778,8 +777,8 @@ ul.img_preview_block li, ul.video_preview_block li {
 }
 
 .slider_images_post {
-	height: 75vh;
-	width: 75vw;
+	height: 74vh;
+	width: 74vw;
 	position: relative;
 	background-color: lightcyan;
 	top: 0;

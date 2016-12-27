@@ -8,6 +8,6 @@ import com.dataart.fastforward.app.model.Idea;
 public interface AttachmentService {
 
     void add(String[] attachments, Idea idea);
-    void delete(String attachmentName);
+    void deleteAttachmentsByIdea(Idea idea);
 
 }
