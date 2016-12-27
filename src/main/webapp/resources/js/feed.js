@@ -22,6 +22,11 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
             $scope.loggedUser = response.data;
         });
 
+    $http.get("/users/loggedUser/bookmarks")
+        .then(function (response) {
+            $scope.favs = response.data;
+        });
+
     /*show_slider*/
     $scope.isActiveSlider = true;
     $scope.displayToggle = function () {
@@ -85,6 +90,7 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
                 updateFeed.getUpdatedFeed();
             })
     };
+
     /*counter*/
     $scope.sizeOf = function(obj) {
         return Object.keys(obj || {}).length;
@@ -124,15 +130,10 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
                 else {
                     alert("Failed!")
                 }
-            })};
+            })
+    };
 
     $scope.addToFavorites = function (fav, ideaId) {
-
-        var config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        };
 
         if(fav == true){
             $http.post('/ideas/'+ideaId +'/bookmark', fav)
