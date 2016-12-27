@@ -237,10 +237,16 @@ app.controller('postCtrl', function ($http, $scope, $mdDialog, updateFeed) {
 
     $scope.postIdea = function() {
 
+        if ($scope.ideaTags != null) {
+            var tags = $scope.ideaTags.split([',']);
+        }
+        else {
+            var tags = [];
+        }
         var ideaDTO = {
             "ideaName" : $scope.ideaName,
             "ideaText" : $scope.ideaText,
-            "tags" : [],
+            "tags" : tags,
             "attachments" : $scope.imageStrings
         };
         var config = {
