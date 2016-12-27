@@ -22,6 +22,13 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
             $scope.loggedUser = response.data;
         });
 
+    $http.get("/users/loggedUser/bookmarks")
+            .then(function (response) {
+                    $scope.favs = response.data;
+                });
+    $scope.filterByFav = function(favs) {
+                $scope.ideas = favs;
+            };
 
     $scope.createEditIdeaDialog = function(ev,ideaId)  {
 
