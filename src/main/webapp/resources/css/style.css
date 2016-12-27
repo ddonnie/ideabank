@@ -777,8 +777,8 @@ ul.img_preview_block li, ul.video_preview_block li {
 }
 
 .slider_images_post {
-	height: 75vh;
-	width: 75vw;
+	height: 74vh;
+	width: 74vw;
 	position: relative;
 	background-color: lightcyan;
 	top: 0;
