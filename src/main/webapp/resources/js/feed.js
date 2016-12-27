@@ -277,7 +277,7 @@ app.controller('postCtrl', function ($http, $scope, $mdDialog, updateFeed) {
             var tags = $scope.ideaTags.split([',']);
         }
         else {
-            tags = [];
+            var tags = [];
         }
 
         var ideaDTO = {
