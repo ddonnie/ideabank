@@ -159,6 +159,15 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
 
     };
 
+    $scope.filterByFav = function(countFavs, favs) {
+        if(countFavs == 0){
+            $scope.ideas = "No favorites.";
+        } else {
+            $scope.ideas = favs;
+        }
+
+    };
+
     $scope.orderOptions = {
         field: '-creationDate'
     };
