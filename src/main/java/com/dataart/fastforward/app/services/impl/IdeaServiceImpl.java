@@ -7,20 +7,12 @@ import com.dataart.fastforward.app.dao.TagRepository;
 import com.dataart.fastforward.app.dto.IdeaDTO;
 import com.dataart.fastforward.app.model.*;
 import com.dataart.fastforward.app.services.*;
-import com.dataart.fastforward.app.model.Attachment;
-import com.dataart.fastforward.app.model.Comment;
-import com.dataart.fastforward.app.model.Idea;
-import com.dataart.fastforward.app.model.Tag;
-import com.dataart.fastforward.app.services.IdeaService;
-import com.dataart.fastforward.app.services.TagService;
-import com.dataart.fastforward.app.services.UserService;
 import com.dataart.fastforward.app.validation.ValidationUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.Valid;
 import java.util.*;
 
 import static com.dataart.fastforward.app.validation.ValidationUtils.assertExistsNotBlank;
@@ -86,7 +78,11 @@ public class IdeaServiceImpl implements IdeaService {
         idea.setIdeaText(StringUtils.normalizeSpace(ideaDTO.getIdeaText()));
         List<Long> tagsToDelete = updateTagSet(idea, ideaDTO);
         idea.setLastModifiedDate(new Date());
-
+        attachmentService.deleteAttachmentsByIdea(idea);
+        idea.getAttachments().clear();
+        if (ideaDTO.getAttachments() != null) {
+            attachmentService.add(ideaDTO.getAttachments(), idea);
+        }
         idea = ideaRepository.saveAndFlush(idea);
         for (Long tagId : tagsToDelete)
             tagService.delete(tagId);

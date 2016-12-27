@@ -10,14 +10,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.UnsatisfiedServletRequestParameterException;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -69,6 +70,7 @@ public class ControllerValidationHandler {
         Map<String, Object>  map = Maps.newHashMap();
         map.put("error", "Entity Not Found");
         map.put("cause", ex.getMessage());
+        ex.printStackTrace();
         return map;
     }
 
@@ -111,6 +113,7 @@ public class ControllerValidationHandler {
         } else {
             map.put("cause", ex.getMessage());
         }
+        ex.printStackTrace();
         return map;
     }
 

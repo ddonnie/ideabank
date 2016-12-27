@@ -27,6 +27,48 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
             $scope.favs = response.data;
         });
 
+
+    $scope.createEditIdeaDialog = function(ev,ideaId)  {
+
+        $scope.ideaId = ideaId;
+
+        $http.get("/ideas/" + ideaId)
+            .then(function(response){
+                $scope.editIdeaName = response.data.ideaName;
+                $scope.editIdeaText = response.data.ideaText;
+                $scope.editIdeaTags = [];
+                angular.forEach(response.data.tags, function(tag) {
+                    console.log(tag);
+                    $scope.editIdeaTags.push(tag.tagName);
+                });
+                $scope.editIdeaTags = $scope.editIdeaTags.toString();
+                console.log($scope.editIdeaTags);
+                $scope.editedIdeaAttachments = [];
+                angular.forEach(response.data.attachments, function(attachment) {
+                    $scope.editedIdeaAttachments.push(attachment.attachmentData);
+                });
+                console.log($scope.editedIdeaAttachments);
+                $mdDialog.show({
+                    controller: DialogController,
+                    contentElement: '#editIdeaDialog',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true
+                });
+            });
+    };
+
+    $scope.createPostIdeaDialog = function(ev)  {
+
+        $mdDialog.show({
+            controller: DialogController,
+            contentElement: '#postIdeaDialog',
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            clickOutsideToClose: true
+        });
+    };
+
     /*show_slider*/
     $scope.isActiveSlider = true;
     $scope.displayToggle = function () {
@@ -194,7 +236,7 @@ function DialogController($scope, $mdDialog) {
 }
 
 
-app.controller('headerCtrl', function ($http, $scope, $mdDialog) {
+app.controller('headerCtrl', function ($http, $scope) {
 
     $scope.logout = function () {
         $http.post('/logout')
@@ -208,16 +250,6 @@ app.controller('headerCtrl', function ($http, $scope, $mdDialog) {
             });
     };
 
-    $scope.createPostIdeaDialog = function(ev)  {
-        $mdDialog.show({
-            controller: DialogController,
-            contentElement: '#postIdeaDialog',
-            parent: angular.element(document.body),
-            targetEvent: ev,
-            clickOutsideToClose: true
-        });
-    };
-
     $http.get('/users/loggedUser')
         .then(function(response) {
             $scope.currentuser = response.data;
@@ -225,7 +257,6 @@ app.controller('headerCtrl', function ($http, $scope, $mdDialog) {
 });
 
 app.controller('postCtrl', function ($http, $scope, $mdDialog, updateFeed) {
-
 
     $scope.imageStrings = [];
 
@@ -242,16 +273,75 @@ app.controller('postCtrl', function ($http, $scope, $mdDialog, updateFeed) {
 
     $scope.postIdea = function() {
 
+        if ($scope.ideaTags != null) {
+            var tags = $scope.ideaTags.split([',']);
+        }
+        else {
+            tags = [];
+        }
+
         var ideaDTO = {
             "ideaName" : $scope.ideaName,
             "ideaText" : $scope.ideaText,
-            "tags" : [],
+            "tags" : tags,
             "attachments" : $scope.imageStrings
         };
         var config = {
             headers: {'Content-Type': 'application/json' }
         };
         $http.post('/ideas', ideaDTO, config)
+            .then(function (response) {
+                if (response.status == 200) {
+                    $mdDialog.cancel();
+                    updateFeed.getUpdatedFeed();
+                }
+                else {
+                    alert("Failed!")
+                }
+            });
+    };
+});
+
+app.controller('editCtrl', function ($http, $scope, $mdDialog, updateFeed) {
+
+    $scope.imageStrings = [];
+
+    $scope.removeAttachment = function(attachment) {
+        var index = $scope.editedIdeaAttachments.indexOf(attachment);
+        $scope.editedIdeaAttachments.splice(index, 1);
+    };
+
+    $scope.processFiles = function(files){
+        angular.forEach(files, function(flowFile, i){
+            var fileReader = new FileReader();
+            fileReader.onload = function (event) {
+                console.log(flowFile.file);
+                var uri = event.target.result;
+                $scope.imageStrings[i] = uri;
+            };
+        });
+    };
+
+    $scope.editIdea = function(ideaId) {
+
+        var uploadAttachments = $scope.imageStrings.concat($scope.editedIdeaAttachments);
+
+        if ($scope.editIdeaTags != null) {
+            var tags = $scope.editIdeaTags.split([',']);
+        }
+        else {
+            var tags = [];
+        }
+        var ideaDTO = {
+            "ideaName" : $scope.editIdeaName,
+            "ideaText" : $scope.editIdeaText,
+            "tags" : tags,
+            "attachments" : $scope.imageStrings
+        };
+        var config = {
+            headers: {'Content-Type': 'application/json' }
+        };
+        $http.put('/ideas/'+ideaId, ideaDTO, config)
             .then(function (response) {
                 if (response.status == 200) {
                     alert("Posted!");
@@ -262,7 +352,5 @@ app.controller('postCtrl', function ($http, $scope, $mdDialog, updateFeed) {
                     alert("Failed!")
                 }
             });
-    };
-
-
+    }
 });

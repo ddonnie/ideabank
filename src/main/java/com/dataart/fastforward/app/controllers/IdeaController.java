@@ -63,6 +63,13 @@ public class IdeaController {
         ideaService.add(ideaDTO, username);
     }
 
+    @PutMapping("/{ideaId}")
+    public void deleteIdeaById(@RequestBody IdeaDTO ideaDTO, @PathVariable long ideaId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        ideaService.edit(ideaDTO,ideaId,username);
+    }
 
     @GetMapping("/{ideaId}")
     public Idea getIdeaById(@PathVariable long ideaId) {
@@ -72,6 +79,7 @@ public class IdeaController {
 
         Idea idea = ideaService.getIdeaById(ideaId);
         ideaService.setInfoForCurrUser(idea, loggedUser);
+
         return idea;
     }
 
