@@ -61,12 +61,12 @@ public class IdeaServiceImpl implements IdeaService {
 
         idea.setAuthor(userService.getUserByUsername(userName));
         if (ideaDTO.getIdeaName()!=null) {
-            idea.setIdeaName(StringUtils.normalizeSpace(ideaDTO.getIdeaName()));
+            idea.setIdeaName(ideaDTO.getIdeaName());
         }
         else {
             idea.setIdeaName("Без имени");
         }
-        idea.setIdeaText(StringUtils.normalizeSpace(ideaDTO.getIdeaText()));
+        idea.setIdeaText(ideaDTO.getIdeaText());
         updateTagSet(idea, ideaDTO);
         idea.setCreationDate(new Date());
 

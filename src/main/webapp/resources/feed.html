@@ -98,8 +98,11 @@
                     <div class="img_preview_block_wrap">
                         <ul class="img_preview_block" ng-click="displayToggle()">
                             <li  ng-repeat="attachment in idea.attachments">
-                                <img data-ng-src="{{attachment.attachmentData}}"/>
+                                <div class="img_preview" style="background: url({{attachment.attachmentData}}) center/cover no-repeat"></div>
                             </li>
+                            <!--<li  ng-repeat="attachment in idea.attachments">
+                                <img class="img_preview" data-ng-src="{{attachment.attachmentData}}"/>
+                            </li>-->
                         </ul>
                     </div>
 
@@ -114,8 +117,8 @@
                     <img src="img/icons_of_idea_list/video_camera.png" class="video_pic">
                     <div class="ib grey_font_color count_of_video">4</div>
                     <ul class="video_preview_block">
-                        <li><video class="video_prev" src="video/newyear2017.mp4" controls></video></li>
-                        <li><video class="video_prev" src="video/smeshnye.mp4" controls></video></li>
+                        <li><video class="video_prev" src="video/newyear2017.mp4" controls poster="video/prev1.jpg"></video></li>
+                        <li><video class="video_prev" src="video/smeshnye.mp4" controls poster="video/prev2.jpg"></video></li>
 
                         <li><!--<iframe class="video_prev" src="https://www.youtube.com/embed/aKdq25OwIhg" frameborder="0" allowfullscreen></iframe>--></li>
                         <li></li>
@@ -229,6 +232,7 @@
                         <div ng-repeat="image in uploader.flow.files track by $index">
                             <img style="width:400px" class="preview" flow-img="image"/><br>
                         </div>
+                    </div>
                 </label>
 
                 <md-input-container class="md-block">

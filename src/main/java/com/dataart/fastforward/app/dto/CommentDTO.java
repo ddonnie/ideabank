@@ -1,7 +1,5 @@
 package com.dataart.fastforward.app.dto;
 
-import com.dataart.fastforward.app.validation.NotWhitespace;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -11,7 +9,6 @@ import javax.validation.constraints.Size;
 public class CommentDTO {
 
     @NotNull(message = "{error.comment.notnull}")
-    @NotWhitespace
     @Size(min = 1, max = 500, message = "{error.comment.size}")
     private String commentText;
 
