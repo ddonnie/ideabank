@@ -1,8 +1,11 @@
 package com.dataart.fastforward.app.dto;
 
+import com.dataart.fastforward.app.validation.NotEmptyIdea;
+
 /**
  * Created by logariett on 27.11.2016.
  */
+@NotEmptyIdea
 public class IdeaDTO {
 
     private String ideaName;
