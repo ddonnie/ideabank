@@ -6,11 +6,7 @@ import com.dataart.fastforward.app.model.Idea;
 import com.dataart.fastforward.app.services.AttachmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.ContextLoader;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.util.Date;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by Orlov on 20.12.2016.
@@ -22,35 +18,18 @@ public class AttachmentServiceImpl implements AttachmentService {
     private AttachmentRepository attachmentRepository;
 
     @Override
-    public void add(MultipartFile ideaAttachment, Idea idea) {
-        try {
-            String uploadsDir = "/upload/";
-            String filepath = ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath(uploadsDir);
-            if (!new File(filepath).exists()) {
-                new File(filepath).mkdir();
-            }
-            System.out.println("realPathtoUploads = " + filepath);
-            String orgName = (new Date().getTime()) + ideaAttachment.getOriginalFilename();
-            String filePath = filepath + "\\" + orgName;
-            File dest = new File(filePath);
-            ideaAttachment.transferTo(dest);
-
+    @Transactional
+    public void add(String[] attachments, Idea idea) {
+        for (String attachmentData: attachments) {
             Attachment attachment = new Attachment();
+            attachment.setAttachmentData(attachmentData);
             attachment.setIdea(idea);
-            attachment.setAttachmentName(orgName);
-            attachmentRepository.saveAndFlush(attachment);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            attachmentRepository.save(attachment);
         }
+        attachmentRepository.flush();
     }
 
     @Override
     public void delete(String attachmentName) {
-
-        String uploadsDir = "/upload/";
-        String filepath = ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath(uploadsDir);
-        System.out.println("File to delete: "+filepath+attachmentName);
-        File file = new File(filepath+attachmentName);
-        file.delete();
     }
 }

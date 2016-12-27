@@ -41,8 +41,8 @@ public class UserController {
         return userService.getAll();
     }
 
-    @GetMapping("/users/me")
-    public UserInfoDTO getLoggedInUser() {
+    @GetMapping("/users/loggedUser")
+    public UserInfoDTO getLoggedUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
 
@@ -50,9 +50,37 @@ public class UserController {
         UserInfoDTO userInfo = new UserInfoDTO();
         userInfo.setUsername(user.getUsername());
         userInfo.setRole(user.getRole().getRoleName());
+        userInfo.setBookmarksCount(user.getBookmarkedIdeas().size());
 
         return userInfo;
     }
+
+    @GetMapping("/users/loggedUser/bookmarks")
+    @ResponseStatus(HttpStatus.OK)
+    public Set<Idea> getLoggedUserBookmarks() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String loggedUsername = auth.getName();
+        User loggedUser = userService.getUserByUsername(loggedUsername);
+
+        Set<Idea> ideas = loggedUser.getBookmarkedIdeas();
+        ideaService.setInfoForCurrUser(ideas, loggedUser);
+
+        return ideas;
+    }
+
+    @GetMapping("/users/loggedUser/ideas")
+    @ResponseStatus(HttpStatus.OK)
+    public Set<Idea> getLoggedUserIdeas(@PathVariable String username) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String loggedUsername = auth.getName();
+        User loggedUser = userService.getUserByUsername(loggedUsername);
+
+        Set<Idea> ideas = loggedUser.getIdeas();
+        ideaService.setInfoForCurrUser(ideas, loggedUser);
+
+        return ideas;
+    }
+
 
     @GetMapping("/users/{username}")
     @ResponseStatus(HttpStatus.OK)
@@ -69,22 +97,22 @@ public class UserController {
 
         User userWithIdeas = userService.getUserByUsername(username);
         Set<Idea> ideas = userWithIdeas.getIdeas();
-        ideaService.setMarkInfoForCurrUser(ideas, loggedUser);
+        ideaService.setInfoForCurrUser(ideas, loggedUser);
 
         return ideas;
     }
 
     @PostMapping("/registration")
-    @ResponseStatus(HttpStatus.OK)
     public void createUser(@Valid @RequestBody NewUserDTO newUserDTO) {
         userService.createUser(newUserDTO);
     }
 
-    /*    @GetMapping("/users/{userId}")
+    @GetMapping("/users/id={userId}")
     @ResponseStatus(HttpStatus.OK)
     public User getUserById(@PathVariable long userId) {
         return userService.getUserById(userId);
-    }*/
+    }
+
 /*    @ExceptionHandler(Exception.class)
     public ResponseEntity<String> errorHandler(Exception exc) {
         return new ResponseEntity<>(exc.getMessage(), HttpStatus.BAD_REQUEST);

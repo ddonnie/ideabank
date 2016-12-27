@@ -13,3 +13,5 @@ target/
 *.war
 *.ear
 
+src/main/java/com/dataart/fastforward/app/validation/FieldErrorDTO.java
+src/main/java/com/dataart/fastforward/app/validation/MessageDTO.java

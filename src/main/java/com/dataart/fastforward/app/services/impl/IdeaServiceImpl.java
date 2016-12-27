@@ -14,14 +14,16 @@ import com.dataart.fastforward.app.model.Tag;
 import com.dataart.fastforward.app.services.IdeaService;
 import com.dataart.fastforward.app.services.TagService;
 import com.dataart.fastforward.app.services.UserService;
-import com.dataart.fastforward.app.services.validation.ValidationUtils;
+import com.dataart.fastforward.app.validation.ValidationUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.Valid;
 import java.util.*;
 
-import static com.dataart.fastforward.app.services.validation.ValidationUtils.assertExistsNotBlank;
+import static com.dataart.fastforward.app.validation.ValidationUtils.assertExistsNotBlank;
 
 /**
  * Created by logariett on 23.11.16.
@@ -45,6 +47,8 @@ public class IdeaServiceImpl implements IdeaService {
     private TagService tagService;
     @Autowired
     private MarkService markService;
+    @Autowired
+    private AttachmentService attachmentService;
 
 
 
@@ -57,16 +61,17 @@ public class IdeaServiceImpl implements IdeaService {
 
         idea.setAuthor(userService.getUserByUsername(userName));
         if (ideaDTO.getIdeaName()!=null) {
-            idea.setIdeaName(ideaDTO.getIdeaName());
+            idea.setIdeaName(StringUtils.normalizeSpace(ideaDTO.getIdeaName()));
         }
         else {
             idea.setIdeaName("Без имени");
         }
-        idea.setIdeaText(ideaDTO.getIdeaText());
+        idea.setIdeaText(StringUtils.normalizeSpace(ideaDTO.getIdeaText()));
         updateTagSet(idea, ideaDTO);
         idea.setCreationDate(new Date());
 
         idea = ideaRepository.saveAndFlush(idea);
+        attachmentService.add(ideaDTO.getAttachments(), idea);
         tagRepository.flush();
         return ideaRepository.saveAndFlush(idea);
     }
@@ -77,8 +82,8 @@ public class IdeaServiceImpl implements IdeaService {
         Idea idea = getIdeaById(ideaId);
         ValidationUtils.assertAuthor(idea, userService.getUserByUsername(userName));
 
-        idea.setIdeaName(ideaDTO.getIdeaName());
-        idea.setIdeaText(ideaDTO.getIdeaText());
+        idea.setIdeaName(StringUtils.normalizeSpace(ideaDTO.getIdeaName()));
+        idea.setIdeaText(StringUtils.normalizeSpace(ideaDTO.getIdeaText()));
         List<Long> tagsToDelete = updateTagSet(idea, ideaDTO);
         idea.setLastModifiedDate(new Date());
 
@@ -113,15 +118,18 @@ public class IdeaServiceImpl implements IdeaService {
 
     @Override
     @Transactional
-    public Idea setMarkInfoForCurrUser(Idea idea, User loggedUser) {
+    public Idea setInfoForCurrUser(Idea idea, User loggedUser) {
         setUserRating(idea, loggedUser);
+        setBookmarked(idea, loggedUser);
         return idea;
     }
     @Override
     @Transactional
-    public Collection<Idea> setMarkInfoForCurrUser(Collection<Idea> ideas, User loggedUser) {
-        for (Idea idea : ideas)
+    public Collection<Idea> setInfoForCurrUser(Collection<Idea> ideas, User loggedUser) {
+        for (Idea idea : ideas) {
             setUserRating(idea, loggedUser);
+            setBookmarked(idea, loggedUser);
+        }
         return ideas;
     }
 
@@ -212,8 +220,19 @@ public class IdeaServiceImpl implements IdeaService {
         idea.setUserMark(mark == null ? 0 : mark.getMark());
     }
 
+    private void setBookmarked(Idea idea, User loggedUser) {
+        idea.setBookmarked(loggedUser.getBookmarkedIdeas().contains(idea));
+    }
+
     private List<Long> updateTagSet(Idea idea, IdeaDTO ideaDTO) {
         List<Long> tagsToDelete = new ArrayList<>(idea.getTags().size());
+
+        if ( ideaDTO != null && ideaDTO.getTags() != null) {
+            for (String tag : ideaDTO.getTags()) {
+                tag = StringUtils.normalizeSpace(tag);
+                tag = "".equals(tag) ? null : tag;
+            }
+        }
 
         if (ideaDTO == null || ideaDTO.getTags().length == 0) {
             for (Tag tag : idea.getTags()) {
@@ -227,15 +246,19 @@ public class IdeaServiceImpl implements IdeaService {
         } else if (idea.getTags().size() == 0) {
             Tag tag;
             for (String tagToAdd : ideaDTO.getTags()) {
-                if ((tag = tagService.getTagByTagName(tagToAdd)) == null)
-                    tag = tagService.add(tagToAdd);
+                if (! "".equals(tagToAdd)) {
+                    if ((tag = tagService.getTagByTagName(tagToAdd)) == null)
+                        tag = tagService.add(tagToAdd);
 
-                idea.getTags().add(tag);
+                    idea.getTags().add(tag);
+                }
             }
 
         } else {
             List<String> tagsToRemove = new ArrayList(idea.getTags().size());
             List<String> tagsToAdd = new ArrayList<>(Arrays.asList(ideaDTO.getTags()));
+            while(tagsToAdd.remove(null)); // REFACTOR THIS
+            // tourists.removeIf(Objects::isNull); //TEST ME
 
             for (Tag tag : idea.getTags())
                 tagsToRemove.add(tag.getTagName());
