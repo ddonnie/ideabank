@@ -47,6 +47,8 @@ public class IdeaServiceImpl implements IdeaService {
     private TagService tagService;
     @Autowired
     private MarkService markService;
+    @Autowired
+    private AttachmentService attachmentService;
 
 
 
@@ -69,6 +71,7 @@ public class IdeaServiceImpl implements IdeaService {
         idea.setCreationDate(new Date());
 
         idea = ideaRepository.saveAndFlush(idea);
+        attachmentService.add(ideaDTO.getAttachments(), idea);
         tagRepository.flush();
         return ideaRepository.saveAndFlush(idea);
     }

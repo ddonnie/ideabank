@@ -18,6 +18,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet">
 
+
 </head>
 
 <body ng-controller="feedCtrl" ng-cloak="" ng-app="feedApp">
@@ -31,7 +32,7 @@
                 <li><a href="feed.html"  ng-class="{'active_menu_link': isActiveFeed}">Feed</a></li>
                 <li ng-click="filterByMyIdeas()" ng-class="{'active_menu_link': isActiveMyIdeas}">My Ideas</li>
                 <li>
-                    <button id="button_add_idea" ng-click="createIdea($event)">&nbsp&nbsp&nbspAdd Idea</button>
+                    <button id="button_add_idea" ng-click="createPostIdeaDialog($event)">&nbsp&nbsp&nbspAdd Idea</button>
                 </li>
                 <li>
                     <form role="form">
@@ -97,7 +98,7 @@
                     <div class="img_preview_block_wrap">
                         <ul class="img_preview_block" ng-click="displayToggle()">
                             <li  ng-repeat="attachment in idea.attachments">
-                                <div class="img_preview" style="background: url(../upload/{{attachment.attachmentName}}) center/cover no-repeat"></div>
+                                <img data-ng-src="{{attachment.attachmentData}}"/>
                             </li>
                         </ul>
                     </div>
@@ -105,7 +106,7 @@
                     <div class="slider_wrap" ng-class="{'dnone': isActiveSlider}">
                         <div class="hide_slider_button" ng-click="displayToggle()"></div>
                         <ul rn-carousel rn-carousel-controls rn-carousel-index="carouselIndex" rn-carousel-buffered class="slider_images_post">
-                            <li ng-repeat="attachment in idea.attachments"><div class="img_slider" style="background: url(../upload/{{attachment.attachmentName}}) center/cover no-repeat"></div></li>
+                            <li ng-repeat="attachment in idea.attachments"><div class="img_slider" style="background: url({{attachment.attachmentData}}) center/cover no-repeat"></div></li>
                         </ul>
                     </div>
                 </div>
@@ -207,7 +208,7 @@
 
 <!--Add Idea Form-->
 <div style="visibility: hidden">
-    <div class="md-dialog-container" id="createIdeaDialog">
+    <div class="md-dialog-container" id="postIdeaDialog">
         <md-dialog layout-padding style="width: 35%">
             <h2>Post new idea</h2>
             <form ng-controller="postCtrl" name="postIdeaForm" ng-submit="postIdea()">
@@ -221,16 +222,14 @@
                     <textarea ng-model="ideaText" name="ideaText" md-maxlength="1000" rows="5" md-select-on-focus></textarea>
                 </md-input-container>
 
-               <!--TODO add photos-->
+                <!--TODO add photos-->
                 <label>
-                    <input file-model="ideaAttachments" type="file" accept="image/jpeg,image/png" multiple
-                          style="display: none">
-                    <img src="img/upload_photo_icon.jpg" class="camera_up_pic">
+                    <div flow-init flow-name="uploader.flow" flow-files-added="processFiles($files)">
+                        <input flow-btn type="file">Upload Images</input>
+                        <div ng-repeat="image in uploader.flow.files track by $index">
+                            <img style="width:400px" class="preview" flow-img="image"/><br>
+                        </div>
                 </label>
-
-                <md-input-container class="md-block" ng-repeat="file in ideaAttachments">
-                    <p>{{ file }}</p>
-                </md-input-container>
 
                 <md-input-container class="md-block">
                     <label>Use comma to separate tags</label>
@@ -243,41 +242,6 @@
     </div>
 </div>
 
-<!--Edit Idea Form-->
-<div style="visibility: hidden">
-    <div class="md-dialog-container" id="createIdeaEditDialog">
-        <md-dialog layout-padding style="width: 35%">
-            <h2>Edit idea</h2>
-            <form ng-controller="postCtrl" name="editIdeaForm" ng-submit="postEditIdea(ideaId)">
-                <md-input-container class="md-block">
-                    <label>Idea title</label>
-                    <input type="text" name="editIdeaName" ng-model="editIdeaName">
-                </md-input-container>
-
-                <md-input-container class="md-block">
-                    <label>Idea text</label>
-                    <textarea ng-model="editIdeaText" name="editIdeaText" md-maxlength="1000" rows="5" md-select-on-focus></textarea>
-                </md-input-container>
-
-                <label>
-                    <input file-model="editIdeaAttachments" name="editIdeaAttachments" type="file" accept="image/jpeg,image/png" multiple style="display: none">
-                    <img src="img/upload_photo_icon.jpg" class="camera_up_pic">
-                </label>
-
-                <md-input-container class="md-block">
-                    <img ng-src="{{filepreview}}"  ng-show="filepreview" class="up_pic" >
-                </md-input-container>
-
-                <md-input-container class="md-block">
-                    <label>Use comma to separate tags</label>
-                    <input type="text" name="editIdeaTags" ng-model="editIdeaTags">
-                </md-input-container>
-
-                <md-button flex="" type="submit" id="postButton" class="md-raised">Edit!</md-button>
-            </form>
-        </md-dialog>
-    </div>
-</div>
 
 
 
@@ -308,6 +272,7 @@
 <script type="text/javascript" src="js/dropdownmenu.js"></script>
 <script type="text/javascript" src="js/totop.js"></script>
 <script src="/resources/js/feed.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/ng-flow/2.5.1/ng-flow-standalone.min.js"></script>
 
 </body>
 </html>

@@ -13,5 +13,4 @@ import java.util.List;
 @Repository
 public interface AttachmentRepository extends JpaRepository<Attachment, Long> {
     List<Attachment> getAllAttachmentsByIdea(Idea idea);
-    void deleteByAttachmentName(String attachmentName);
 }

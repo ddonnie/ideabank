@@ -2,98 +2,7 @@
  * Created by Orlov on 30.11.2016.
  */
 
-var app = angular.module('feedApp',['ngMaterial', 'ngMessages', 'material.svgAssetsCache', 'angular-carousel']);
-
-app.directive('fileModel', [ '$parse', function($parse) {
-    return {
-        restrict : 'A',
-        link : function(scope, element, attrs) {
-            var model = $parse(attrs.fileModel);
-            var isMultiple = attrs.multiple;
-            var modelSetter = model.assign;
-            element.bind('change', function() {
-                var values = [];
-                console.log('files:');
-                console.log(element[0].files);
-                angular.forEach(element[0].files, function (item) {
-                    console.log(item);
-                    values.push(item);
-                });
-                scope.$apply(function () {
-                    if (isMultiple) {
-                        modelSetter(scope, values);
-                    } else {
-                        modelSetter(scope, values[0]);
-                    }
-                });
-            });
-        }
-    };
-}]);
-
-app.service('fileUpload', ['$http', 'updateFeed', '$mdDialog', function($http, updateFeed, $mdDialog) {
-    this.uploadFileToUrl = function(uploadUrl, ideaName, ideaText, tags, ideaAttachments) {
-
-        var fd = new FormData();
-        var procTags = [];
-        if (tags != null) {
-            procTags = tags.split([',']);
-        };
-        var ideaDTO = {
-            "ideaName": ideaName,
-            "ideaText": ideaText,
-            "tags": procTags
-        };
-        console.log(ideaDTO);
-        fd.append('ideaDTO', JSON.stringify(ideaDTO));
-        angular.forEach(ideaAttachments, function(attachment) {
-            fd.append('ideaAttachments', attachment);
-        });
-
-        $http.post(uploadUrl, fd, {
-            transformRequest : angular.identity,
-            headers : {
-                'Content-Type' : undefined
-            }
-        }).success(function() {
-            $mdDialog.cancel();
-            updateFeed.getUpdatedFeed();
-        }).error(function() {
-            alert("Nope");
-        });
-    }
-    this.uploadModifiedFileToUrl = function(uploadUrl, ideaName, ideaText, tags, ideaAttachments) {
-
-        var fd = new FormData();
-        var procTags = [];
-        if (tags != null) {
-            procTags = tags.split([',']);
-        };
-        var ideaDTO = {
-            "ideaName": ideaName,
-            "ideaText": ideaText,
-            "tags": procTags
-        };
-        console.log(ideaDTO);
-        fd.append('ideaDTO', JSON.stringify(ideaDTO));
-
-        angular.forEach(ideaAttachments, function(attachment) {
-            fd.append('ideaAttachments', attachment);
-        });
-
-        $http.put(uploadUrl, fd, {
-            transformRequest : angular.identity,
-            headers : {
-                'Content-Type' : undefined
-            }
-        }).success(function() {
-            $mdDialog.cancel();
-            updateFeed.getUpdatedFeed();
-        }).error(function() {
-            alert("Nope");
-        });
-    }
-} ]);
+var app = angular.module('feedApp',['ngMaterial', 'ngMessages', 'material.svgAssetsCache', 'angular-carousel', 'flow']);
 
 app.service('updateFeed', ['$http', '$rootScope', function($http, $rootScope) {
     this.getUpdatedFeed = function() {
@@ -108,13 +17,18 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
 
     updateFeed.getUpdatedFeed();
 
- /*show_slider*/
+    $http.get('/users/loggedUser')
+        .then(function(response) {
+            $scope.loggedUser = response.data;
+        });
+
+    /*show_slider*/
     $scope.isActiveSlider = true;
     $scope.displayToggle = function () {
         $scope.isActiveSlider = !$scope.isActiveSlider;
     };
 
- /*Tag filter*/
+    /*Tag filter*/
     $scope.filterByTag = function(tag) {
         var tagUrl = "/tags/"+tag;
         $http.get(tagUrl).success(
@@ -123,7 +37,7 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
             }
         );
     };
-/*user filter*/
+    /*user filter*/
     $scope.filterByUser = function(user) {
         var userUrl = "/users/"+user+"/ideas";
         $http.get(userUrl).success(
@@ -134,11 +48,11 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
     };
 
 
-/*toggle menu class active*/
+    /*toggle menu class active*/
     $scope.isActiveFeed = true;
     $scope.isActiveMyIdeas = false;
 
-/*My ideas filter*/
+    /*My ideas filter*/
 
     $scope.filterByMyIdeas = function() {
         $http.get('/users/loggedUser')
@@ -155,8 +69,6 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
                 );
             });
     };
-
-
 
     $scope.commentIdea = function(ideaId) {
         var commentData = {
@@ -178,58 +90,12 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
         return Object.keys(obj || {}).length;
     };
 
-    /*$scope.deleteIdea = function(ideaId) {
-     ideatideleteurl = '/ideas/'+ideaId;
-     $http.delete(ideatideleteurl).
-     then(function() {
-     updateFeed.getUpdatedFeed();
-     });
-     }*/
-
     $scope.remove = function(ideaId) {
         $http.delete('/ideas/'+ideaId)
             .then(function(response) {
                 updateFeed.getUpdatedFeed();
             });
     }
-
-    $http.get('/users/loggedUser')
-        .then(function(response) {
-            $scope.loggedUser = response.data;
-        });
-
-
-
-
-    $scope.editIdea = function(ev, ideaId)  {
-        $mdDialog.show({
-            controller: DialogController,
-            contentElement: '#createIdeaEditDialog',
-            parent: angular.element(document.body),
-            targetEvent: ev,
-            clickOutsideToClose: true
-        });
-
-        var ideaUrl = "/ideas/" + ideaId;
-        $scope.ideaId = ideaId;
-        $http.get(ideaUrl)
-            .then(function(response){
-                $scope.editIdeaName = response.data.ideaName;
-                $scope.editIdeaText = response.data.ideaText;
-
-                var tagsArray = response.data.tags;
-                $scope.editIdeaTags = '';
-                tagsArray.forEach(function (tag, index) {
-                    if(index == tagsArray.length - 1){
-                        $scope.editIdeaTags += tag.tagName;
-                    } else {
-                        $scope.editIdeaTags += tag.tagName + ',';
-                    }
-                });
-
-            })
-
-    };
 
     $scope.removed = function(commentId, ideaId) {
         $http.delete('/ideas/'+ideaId+'/comments/'+commentId)
@@ -238,7 +104,7 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
             });
     };
 
-    $scope.like = function(userMark, ideaId) {
+    $scope.like = function(userMark,ideaId) {
 
         var ideadata = {
             mark: userMark
@@ -248,7 +114,7 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
             headers: {
                 'Content-Type': 'application/json'
             }
-        };
+        }
 
         $http.post('/ideas/'+ideaId+'/vote', ideadata, config)
             .then(function (response) {
@@ -258,8 +124,7 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
                 else {
                     alert("Failed!")
                 }
-            });
-    };
+            })};
 
     $scope.addToFavorites = function (fav, ideaId) {
 
@@ -338,10 +203,10 @@ app.controller('headerCtrl', function ($http, $scope, $mdDialog) {
             });
     };
 
-    $scope.createIdea = function(ev)  {
+    $scope.createPostIdeaDialog = function(ev)  {
         $mdDialog.show({
             controller: DialogController,
-            contentElement: '#createIdeaDialog',
+            contentElement: '#postIdeaDialog',
             parent: angular.element(document.body),
             targetEvent: ev,
             clickOutsideToClose: true
@@ -354,57 +219,45 @@ app.controller('headerCtrl', function ($http, $scope, $mdDialog) {
         });
 });
 
-app.controller('postCtrl', [ '$scope', 'fileUpload',
-    function($scope, fileUpload) {
-        $scope.postIdea = function() {
-            var ideaName = $scope.ideaName;
-            var ideaText = $scope.ideaText;
-            var tags = $scope.ideaTags;
-            var ideaAttachments = $scope.ideaAttachments;
-            console.log('file is ' + angular.toJson(ideaAttachments));
-            var uploadUrl = "/ideas";
-            fileUpload.uploadFileToUrl(uploadUrl, ideaName, ideaText, tags, ideaAttachments);
+app.controller('postCtrl', function ($http, $scope, $mdDialog, updateFeed) {
+
+
+    $scope.imageStrings = [];
+
+    $scope.processFiles = function(files){
+        angular.forEach(files, function(flowFile, i){
+            var fileReader = new FileReader();
+            fileReader.onload = function (event) {
+                var uri = event.target.result;
+                $scope.imageStrings[i] = uri;
+            };
+            fileReader.readAsDataURL(flowFile.file);
+        });
+    };
+
+    $scope.postIdea = function() {
+
+        var ideaDTO = {
+            "ideaName" : $scope.ideaName,
+            "ideaText" : $scope.ideaText,
+            "tags" : [],
+            "attachments" : $scope.imageStrings
         };
-        $scope.postEditIdea = function(ideaId) {
-            var ideaName = $scope.editIdeaName;
-            var ideaText = $scope.editIdeaText;
-            var tags = $scope.editIdeaTags;
-            var ideaAttachments = $scope.editIdeaAttachments;
-            console.log('file is ' + angular.toJson(ideaAttachments));
-            var uploadUrl = "/ideas/" + ideaId;
-            fileUpload.uploadModifiedFileToUrl(uploadUrl, ideaName, ideaText, tags, ideaAttachments);
+        var config = {
+            headers: {'Content-Type': 'application/json' }
         };
-    }]);
+        $http.post('/ideas', ideaDTO, config)
+            .then(function (response) {
+                if (response.status == 200) {
+                    alert("Posted!");
+                    $mdDialog.cancel();
+                    updateFeed.getUpdatedFeed();
+                }
+                else {
+                    alert("Failed!")
+                }
+            });
+    };
 
 
-/*directive for picture preview in add idea form*/
-app.directive("fileinput", [function() {
-     return {
-     scope: {
-         fileinput: "=",
-         filepreview: "="
-         },
-         link: function (scope, element) {
-             element.bind("change", function (changeEvent) {
-                 for (var i = 0; i < element.files.length; i++) {
-                    scope.fileinput = changeEvent.target.files[i];
-                 }
-
-                 console.log("Fileinput" + scope.fileinput);
-
-                 var reader = new FileReader();
-
-                 reader.onload = function (loadEvent) {
-                     scope.$apply(function () {
-                        scope.filepreview = loadEvent.target.result;
-                         console.log("Filepreview" + scope.filepreview);
-                     });
-                 }
-
-                 reader.readAsDataURL(scope.fileinput);
-                 console.log("Reader" + reader);
-
-
-         });
-     }
- }}]);
+});
