@@ -214,7 +214,7 @@
     <div class="md-dialog-container" id="postIdeaDialog">
         <md-dialog layout-padding style="width: 35%">
             <h2>Post new idea</h2>
-            <form ng-controller="postCtrl" flow-init flow-name="post.flow" name="postIdeaForm" ng-submit="postIdea()">
+            <form ng-controller="postCtrl" flow-init flow-name="flowPost" name="postIdeaForm" ng-submit="postIdea()">
                 <md-input-container class="md-block">
                     <label>Idea title</label>
                     <input type="text" name="ideaName" ng-model="ideaName">
@@ -229,7 +229,7 @@
                 <label>
                     <div flow-files-added="processFiles($files)">
                         <input flow-btn type="file" multiple/>
-                        <div ng-repeat="attachment in post.flow.files track by $index">
+                        <div ng-repeat="attachment in flowPost.files track by $index">
                             <img ng-click="$flow.files[$index].cancel()" style="width:400px" class="preview" flow-img="attachment"/><br>
                         </div>
                     </div>
@@ -251,7 +251,7 @@
     <div class="md-dialog-container" id="editIdeaDialog">
         <md-dialog layout-padding style="width: 35%">
             <h2>Edit idea</h2>
-            <form ng-controller="editCtrl" flow-init flow-name="edit.flow" name="editIdeaForm" ng-submit="editIdea(ideaId)">
+            <form ng-controller="editCtrl" flow-init flow-name="flowEdit" name="editIdeaForm" ng-submit="editIdea(ideaId)">
                 <md-input-container class="md-block">
                     <label>Idea title</label>
                     <input type="text" name="editIdeaName" ng-model="editIdeaName">
@@ -266,7 +266,7 @@
                 <label>
                     <div flow-files-added="processFiles($files)">
                         <input flow-btn type="file" multiple/>
-                        <div ng-repeat="attachment in edit.flow.files track by $index">
+                        <div ng-repeat="attachment in flowEdit.files track by $index">
                             <img ng-click="$flow.files[$index].cancel()" style="width:400px" class="preview" flow-img="attachment"/><br>
                         </div>
                         <div ng-repeat="attachment in editedIdeaAttachments">

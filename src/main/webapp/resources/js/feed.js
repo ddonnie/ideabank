@@ -22,11 +22,6 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
             $scope.loggedUser = response.data;
         });
 
-    $http.get("/users/loggedUser/bookmarks")
-        .then(function (response) {
-            $scope.favs = response.data;
-        });
-
 
     $scope.createEditIdeaDialog = function(ev,ideaId)  {
 
@@ -132,7 +127,6 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
                 updateFeed.getUpdatedFeed();
             })
     };
-
     /*counter*/
     $scope.sizeOf = function(obj) {
         return Object.keys(obj || {}).length;
@@ -172,10 +166,15 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
                 else {
                     alert("Failed!")
                 }
-            })
-    };
+            })};
 
     $scope.addToFavorites = function (fav, ideaId) {
+
+        var config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
 
         if(fav == true){
             $http.post('/ideas/'+ideaId +'/bookmark', fav)
@@ -199,10 +198,6 @@ app.controller('feedCtrl', function($http, $scope, updateFeed, $mdDialog) {
                 });
         }
 
-    };
-
-    $scope.filterByFav = function(favs) {
-        $scope.ideas = favs;
     };
 
     $scope.orderOptions = {
@@ -277,7 +272,7 @@ app.controller('postCtrl', function ($http, $scope, $mdDialog, updateFeed) {
             var tags = $scope.ideaTags.split([',']);
         }
         else {
-            var tags = [];
+            tags = [];
         }
 
         var ideaDTO = {
@@ -304,7 +299,7 @@ app.controller('postCtrl', function ($http, $scope, $mdDialog, updateFeed) {
 
 app.controller('editCtrl', function ($http, $scope, $mdDialog, updateFeed) {
 
-    $scope.imageStrings = [];
+    $scope.modifiedStrings = [];
 
     $scope.removeAttachment = function(attachment) {
         var index = $scope.editedIdeaAttachments.indexOf(attachment);
@@ -317,14 +312,14 @@ app.controller('editCtrl', function ($http, $scope, $mdDialog, updateFeed) {
             fileReader.onload = function (event) {
                 console.log(flowFile.file);
                 var uri = event.target.result;
-                $scope.imageStrings[i] = uri;
+                $scope.modifiedStrings[i] = uri;
             };
         });
     };
 
     $scope.editIdea = function(ideaId) {
 
-        var uploadAttachments = $scope.imageStrings.concat($scope.editedIdeaAttachments);
+        var uploadAttachments = $scope.modifiedStrings.concat($scope.editedIdeaAttachments);
 
         if ($scope.editIdeaTags != null) {
             var tags = $scope.editIdeaTags.split([',']);
@@ -336,7 +331,7 @@ app.controller('editCtrl', function ($http, $scope, $mdDialog, updateFeed) {
             "ideaName" : $scope.editIdeaName,
             "ideaText" : $scope.editIdeaText,
             "tags" : tags,
-            "attachments" : $scope.imageStrings
+            "attachments" : uploadAttachments
         };
         var config = {
             headers: {'Content-Type': 'application/json' }
