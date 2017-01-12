@@ -42,24 +42,10 @@ public class UserServiceTest {
 
     @Test
     public void testDataSource(){
-        System.out.println(dataSource);
+//        System.out.println(dataSource);
     }
 
-    @Test
-    public void testCreateAccount() {
-/*        NewUserDTO newUserDTO = new NewUserDTO();
-        newUserDTO.setFirstName("TestFirstName");
-        newUserDTO.setLastName("TestLastName");
-        newUserDTO.setUsername("TestLogin");
-        newUserDTO.setPassword("TestPassword");
-        userService.createUser(newUserDTO);
-        System.out.println(userService.getUserByUsername(newUserDTO.getUsername()));*/
-    }
 
-    @Test
-    public void getBookmarksTest() {
-//        System.out.println(userService.getBookmarks(userService.getUserById(1)));
-    }
 
     @Test
     public void findNonExistLoginTest() {
