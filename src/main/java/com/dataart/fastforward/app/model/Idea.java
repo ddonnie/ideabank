@@ -40,6 +40,8 @@ public class Idea {
 
     @Transient
     private int userMark;
+    @Transient
+    private boolean isBookmarked;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "creation_date")
@@ -167,6 +169,14 @@ public class Idea {
 
     public void setUserMark(int userMark) {
         this.userMark = userMark;
+    }
+
+    public boolean isBookmarked() {
+        return isBookmarked;
+    }
+
+    public void setBookmarked(boolean bookmarked) {
+        isBookmarked = bookmarked;
     }
 
     public Set<Tag> getTags() {

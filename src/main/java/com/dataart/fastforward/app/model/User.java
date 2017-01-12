@@ -37,6 +37,10 @@ public class User {
     private Role role;
 
     @JsonIgnore
+    @OneToMany(mappedBy = "author", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private Set<Idea> ideas = new HashSet<>();
+
+    @JsonIgnore
     @ManyToMany(mappedBy = "usersWhoBookmarked",fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<Idea> bookmarkedIdeas = new HashSet<>();
@@ -92,6 +96,14 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Set<Idea> getIdeas() {
+        return ideas;
+    }
+
+    public void setIdeas(Set<Idea> ideas) {
+        this.ideas = ideas;
     }
 
     @JsonIgnore

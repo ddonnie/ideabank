@@ -52,7 +52,7 @@
 html, body {
 	 height: 100%;
 	 width: 100%;
-	background-color: white;
+	 background-color: #fff;
 }
 body {
 	margin: 0;
@@ -61,7 +61,6 @@ body {
     color: #1b1b1b;
     font-size: 0;
     font-weight: normal;
-
 }
 
 a {
@@ -116,18 +115,27 @@ header {
     line-height: 6vw;
     position: relative;
     z-index: 2;
+	background-color: white;
 }
 
-header a {
+.active_menu_link {
+	color: #2294d6;
+}
+
+.logo >a {
 	font-weight: bold;
 }
+
+
 .logo {
 	font-family: 'poiret_oneregular';
-	font-weight: bold;
 	font-size: 2.3vw;
 	vertical-align: middle;
 	display: inline-block;
-	
+}
+
+.logo:hover {
+	opacity: 0.7;
 }
 
 
@@ -144,6 +152,7 @@ header ul li{
 	font-size: 1.2vw;
 	margin-right: 2vw;
 	color: #909090;
+
 	
 }
 
@@ -268,7 +277,12 @@ input#search:focus {
   opacity: 0.5;
 }
 
-
+*:focus {
+	outline: -webkit-focus-ring-color auto 0px;
+	outline-color: -webkit-focus-ring-color;
+	outline-style: none;
+	outline-width: 0px;
+}
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 /*THE FIRST UNDER HEADER*/
@@ -300,7 +314,7 @@ input#search:focus {
 	display: none;
    border-radius:0.2vw; 
    width: 9vw;
-   height: 5vw;
+   height: 7vw;
    background-color: #f2f2f2;
   
 }
@@ -321,6 +335,10 @@ input#search:focus {
 
 .dropdown-menu li:hover {
   opacity: 0.5;
+}
+
+.wrap_for_sorting {
+	cursor: pointer;
 }
 
 .sorting img {
@@ -369,6 +387,9 @@ input#search:focus {
 	vertical-align: middle;
 }
 
+.wrap_for_sorting h1:hover{
+	opacity: 0.7;
+}
 
 .main_content {
 	background-color: #fff;
@@ -389,12 +410,15 @@ input#search:focus {
 
 
 .ideas_list.container {
+	background-color:	white;
 	overflow: visible;
 }
 .ideas_list {
 	margin-top: 2vw;
 }
-
+#idea {
+	background-color:	white;
+}
 .idea {
 	width: 100%;
 	line-height: 16vw;
@@ -425,7 +449,13 @@ input#search:focus {
 	padding-bottom: 1vw;
 	font-size: 1.4vw;
 	line-height: 1.5vw;
+	cursor: pointer;
 
+
+}
+
+.column_style h5:hover {
+	opacity: 0.6;
 }
 
 .left_side {
@@ -483,11 +513,19 @@ input#search:focus {
 .likes_block {
 	margin-left: 1.6vw;
 }
+/*.likes {
+	width: 1.5vw;
+	height: ;
+	margin-right: 0.3vw;
+	cursor: pointer;
+}*/
+
 .likes {
 	width: 1.5vw;
 	margin-right: 0.3vw;
 	cursor: pointer;
 }
+
 
 .count_of_like {
 	margin-right: 1vw;
@@ -527,8 +565,6 @@ input#search:focus {
 .column_style p {
 	font-size: 1.3vw;
 	line-height: 1.5vw;
-	margin-bottom: 1vw;
-	margin-top: 0.4vw;
 }
 
 
@@ -565,7 +601,6 @@ input#search:focus {
 	width: 1.9vw;
 	margin-left: 0.6vw;
 	cursor: pointer;
-
 }
 
 .count_of_comments {
@@ -576,6 +611,47 @@ input#search:focus {
 	display: block;
 }
 
+md-card {
+	width: 60vw;
+}
+
+md-card-content {
+	width: 60vw;
+	margin: 0 auto;
+}
+
+.delete_and_edit_comment_icon_block {
+	margin-left: 0;
+	vertical-align: top;
+	width: 1.5vw;
+	margin-top: 0.5vw;
+	position: relative;
+	right: 6vw;
+	top: 0.5vw;
+}
+
+.delete_icon_in_comments {
+	width: 1.2vw;
+	cursor: pointer;
+
+
+}
+
+.edit_icon_in_comments {
+	width: 1.2vw;
+	cursor: pointer;
+	margin-top: 0.7vw;
+}
+
+
+/*
+.tags li p {
+	margin-bottom: 0;
+}
+*/
+
+/*footer of idea*/
+
 .footer_of_idea_preview {
 	height: 3vw;
 	font-size: 1.2vw;
@@ -583,6 +659,9 @@ input#search:focus {
 	vertical-align: middle;
 
 }
+
+
+
 
 /*Open full idea view*/
 
@@ -634,12 +713,17 @@ input#search:focus {
 }
 
 .open_idea .column_style {
-	line-height: 1.2vw;
+	line-height: 1.6vw;
 	vertical-align: top;
 	font-size: 1.2vw;
 
 }
 
+.img_preview_block_wrap {
+	width: 21.9vw;
+	height: 7.8vw;
+	overflow: hidden;
+}
 
 ul.img_preview_block li, ul.video_preview_block li {
 	display: inline-block;
@@ -656,9 +740,9 @@ ul.img_preview_block li, ul.video_preview_block li {
 	height: 6.8vw;
 }
 
-
 .show-hide_idea_button {
 	background: url(../img/icons_of_idea_list/open.png) center no-repeat;
+	background-size: 6%;
 	height: 3vw;
 	cursor: pointer;
 	width: 57vw;
@@ -666,6 +750,7 @@ ul.img_preview_block li, ul.video_preview_block li {
 }
 .open_idea .show-hide_idea_button {
 	background: url(../img/icons_of_idea_list/hide.png) center no-repeat;
+	background-size: 6%;
 }
 
 .open_idea .footer_of_idea_preview {
@@ -692,9 +777,8 @@ ul.img_preview_block li, ul.video_preview_block li {
 }
 
 .slider_images_post {
-	width: 80vw;
-	height: 60vw;
-	color: green;
+	height: 74vh;
+	width: 74vw;
 	position: relative;
 	background-color: lightcyan;
 	top: 0;
@@ -706,21 +790,22 @@ ul.img_preview_block li, ul.video_preview_block li {
 	text-align: center;
 
 }
-.slider_images_post img {
-	width: 100%;
-	height:auto;
+
+ul.slider_images_post li {
+	padding: 0;
+	margin: 0;
+	vertical-align: middle;
 }
 
-.rn-carousel-control {
-	z-index: 1001;
+ul.slider_images_post {
 	position: absolute;
 }
-.rn-carousel-control.rn-carousel-control-prev,
-.rn-carousel-control.rn-carousel-control-next {
-	background-color: lightgrey;
-	font-size: 14vw;
-	color: #F5F6FA;
+.slider_images_post .img_slider {
+	height: 76vh;
+	width: 76vw;
 }
+
+
 
 .hide_slider_button {
 	width: 2vw;
@@ -735,8 +820,38 @@ ul.img_preview_block li, ul.video_preview_block li {
 }
 
 .hide_slider_button:hover {
-	opacity: 0.6;
+	opacity: 0.5;
 }
+
+/* prev/next controls */
+.rn-carousel-control {
+	z-index: 1001;
+	position: absolute;
+	-webkit-transition: opacity 0.2s ease-out;
+	transition: opacity 0.2s ease-out;
+	font-size: 14vw;
+	color: lightgrey;
+	background-color: dimgrey;
+	top: 45%;
+	opacity: 0.75;
+	cursor: pointer; }
+.rn-carousel-control:hover {
+	opacity: 0.5; }
+.rn-carousel-control.rn-carousel-control-prev {
+	width: 2.5vw;
+	height: 5vw;
+	background: url("../img/icons_of_idea_list/prev.png") center/cover no-repeat;
+}
+.rn-carousel-control.rn-carousel-control-prev:before {
+	content: ""; }
+.rn-carousel-control.rn-carousel-control-next {
+	width: 2.5vw;
+	height: 5vw;
+	background: url("../img/icons_of_idea_list/next.png") center/cover no-repeat;
+}
+.rn-carousel-control.rn-carousel-control-next:before {
+	content: ""; }
+
 
 /*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 /*Pages number*/
@@ -837,3 +952,4 @@ footer .logo {
 	width: 8vw;
 	height: 8vw;
 }
+

@@ -24,8 +24,8 @@ public class Attachment {
     @JoinColumn(name = "idea_id", nullable = false)
     private Idea idea;
 
-    @Column(name = "attachment_name")
-    private String attachmentName;
+    @Column(name = "attachment_data")
+    private String attachmentData;
 
     public Attachment() {}
 
@@ -45,12 +45,11 @@ public class Attachment {
         this.idea = idea;
     }
 
-    public String getAttachmentName() {
-        return attachmentName;
+    public String getAttachmentData() {
+        return attachmentData;
     }
 
-    public void setAttachmentName(String attachmentName) {
-        this.attachmentName = attachmentName;
+    public void setAttachmentData(String attachmentData) {
+        this.attachmentData = attachmentData;
     }
-
 }

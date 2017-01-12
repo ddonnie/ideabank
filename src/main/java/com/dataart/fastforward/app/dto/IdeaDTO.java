@@ -1,13 +1,17 @@
 package com.dataart.fastforward.app.dto;
 
+import com.dataart.fastforward.app.validation.NotEmptyIdea;
+
 /**
  * Created by logariett on 27.11.2016.
  */
+@NotEmptyIdea
 public class IdeaDTO {
 
     private String ideaName;
     private String ideaText;
     private String[] tags;
+    private String[] attachments;
 
     public IdeaDTO() {
     }
@@ -36,4 +40,11 @@ public class IdeaDTO {
         this.tags = tags;
     }
 
+    public String[] getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(String[] attachments) {
+        this.attachments = attachments;
+    }
 }

@@ -10,14 +10,16 @@ import java.util.Set;
  */
 public class UserInfoDTO {
 
-    private String firstName;
-    private String lastName;
+/*    private String firstName;
+    private String lastName;*/
     private String username;
+    private String role;
+    private int bookmarksCount;
 
     public UserInfoDTO() {
     }
 
-    public String getFirstName() {
+/*    public String getFirstName() {
         return firstName;
     }
 
@@ -31,7 +33,7 @@ public class UserInfoDTO {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
+    }*/
 
     public String getUsername() {
         return username;
@@ -39,5 +41,21 @@ public class UserInfoDTO {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public int getBookmarksCount() {
+        return bookmarksCount;
+    }
+
+    public void setBookmarksCount(int bookmarksCount) {
+        this.bookmarksCount = bookmarksCount;
     }
 }
